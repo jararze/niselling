@@ -11,6 +11,12 @@ export default {
 
     theme: {
         extend: {
+            transitionTimingFunction: {
+                'custom': 'cubic-bezier(.64,.04,.35,1)',
+            },
+            colors: {
+                'nissan': '#c3002f',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
