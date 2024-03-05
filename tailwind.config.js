@@ -18,7 +18,7 @@ export default {
                 'nissan': '#c3002f',
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['nissan', ...defaultTheme.fontFamily.sans],
             },
         },
     },

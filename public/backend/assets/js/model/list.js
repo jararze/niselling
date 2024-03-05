@@ -1,5 +1,5 @@
 "use strict";
-var KTCustomersList = function () {
+var ModelList = function () {
     var t, e, o, n, c = () => {
             n.querySelectorAll('[data-kt-customer-table-filter="delete_row"]').forEach((e => {
                 e.addEventListener("click", (function (e) {
@@ -172,7 +172,7 @@ var KTCustomersList = function () {
             (n = document.querySelector("#kt_customers_table")) && (n.querySelectorAll("tbody tr").forEach((t => {
                 const e = t.querySelectorAll("td"),
                     o = moment(e[4].innerHTML, "DD MMM YYYY, LT").format();
-                e[4].setAttribute("data-order", o)
+                e[9].setAttribute("data-order", o)
             })), (t = $(n).DataTable({
                 info: !1,
                 order: [],
@@ -203,5 +203,5 @@ var KTCustomersList = function () {
     }
 }();
 KTUtil.onDOMContentLoaded((function () {
-    KTCustomersList.init()
+    ModelList.init()
 }));
