@@ -1,0 +1,93 @@
+#signUpForm {
+    max-width: 1000px;
+}
+
+#signUpForm .form-header .stepIndicator.active {
+    font-weight: 600;
+}
+
+#signUpForm .form-header .stepIndicator.finish {
+    font-weight: 600;
+    color: #c3002f;
+}
+
+#signUpForm .form-header .stepIndicator::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: 9;
+    width: 20px;
+    height: 20px;
+    background-color: #f5ced7;
+    border-radius: 50%;
+    border: 3px solid #f7dfe4;
+}
+
+#signUpForm .form-header .stepIndicator.active::before {
+    background-color: #e02855;
+    border: 3px solid #f5ced7;
+}
+
+#signUpForm .form-header .stepIndicator.finish::before {
+    background-color: #c3002f;
+    border: 3px solid #f5ced7;
+}
+
+#signUpForm .form-header .stepIndicator::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 100%;
+    height: 3px;
+    background-color: #f3f3f3;
+}
+
+#signUpForm .form-header .stepIndicator.active::after {
+    background-color: #e02855;
+}
+
+#signUpForm .form-header .stepIndicator.finish::after {
+    background-color: #c3002f;
+}
+
+#signUpForm .form-header .stepIndicator:last-child:after {
+    display: none;
+}
+
+#signUpForm input.invalid {
+    border: 2px solid #ffaba5;
+}
+
+#signUpForm .step {
+    display: none;
+}
+
+.spinner-overlay {
+    position: fixed; /* Full-page overlay */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    z-index: 1000; /* Make sure it's on top of other elements */
+}
+
+.spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #c3002f; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -4,10 +4,10 @@
     <script type="text/javascript">
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
-            deleteEndpoint: '{{ route("backend.vehicle.model.delete") }}'
+            deleteEndpoint: '{{ route("backend.vehicle.color.delete") }}'
         };
     </script>
-    <script src="{{ asset('backend/assets/js/model/list.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/color/list.js') }}"></script>
 @endpush
 
 <x-app-layout>
@@ -144,8 +144,8 @@
                                     </button>
                                     <!--end::Export-->
                                     <!--begin::Add customer-->
-                                    <a href="{{ route('backend.vehicle.model.create') }}" class="btn btn-primary">Nuevo
-                                        Modelo</a>
+                                    <a href="{{ route('backend.vehicle.color.create') }}" class="btn btn-primary">Nuevo
+                                        Color</a>
                                     <!--end::Add customer-->
                                 </div>
                                 <!--end::Toolbar-->
@@ -178,57 +178,43 @@
                                         </div>
                                     </th>
                                     <th class="min-w-125px">Modelo</th>
-                                    <th class="min-w-125px">Tipo</th>
+                                    <th class="min-w-125px">Color</th>
                                     <th class="min-w-125px">Imagen</th>
-                                    <th class="min-w-80px">Ficha Técnica</th>
-                                    <th class="min-w-70px">Reserva en línea</th>
-                                    <th class="min-w-60px">Orden</th>
-                                    <th class="min-w-80px">Status</th>
-                                    <th class="min-w-120px">Fecha Creación</th>
+                                    <th class="min-w-125px">Orden</th>
+                                    <th class="min-w-125px">Status</th>
+                                    <th class="min-w-125px">Fecha Creación</th>
                                     <th class="text-end min-w-70px"></th>
                                 </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
-                                @foreach($values as $vehicle_model)
+                                @foreach($values as $grade)
                                     <tr>
                                         <td>
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                 <input class="form-check-input" type="checkbox"
-                                                       value="{{ $vehicle_model->id }}"/>
+                                                       value="{{ $grade->id }}"/>
                                             </div>
                                         </td>
                                         <td>
-                                            <p
-                                                class="text-gray-800 text-hover-primary mb-1">{{ $vehicle_model->name }}</p>
+                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar->name }}</p>
                                         </td>
-                                        <td data-filter="">
-                                            {{ $vehicle_model->typeOfCar->name}}
-                                        </td>
+                                        <td>{{ $grade->name  }}</td>
                                         <td>
                                             <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                                 <div class="symbol-label">
-                                                    <img
-                                                        src="{{ asset('storage/vehicles/'.$vehicle_model->slug.'/thumbnail/'.$vehicle_model->image) }}"
-                                                        alt="{{ $vehicle_model->slug }}" class="w-100">
+                                                    <img src="{{ asset('storage/vehicles/'.$grade->modelOfCar->slug.'/thumbnail/'.$grade->image) }}" alt="{{ $grade->name }}" class="w-100">
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="{{ $vehicle_model->data_sheet }}" target="_blank"
-                                               class="btn btn-primary" style="font-size: 12px"><i
-                                                    class="bi bi-cloud-arrow-down-fill fs-4 me-2"></i> Descargar</a>
+                                            {{ $grade->order  }}
                                         </td>
-                                        <td data-filter="{{ $vehicle_model->online_reservation == 1 ? 'SI' : 'NO' }}">
-                                            <div
-                                                class="badge {{ $vehicle_model->online_reservation == 1 ? 'badge-light-success' : 'badge-light-danger' }} fw-bold">
-                                                {{ $vehicle_model->online_reservation == 1 ? 'SI' : 'NO' }}
+                                        <td data-filter="{{ $grade->status == 1 ? 'habilitado' : 'no_habilitado' }}">
+                                            <div class="badge {{ $grade->status == 1 ? 'badge-light-success' : 'badge-light-danger' }} fw-bold">{{ ($grade->status == 1) ?'Habilitado':'No habilitado' }}
                                             </div>
                                         </td>
-                                        <td>{{ $vehicle_model->order  }}</td>
-                                        <td>
-                                            <div class="badge badge-light-success fw-bold">Habilitado</div>
-                                        </td>
-                                        <td>{{ $vehicle_model->created_at->format('d M Y, h:i a') }}</td>
+
+                                        <td>{{ $grade->created_at->format('d M Y, h:i a') }}</td>
                                         <td class="text-end">
                                             <a href="#"
                                                class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
@@ -240,14 +226,13 @@
                                                 data-kt-menu="true">
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="{{ route('backend.vehicle.model.edit', $vehicle_model->id) }}"
+                                                    <a href="{{ route('backend.vehicle.color.edit', $grade->id) }}"
                                                        class="menu-link px-3">Editar</a>
                                                 </div>
                                                 <!--end::Menu item-->
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="#" data-id="{{ $vehicle_model->id }}"
-                                                       class="menu-link px-3"
+                                                    <a href="#" data-id="{{ $grade->id }}" class="menu-link px-3"
                                                        data-kt-customer-table-filter="delete_row">Borrar</a>
                                                 </div>
                                                 <!--end::Menu item-->
@@ -263,11 +248,7 @@
                         </div>
                         <!--end::Card body-->
                     </div>
-                    <!--end::Card-->
-                    <!--begin::Modals-->
-                    <!--begin::Modal - Customers - Add-->
-                    <!--end::Modal - Customers - Add-->
-                    <!--begin::Modal - Adjust Balance-->
+
                     <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -396,3 +377,5 @@
         <!--end::Content wrapper-->
     </div>
 </x-app-layout>
+
+

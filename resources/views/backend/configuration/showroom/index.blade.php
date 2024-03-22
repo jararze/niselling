@@ -4,20 +4,38 @@
     <script type="text/javascript">
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
-            deleteEndpoint: '{{ route("backend.vehicle.model.delete") }}'
+            submitEndpoint: '{{ route("backend.configuration.showroom.store") }}',
+            deleteEndpoint: '{{ route("backend.configuration.showroom.delete", ":id" ) }}'
         };
     </script>
-    <script src="{{ asset('backend/assets/js/model/list.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/js/configuration/showroom/list.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/configuration/showroom/save.js') }}"></script>
 @endpush
 
 <x-app-layout>
+
     <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+
+
         <!--begin::Content wrapper-->
         <div class="d-flex flex-column flex-column-fluid">
             <!--begin::Content-->
             <div id="kt_app_content" class="app-content flex-column-fluid">
+
+
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
+
+                    <div class="card mb-10">
+                        <!--begin::Card body-->
+                        <div class="card-body p-5 p-lg-10">
+                            <!--begin::Title-->
+                            <h1 class="fw-bold text-gray-900 ps-0">Showroom</h1>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
                     <!--begin::Card-->
                     <div class="card">
                         <!--begin::Card header-->
@@ -59,7 +77,7 @@
                                             <!--begin::Input group-->
                                             <div class="mb-10">
                                                 <!--begin::Label-->
-                                                <label class="form-label fs-5 fw-semibold mb-3">Mes creado:</label>
+                                                <label class="form-label fs-5 fw-semibold mb-3">Mes:</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <select class="form-select form-select-solid fw-bold"
@@ -112,8 +130,7 @@
                                                         class="form-check form-check-sm form-check-custom form-check-solid mb-3">
                                                         <input class="form-check-input" type="radio" name="payment_type"
                                                                value="no_habilitado"/>
-                                                        <span
-                                                            class="form-check-label text-gray-600">No habilitado</span>
+                                                        <span class="form-check-label text-gray-600">No habilitado</span>
                                                     </label>
                                                     <!--end::Option-->
                                                 </div>
@@ -144,8 +161,9 @@
                                     </button>
                                     <!--end::Export-->
                                     <!--begin::Add customer-->
-                                    <a href="{{ route('backend.vehicle.model.create') }}" class="btn btn-primary">Nuevo
-                                        Modelo</a>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#kt_modal_add_customer">Nuevo showroom
+                                    </button>
                                     <!--end::Add customer-->
                                 </div>
                                 <!--end::Toolbar-->
@@ -177,58 +195,39 @@
                                                    value="1"/>
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Modelo</th>
-                                    <th class="min-w-125px">Tipo</th>
-                                    <th class="min-w-125px">Imagen</th>
-                                    <th class="min-w-80px">Ficha Técnica</th>
-                                    <th class="min-w-70px">Reserva en línea</th>
-                                    <th class="min-w-60px">Orden</th>
-                                    <th class="min-w-80px">Status</th>
-                                    <th class="min-w-120px">Fecha Creación</th>
+                                    <th class="min-w-125px">Ciudad</th>
+                                    <th class="min-w-125px">Showroom</th>
+                                    <th class="min-w-125px">Agentes</th>
+                                    <th class="min-w-125px">¿Activo?</th>
+                                    <th class="min-w-125px">Fecha Creación</th>
                                     <th class="text-end min-w-70px"></th>
                                 </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
-                                @foreach($values as $vehicle_model)
+                                @foreach($values as $showroom)
                                     <tr>
                                         <td>
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox"
-                                                       value="{{ $vehicle_model->id }}"/>
+                                                <input class="form-check-input" type="checkbox" value="{{ $showroom->id }}"/>
                                             </div>
                                         </td>
                                         <td>
-                                            <p
-                                                class="text-gray-800 text-hover-primary mb-1">{{ $vehicle_model->name }}</p>
-                                        </td>
-                                        <td data-filter="">
-                                            {{ $vehicle_model->typeOfCar->name}}
+                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $showroom->cityOfShowroom->name }}</p>
                                         </td>
                                         <td>
-                                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                                <div class="symbol-label">
-                                                    <img
-                                                        src="{{ asset('storage/vehicles/'.$vehicle_model->slug.'/thumbnail/'.$vehicle_model->image) }}"
-                                                        alt="{{ $vehicle_model->slug }}" class="w-100">
-                                                </div>
-                                            </div>
+                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $showroom->name }}</p>
                                         </td>
                                         <td>
-                                            <a href="{{ $vehicle_model->data_sheet }}" target="_blank"
-                                               class="btn btn-primary" style="font-size: 12px"><i
-                                                    class="bi bi-cloud-arrow-down-fill fs-4 me-2"></i> Descargar</a>
+                                            {{ $showroom->agents_count }}
                                         </td>
-                                        <td data-filter="{{ $vehicle_model->online_reservation == 1 ? 'SI' : 'NO' }}">
-                                            <div
-                                                class="badge {{ $vehicle_model->online_reservation == 1 ? 'badge-light-success' : 'badge-light-danger' }} fw-bold">
-                                                {{ $vehicle_model->online_reservation == 1 ? 'SI' : 'NO' }}
-                                            </div>
+                                        <td data-filter="{{ $showroom->status == 1 ? 'habilitado' : 'no_habilitado' }}">
+                                            @if($showroom->status == 1)
+                                                <div class="badge badge-light-success fw-bold">Habilitado</div>
+                                            @else
+                                                <div class="badge badge-light-danger fw-bold">No habilitado</div>
+                                            @endif
                                         </td>
-                                        <td>{{ $vehicle_model->order  }}</td>
-                                        <td>
-                                            <div class="badge badge-light-success fw-bold">Habilitado</div>
-                                        </td>
-                                        <td>{{ $vehicle_model->created_at->format('d M Y, h:i a') }}</td>
+                                        <td>{{ $showroom->created_at->format('d M Y, h:i a') }}</td>
                                         <td class="text-end">
                                             <a href="#"
                                                class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
@@ -240,14 +239,12 @@
                                                 data-kt-menu="true">
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="{{ route('backend.vehicle.model.edit', $vehicle_model->id) }}"
-                                                       class="menu-link px-3">Editar</a>
+                                                    <a href="{{ route('backend.configuration.showroom.edit', $showroom->id) }}" class="menu-link px-3">Editar</a>
                                                 </div>
                                                 <!--end::Menu item-->
                                                 <!--begin::Menu item-->
                                                 <div class="menu-item px-3">
-                                                    <a href="#" data-id="{{ $vehicle_model->id }}"
-                                                       class="menu-link px-3"
+                                                    <a href="#" data-id="{{ $showroom->id }}" class="menu-link px-3"
                                                        data-kt-customer-table-filter="delete_row">Borrar</a>
                                                 </div>
                                                 <!--end::Menu item-->
@@ -266,6 +263,128 @@
                     <!--end::Card-->
                     <!--begin::Modals-->
                     <!--begin::Modal - Customers - Add-->
+                    <div class="modal fade" id="kt_modal_add_customer" tabindex="-1" aria-hidden="true">
+                        <!--begin::Modal dialog-->
+                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                            <!--begin::Modal content-->
+                            <div class="modal-content">
+                                <!--begin::Form-->
+                                {{--                                <form class="form" method="post" action="{{ route('backend.vehicle.type.store') }}" >--}}
+                                <form class="form" id="kt_modal_add_customer_form" action="#"
+                                      data-kt-redirect="{{ route('backend.configuration.showroom.index') }}">
+                                    @csrf
+                                    <!--begin::Modal header-->
+                                    <div class="modal-header" id="kt_modal_add_customer_header">
+                                        <!--begin::Modal title-->
+                                        <h2 class="fw-bold">Agregar Showroom</h2>
+                                        <!--end::Modal title-->
+                                        <!--begin::Close-->
+                                        <div id="kt_modal_add_customer_close"
+                                             class="btn btn-icon btn-sm btn-active-icon-primary">
+                                            <i class="ki-outline ki-cross fs-1"></i>
+                                        </div>
+                                        <!--end::Close-->
+                                    </div>
+                                    <!--end::Modal header-->
+                                    <!--begin::Modal body-->
+                                    <div class="modal-body py-10 px-lg-17">
+                                        <!--begin::Scroll-->
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll"
+                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
+                                             data-kt-scroll-max-height="auto"
+                                             data-kt-scroll-dependencies="#kt_modal_add_customer_header"
+                                             data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+                                             data-kt-scroll-offset="300px">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label for="name" class="required fs-6 fw-semibold mb-2">Nombre Showroom</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" class="form-control" id="name"
+                                                       placeholder="Calacoto" name="name" value=""/>
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label for="city" class="required fs-6 fw-semibold mb-2">Ciudad</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <select class="form-select mb-2" data-control="select2"
+                                                        name="city"
+                                                        id="city"
+                                                        required
+                                                        data-placeholder="Seleccione una opcion" data-allow-clear="true">
+                                                    @foreach($cities as $city)
+                                                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Wrapper-->
+                                                <div class="d-flex flex-stack">
+                                                    <!--begin::Label-->
+                                                    <div class="me-5">
+                                                        <!--begin::Label-->
+                                                        <label class="fs-6 fw-semibold">¿El showroom está
+                                                            habilitado?</label>
+                                                        <!--end::Label-->
+                                                        <!--begin::Input-->
+                                                        <div class="fs-7 fw-semibold text-muted">SI se marca si,
+                                                            aparecerá en la pantalla principal
+                                                        </div>
+                                                        <!--end::Input-->
+                                                    </div>
+                                                    <!--end::Label-->
+                                                    <!--begin::Switch-->
+                                                    <label
+                                                        class="form-check form-switch form-check-custom form-check-solid">
+                                                        <!--begin::Input-->
+                                                        <input class="form-check-input" name="available" type="checkbox"
+                                                               value="1"
+                                                               id="available"
+                                                               checked="checked"
+                                                        />
+                                                        <!--end::Input-->
+                                                        <!--begin::Label-->
+                                                        <span class="form-check-label fw-semibold text-muted"
+                                                              for="kt_modal_add_customer_billing">Si</span>
+                                                        <!--end::Label-->
+                                                    </label>
+                                                    <!--end::Switch-->
+                                                </div>
+                                                <!--begin::Wrapper-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Scroll-->
+                                    </div>
+                                    <!--end::Modal body-->
+                                    <!--begin::Modal footer-->
+                                    <div class="modal-footer flex-center">
+                                        <!--begin::Button-->
+                                        <button type="reset" id="kt_modal_add_customer_cancel"
+                                                class="btn btn-light me-3">Descartar
+                                        </button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_modal_add_customer_submit" class="btn btn-primary">
+                                            <span class="indicator-label">Guardar</span>
+                                            <span class="indicator-progress">Por favor espere...
+															<span
+                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                    <!--end::Modal footer-->
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                        </div>
+                    </div>
                     <!--end::Modal - Customers - Add-->
                     <!--begin::Modal - Adjust Balance-->
                     <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
@@ -395,4 +514,5 @@
         </div>
         <!--end::Content wrapper-->
     </div>
+
 </x-app-layout>

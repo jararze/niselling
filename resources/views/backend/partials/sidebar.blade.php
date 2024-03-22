@@ -64,17 +64,17 @@
                     <div class="menu-item">
                         <!--begin:Menu content-->
                         <div class="menu-content">
-                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Paginas</span>
+                            <span class="menu-section fs-5 fw-bolder ps-1 py-1">Configuración</span>
                         </div>
                         <!--end:Menu content-->
                     </div>
                     <!--end:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities"
-                           target="_blank" title="Showrooms de todo el pais" data-bs-toggle="tooltip"
-                           data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-												<span class="menu-bullet">
+                        <a class="menu-link" href="{{ route('backend.configuration.showroom.index') }}"
+                            title="Showrooms de todo el pais" data-bs-toggle="tooltip"
+                            data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
                             <span class="menu-title">Showrooms</span>
@@ -84,8 +84,7 @@
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link"
-                               href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog"
-                               target="_blank">
+                               href="{{ route('backend.configuration.city.index') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -98,12 +97,11 @@
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link"
-                               href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog"
-                               target="_blank">
+                               href="{{ route('backend.configuration.agent.index') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-                                <span class="menu-title">Asesores</span>
+                                <span class="menu-title">Agentes</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
@@ -666,7 +664,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="">
+                        <a class="menu-link" href="{{ route('backend.vehicle.grade.index') }}">
 												<span class="menu-icon">
                                                     <i class="ki-outline ki-car fs-2"></i>
 												</span>
@@ -676,7 +674,7 @@
                     </div>
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="">
+                        <a class="menu-link" href="{{ route('backend.vehicle.color.index') }}">
 												<span class="menu-icon">
 													<i class="ki-outline ki-color-swatch fs-2"></i>
 												</span>
@@ -687,7 +685,7 @@
 
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="">
+                        <a class="menu-link" href="{{ route('backend.vehicle.additional.index') }}">
 												<span class="menu-icon">
 													<i class="ki-outline ki-tag fs-2"></i>
 												</span>

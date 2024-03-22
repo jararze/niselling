@@ -51,12 +51,12 @@ var ModelList = function () {
 
                     console.log('Delete endpoint:', deleteEndpoint);
                     const rowContainer = vehicle.target.closest("tr");
-                    const vehicleName = rowContainer.querySelectorAll("td")[1].innerText;
+                    const vehicleName = rowContainer.querySelectorAll("td")[2].innerText;
 
                     console.log('vehicleNamet:', vehicleName);
 
                     const swalOptions = {
-                        text: "¿Está seguro que desea borrar " + vehicleName + "?",
+                        text: "¿Está seguro que desea borrar el color " + vehicleName + "?",
                         icon: "warning",
                         showCancelButton: true,
                         buttonsStyling: false,
@@ -206,77 +206,13 @@ var ModelList = function () {
             tableSelected.classList.add("d-none"))
     };
 
-    // return {
-    //     init: function () {
-    //         const dataTablePrin = document.querySelector("#kt_customers_table");
-    //
-    //         if(dataTablePrin) {
-    //             const tableRows = dataTablePrin.querySelectorAll("tbody tr");
-    //
-    //             tableRows.forEach(row => {
-    //                 const cells = row.querySelectorAll("td");
-    //
-    //                 if(cells[4] && cells[9]){
-    //                     const dateAttr = moment(cells[4].innerHTML, "DD MMM YYYY, LT").format();
-    //                     cells[9].setAttribute("data-order", dateAttr);
-    //                 }
-    //
-    //             });
-    //
-    //             const table = $(dataTablePrin).DataTable({
-    //                 info: false,
-    //                 order: [],
-    //                 columnDefs: [
-    //                     { orderable: false, targets: 0 },
-    //                     { orderable: false, targets: 4 }
-    //                 ]
-    //             });
-    //
-    //             table.on("draw", () => {
-    //                 slBoxes();
-    //                 c();
-    //                 updateToolbar();
-    //                 KTMenu.init();
-    //             });
-    //             slBoxes()
-    //             const emonth = $('[data-kt-customer-table-filter="month"]');
-    //
-    //             const otype = document.querySelectorAll('[data-kt-customer-table-filter="payment_type"] [name="payment_type"]');
-    //
-    //             document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", e => {
-    //                 table.search(e.target.value).draw();
-    //             });
-    //             c()
-    //             document.querySelector('[data-kt-customer-table-filter="filter"]').addEventListener("click", () => {
-    //                 const month = emonth.val();
-    //                 let type = "";
-    //                 otype.forEach(t => {
-    //                     if(t.checked){
-    //                         type = t.value;
-    //                         if (type === "all") type = "";
-    //                     }
-    //                 });
-    //
-    //                 const query = `${month} ${type}`;
-    //                 table.search(query).draw();
-    //             });
-    //
-    //             document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", () => {
-    //                 e.val(null).trigger("change");
-    //                 o[0].checked = true;
-    //                 table.search("").draw();
-    //             });
-    //         }
-    //     }
-    // }
-
 
     return {
         init: function () {
             (dataTablePrin = document.querySelector("#kt_customers_table")) && (dataTablePrin.querySelectorAll("tbody tr").forEach((t => {
                 const e = t.querySelectorAll("td"),
-                    o = moment(e[4].innerHTML, "DD MMM YYYY, LT").format();
-                e[9].setAttribute("data-order", o)
+                    o = moment(e[7].innerHTML, "DD MMM YYYY, LT").format();
+                e[7].setAttribute("data-order", o)
             })), (table = $(dataTablePrin).DataTable({
                 info: !1,
                 order: [],
@@ -285,7 +221,7 @@ var ModelList = function () {
                     targets: 0
                 }, {
                     orderable: !1,
-                    targets: 4
+                    targets: 7
                 }]
             })).on("draw", (function () {
                 slBoxes(), c(), updateToolbar(), KTMenu.init()
@@ -299,6 +235,8 @@ var ModelList = function () {
                     "all" === c && (c = "")
                 }));
                 const r = n + " " + c;
+                console.log('n: ', n)
+                console.log('r: ', r)
                 table.search(r).draw()
             })), c(), document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", (function () {
                 e.val(null).trigger("change"), o[0].checked = !0, table.search("").draw()

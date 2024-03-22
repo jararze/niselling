@@ -21,7 +21,9 @@
                 <div id="kt_app_content_container" class="app-container container-fluid">
                     <!--begin::Form-->
                     <form id="kt_ecommerce_add_product_form" class="form d-flex flex-column flex-lg-row"
+{{--                          action="{{ route('backend.vehicle.model.store') }}" method="POST" enctype="multipart/form-data">--}}
                           data-kt-redirect="{{ route('backend.vehicle.model.index') }}">
+{{--                        @csrf--}}
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                             <!--begin::Thumbnail settings-->
@@ -34,11 +36,7 @@
                                     </div>
                                     <!--end::Card title-->
                                 </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
                                 <div class="card-body text-center pt-0">
-                                    <!--begin::Image input-->
-                                    <!--begin::Image input placeholder-->
                                     <style>.image-input-placeholder {
                                             background-image: url('{{ asset('backend/assets/media/svg/files/blank-image.svg') }}');
                                         }
@@ -46,14 +44,10 @@
                                         [data-bs-theme="dark"] .image-input-placeholder {
                                             background-image: url('{{ asset('backend/assets/media/svg/files/blank-image-dark.svg') }}');
                                         }</style>
-                                    <!--end::Image input placeholder-->
                                     <div
                                         class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                         data-kt-image-input="true">
-                                        <!--begin::Preview existing avatar-->
                                         <div class="image-input-wrapper w-250px h-150px"></div>
-                                        <!--end::Preview existing avatar-->
-                                        <!--begin::Label-->
                                         <label
                                             class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                             data-kt-image-input-action="change" data-bs-toggle="tooltip"
@@ -88,31 +82,47 @@
                                         imágenes tengan formato *.png, *.jpg and *.jpeg con transparencia y sus
                                         dimensiones sean 1062px x 550px
                                     </div>
+
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Card body-->
                             </div>
                             <!--end::Thumbnail settings-->
                             <!--begin::Status-->
+
                             <div class="card card-flush py-4">
-                                <!--begin::Card header-->
                                 <div class="card-header">
-                                    <!--begin::Card title-->
+                                    <div class="card-title">
+                                        <h2 class="required">Color</h2>
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <label for="color_name" class="required form-label">Nombre del color</label>
+                                    <input type="text" name="color_name" id="color_name"
+                                           class="form-control mb-2" placeholder="Código del color"
+                                           value=""/>
+                                    <div class="text-muted fs-7">Establece el codigo del color con #.</div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <label for="color_code" class="required form-label">Código del color</label>
+                                    <input type="text" name="color_code" id="color_code"
+                                           class="form-control mb-2" placeholder="Código del color"
+                                           value=""/>
+                                    <div class="text-muted fs-7">Establece el codigo del color con #.</div>
+                                </div>
+                            </div>
+
+                            <div class="card card-flush py-4">
+                                <div class="card-header">
                                     <div class="card-title">
                                         <h2 class="required">Estatus</h2>
                                     </div>
-                                    <!--end::Card title-->
-                                    <!--begin::Card toolbar-->
                                     <div class="card-toolbar">
                                         <div class="rounded-circle bg-success w-15px h-15px"
                                              id="kt_ecommerce_add_product_status"></div>
                                     </div>
-                                    <!--begin::Card toolbar-->
                                 </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
                                 <div class="card-body pt-0">
-                                    <!--begin::Select2-->
                                     <select class="form-select mb-2" data-control="select2" data-hide-search="true"
                                             data-placeholder="Seleccione una opción"
                                             name="status_available"
@@ -121,31 +131,17 @@
                                         <option value="1" selected="selected">Habilitado</option>
                                         <option value="0">No Habilitado</option>
                                     </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
                                     <div class="text-muted fs-7">Establece el estado del modelo.</div>
                                 </div>
-                                <!--end::Card body-->
                             </div>
-                            <!--end::Status-->
-                            <!--begin::Category & tags-->
                             <div class="card card-flush py-4">
-                                <!--begin::Card header-->
                                 <div class="card-header">
-                                    <!--begin::Card title-->
                                     <div class="card-title">
                                         <h2>Detalles del modelo</h2>
                                     </div>
-                                    <!--end::Card title-->
                                 </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
                                 <div class="card-body pt-0">
-                                    <!--begin::Input group-->
-                                    <!--begin::Label-->
                                     <label class="form-label required">Tipo</label>
-                                    <!--end::Label-->
-                                    <!--begin::Select2-->
                                     <select class="form-select mb-2" data-control="select2"
                                             name="mode_type"
                                             id="mode_type"
@@ -155,39 +151,22 @@
                                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                                         @endforeach
                                     </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
                                     <div class="text-muted fs-7 mb-7">Agrega el tipo de vehículo al modelo.</div>
-                                    <!--end::Description-->
-                                    <!--end::Input group-->
-                                    <!--begin::Button-->
                                     <a href="{{ route('backend.vehicle.type.index') }}"
                                        class="btn btn-light-primary btn-sm mb-10">
                                         <i class="ki-outline ki-plus fs-2"></i>Agregar un nuevo tipo</a>
-                                    <!--end::Button-->
-                                    <!--begin::Input group-->
                                 </div>
-                                <!--end::Card body-->
                             </div>
-                            <!--end::Category & tags-->
-                            <!--begin::Weekly sales-->
                             <div class="card card-flush py-4">
-                                <!--begin::Card header-->
                                 <div class="card-header">
-                                    <!--begin::Card title-->
                                     <div class="card-title">
                                         <h2>Ventas del modelo</h2>
                                     </div>
-                                    <!--end::Card title-->
                                 </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
                                 <div class="card-body pt-0">
                                     <span class="text-muted">Datos no disponibles. Los datos de ventas comenzarán a capturarse una vez que se haya publicado el producto.</span>
                                 </div>
-                                <!--end::Card body-->
                             </div>
-                            <!--end::Weekly sales-->
                         </div>
                         <!--end::Aside column-->
                         <!--begin::Main column-->

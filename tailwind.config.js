@@ -11,6 +11,9 @@ export default {
 
     theme: {
         extend: {
+            width: {
+                '80': '20rem',
+            },
             transitionTimingFunction: {
                 'custom': 'cubic-bezier(.64,.04,.35,1)',
             },
