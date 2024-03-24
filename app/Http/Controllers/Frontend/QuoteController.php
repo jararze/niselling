@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use GuzzleHttp\Client;
 
 class QuoteController extends Controller
 {
@@ -102,7 +103,90 @@ class QuoteController extends Controller
         $oldQuote->agent_id = $nextAgent->id;
         Cache::put('last_assigned_agent', $nextAgent->id);
 
-        $oldQuote->save();
+
+
+        $client = new Client();
+
+        $username = 'paginaWeb@api.com';
+        $password = 'paginaWeb123';
+        $apiUrl = 'https://test-nissanbolivia.tecnomcrm.com/api/v1/webconnector/consultas/adf';
+
+        $apiData = [
+            'prospect' => [
+                'requestdate' => date('c'),
+                'customer' => [
+                    'comments' => 'Esta compra viene del cotizador de NIssan Bolivia: ' . $oldQuote->id,
+                    'contacts' => [
+                        [
+                            'emails' => [
+                                [
+                                    'value' => $oldQuote->email
+                                ]
+                            ],
+                            'names' => [
+                                [
+                                    'part' => 'first',
+                                    'value' => $oldQuote->name
+                                ],
+                                [
+                                    'part' => 'last',
+                                    'value' => $oldQuote->last_name
+                                ]
+                            ],
+                            'phones' => [
+                                [
+                                    'type' => 'cellphone',
+                                    'value' => $oldQuote->phone
+                                ]
+                            ],
+                            'addresses' => [
+                                [
+                                    'city' => $oldQuote->cityOfCar->name,
+                                    'postalcode' => '591'
+                                ]
+                            ],
+                        ],
+                    ]
+                ],
+                'vehicles' => [
+                    [
+                        'make' => $oldQuote->modelOfCar->name,
+                        'model' => $oldQuote->gradeOfCar->name,
+                        'trim' => $oldQuote->gradeOfCar->name,
+                        'year' => $oldQuote->gradeOfCar->commercial_date
+                    ]
+                ],
+                'provider' => [
+                    'name' => [
+                        'value' => 'Cotizador Nissan'
+                    ],
+                    'service' => 'Cotizador Nissan'
+                ],
+                'vendor' => [
+                    'contacts' => [],
+                    'vendorname' => [
+                        'value' => $nextAgent->email
+                    ]
+                ]
+            ]
+        ];
+
+        try {
+            $response = $client->post($apiUrl, [
+                'json' => $apiData,
+                'auth' => [$username, $password]
+            ]);
+
+            if ($response->getStatusCode() != 200) {
+                dd($response);
+            } else {
+                $result = json_decode($response->getBody()->getContents(), true);
+                $oldQuote->tecnom_id = $result['id'];
+            }
+            $oldQuote->save();
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            // Manejar la excepción como necesites
+        }
 
         return Redirect::route('frontend.quote.final.proform', $oldQuote->id)->with('status', 'created');
 

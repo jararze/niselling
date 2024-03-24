@@ -2,6 +2,7 @@
 
 namespace App\Models\Frontend;
 
+use App\Models\backend\Configuration\Agent;
 use App\Models\backend\Configuration\City;
 use App\Models\backend\Configuration\Showroom;
 use App\Models\backend\vehicle\Grade;
@@ -52,4 +53,10 @@ class Quote extends Model
     {
         return $this->belongsTo(VehicleColor::class, 'color', 'color_code');
     }
+
+    public function agentOfCar()
+    {
+        return $this->belongsTo(Agent::class, 'agent_id', 'id');
+    }
+
 }

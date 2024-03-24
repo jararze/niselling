@@ -107,7 +107,9 @@
                             </select>
                         </div>
                         <div class="flex justify-between mt-10">
-                            <img id="carImage" src="{{ asset('storage/vehicles/'.$quote->modelOfCar->slug .'/'.$quote->modelOfCar->image) }}" alt="{{ $quote->modelOfCar->name }}">
+                            <img id="carImage"
+                                 src="{{ asset('storage/vehicles/'.$quote->modelOfCar->slug .'/'.$quote->modelOfCar->image) }}"
+                                 alt="{{ $quote->modelOfCar->name }}">
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
@@ -133,7 +135,8 @@
                                     @endforeach
                                 @endif
                             </div>
-                            <input type="hidden" id="selected_color" name="selected_color" value="{{ $colors[0]->color_code }}"/>
+                            <input type="hidden" id="selected_color" name="selected_color"
+                                   value="{{ $colors[0]->color_code }}"/>
                             <input type="hidden" id="quote_id" name="quote_id" value="{{ $quote->id }}"/>
                             <p class="uppercase text-center mt-5 text-xs">selecciona el color deseado</p>
                         </div>
@@ -230,18 +233,15 @@
 
 
             </div>
-            {{--            <a href="{{ route('') }}" class="uppercase text-center mt-5 text-xs">Cambiar datos de proforma</a>--}}
+
 
 
         </form>
 
 
-        <div class="mx-auto">
-            <div class="flex">
-                <div class="flex-grow" style="flex-basis: 80%;">
+        <div class="mx-auto mt-10" style="width: 80%">
 
-                </div>
-            </div>
+            <p class="uppercase text-center mt-5 text-xs"><a href="{{ route('frontend.quote_second.show', $quote->id) }}" class="uppercase text-center mt-5 text-xs hover:underline">Cambiar datos de proforma</a></p>
 
         </div>
 
