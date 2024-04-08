@@ -37,10 +37,7 @@
 <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" class="app-default">
 <!--begin::Theme mode setup on page load-->
 <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
-<!--end::Theme mode setup on page load-->
-<!--begin::App-->
 <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
-    <!--begin::Page-->
     <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
         <!--begin::Header-->
         <div id="kt_app_header" class="app-header d-flex">
@@ -84,11 +81,7 @@
         </div>
         <!--end::Wrapper-->
     </div>
-    <!--end::Page-->
 </div>
-<!--end::App-->
-<!--begin::Drawers-->
-<!--begin::Activities drawer-->
 <div id="kt_activities" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="activities" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'lg': '900px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_activities_toggle" data-kt-drawer-close="#kt_activities_close">
     <div class="card shadow-none border-0 rounded-0">
         <!--begin::Header-->
@@ -611,8 +604,6 @@
         <!--end::Footer-->
     </div>
 </div>
-<!--end::Activities drawer-->
-<!--begin::Chat drawer-->
 <div id="kt_drawer_chat" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="chat" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_drawer_chat_toggle" data-kt-drawer-close="#kt_drawer_chat_close">
     <!--begin::Messenger-->
     <div class="card w-100 border-0 rounded-0" id="kt_drawer_chat_messenger">
@@ -975,8 +966,6 @@
     </div>
     <!--end::Messenger-->
 </div>
-<!--end::Chat drawer-->
-<!--begin::Chat drawer-->
 <div id="kt_shopping_cart" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="cart" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_drawer_shopping_cart_toggle" data-kt-drawer-close="#kt_drawer_shopping_cart_close">
     <!--begin::Messenger-->
     <div class="card card-flush w-100 rounded-0">
@@ -1266,23 +1255,12 @@
     </div>
     <!--end::Messenger-->
 </div>
-<!--end::Chat drawer-->
-<!--end::Drawers-->
-<!--begin::Scrolltop-->
 <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
     <i class="ki-outline ki-arrow-up"></i>
 </div>
-<!--end::Scrolltop-->
-<!--begin::Modals-->
-<!--begin::Modal - Upgrade plan-->
-<!--end::Modals-->
-<!--begin::Javascript-->
 <script>var hostUrl = "assets/";</script>
-<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 <script src="{{ asset('backend/assets/plugins/global/plugins.bundle.js') }}"></script>
 <script src="{{ asset('backend/assets/js/scripts.bundle.js') }}"></script>
-<!--end::Global Javascript Bundle-->
-<!--begin::Vendors Javascript(used for this page only)-->
 <script src="{{ asset('backend/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
@@ -1298,7 +1276,7 @@
 <script src="{{ asset('backend/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Vendors Javascript-->
 <!--begin::Custom Javascript(used for this page only)-->
-<script src="{{ asset('backend/assets/js/widgets.bundle.js') }}"></script>
+{{--<script src="{{ asset('backend/assets/js/widgets.bundle.js') }}"></script>--}}
 <script src="{{ asset('backend/assets/js/custom/widgets.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom/apps/chat/chat.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>

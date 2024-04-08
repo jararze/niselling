@@ -22,12 +22,9 @@ class AgentController extends Controller
             ->get();
 
         $agents = Agent::where('status', 1)
+            ->withCount('quotes')
             ->orderBy('name', 'ASC')
             ->get();
-
-//        $cities = City::with(['showrooms' => function ($query) {
-//            $query->where('status', 1)->orderBy('name', 'ASC');
-//        }])->where('status', 1)->orderBy('name', 'ASC')->get();
 
         return view('backend.configuration.agent.index', [
             'showrooms' => $showrooms,

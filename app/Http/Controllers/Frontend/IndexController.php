@@ -20,7 +20,10 @@ class IndexController extends Controller
     public function index()
     {
         $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
-        $cities = City::where('status', 1)->orderBy('name', 'ASC')->get();
+        $cities = City::where('status', 1)
+            ->has('showrooms')
+            ->orderBy('name', 'ASC')
+            ->get();
         return view('index', [
             'models' => $models,
             'cities' => $cities,
@@ -37,55 +40,10 @@ class IndexController extends Controller
     public function getShowrooms($id):JsonResponse
     {
         $showrooms = Showroom::where("city_id", $id)
+            ->has('agents')
             ->pluck("name", "id");
+
         return response()->json($showrooms);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

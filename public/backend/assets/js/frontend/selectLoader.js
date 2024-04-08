@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     modelSelect.addEventListener('change', function () {
         const modelId = this.value;
         if (modelId == 0) {
-            grade.innerHTML = '<option>Seleccione un modelo primero.</option>';
+            grade.innerHTML = '<option value="">Seleccione un modelo primero.</option>';
         } else {
             spinner.style.display = 'flex'; // Show the spinner
 

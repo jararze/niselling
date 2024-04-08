@@ -2,7 +2,14 @@
 
 @endpush
 @push('script')
-
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: '{{ csrf_token() }}',
+            submitEndpoint: '{{ route("frontend.contact.whatsapp", ":id") }}',
+            thanksPoint: '{{ route("frontend.thanks", ":id") }}',
+        };
+    </script>
+    <script src="{{ asset('backend/assets/js/frontend/updateType.js') }}"></script>
 @endpush
 
 <x-front-layout>
@@ -15,8 +22,6 @@
         <div class="spinner"></div>
     </div>
 
-    {{--    <form id="signUpForm" class="mx-auto mb-8" action="{{ route('frontend.quote.store.final') }}" method="POST">--}}
-    {{--        @csrf--}}
     <div
         class="relative w-full max-w-screen-xl px-1 py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-16 lg:py-4 border-t-2"
         style="width: 80%">
@@ -56,9 +61,9 @@
                 </div>
 
                 <div class="flex justify-between mt-10">
-                    <a id="data_sheet_span" target="_blank" href="{{ $quote->modelOfCar->data_sheet }}"
+                    <a id="data_sheet_span" target="_blank" href="{{ route('frontend.quote.pdf', $quote->id) }}"
                        class="w-full uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
-                        <span class="font-thin">descargar proforma</span>
+                        <span class="font-thin">descargar ficha tecnica</span>
                         <span class="font-bold text-xl mt-[-3px]"> > </span>
                     </a>
                 </div>
@@ -99,18 +104,16 @@
     </div>
 
     <div class="mx-auto mt-10 flex justify-center" style="width: 80%">
-        <button type="submit"
-                class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
-            chatear por whatsapp
-        </button>
-        <button type="submit"
+        <a id="whatapp_contact" href="https://wa.me/591{{ $quote->agentOfCar->phone }}?text=¡Hola! Mi nombre es *{{ $quote->name . ' ' . $quote->last_name }}* y estoy interesado en saber más acerca del vehículo *{{ $quote->modelOfCar->name }} {{ $quote->gradeOfCar->name }}*, gracias." target="_blank" class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">chatear por whatsapp
+        </a>
+        <a href="{{ route('frontend.online.reservation', $quote->id) }}"
                 class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-black hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
             reservar con $us 200
-        </button>
-        <button type="submit"
+        </a>
+        <a href="{{ route('frontend.thanks', $quote->id) }}"
                 class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-gray-300 hover:opacity-80 text-md uppercase hover:underline p-3 text-black text-center mx-4">
             solicitar llamada telefónica
-        </button>
+        </a>
     </div>
     {{--            <p class="uppercase text-center mt-5 text-xs">pulse el boton para ver proforma</p>--}}
 
@@ -146,14 +149,8 @@
 
     </div>
 
-
-
-    {{--    </form>--}}
-
     <div class="mx-auto mt-10 mb-20" style="width: 80%">
-
-        <p class="uppercase text-center mt-5 text-xs uppercase text-center mt-5 text-xs hover:underline">Validez de la oferta: 7 días. Las condiciones podrían variar.</p>
-
+        <p class="uppercase text-center mt-5 text-xs hover:underline">Validez de la oferta: 7 días. Las condiciones podrían variar.</p>
     </div>
 
 

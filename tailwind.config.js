@@ -11,6 +11,11 @@ export default {
 
     theme: {
         extend: {
+            fontSize: {
+                'xss': '0.625rem', // Equivalent to 10px
+                '2xs': '0.5rem',  // Equivalent to 8px
+                '3xs': '0.375rem' // Equivalent to 6px
+            },
             width: {
                 '80': '20rem',
             },
@@ -26,5 +31,23 @@ export default {
         },
     },
 
-    plugins: [forms],
+    variants: {
+        extend: {
+            display: ['group-hover'],
+        },
+    },
+
+    plugins: [
+        forms,
+        function ({ addVariant }) {
+            addVariant('important', ({ container }) => {
+                container.walkRules(rule => {
+                    rule.selector = `.\\!${rule.selector.slice(1)}`;
+                    rule.walkDecls(decl => {
+                        decl.important = true;
+                    });
+                });
+            });
+        }
+    ],
 };

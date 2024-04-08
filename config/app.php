@@ -59,6 +59,20 @@ return [
 
     'asset_url' => env('ASSET_URL'),
 
+    'api_url' => env('API_URL', 'default_value'),
+
+    'api_username' => env('API_USERNAME', 'default_value'),
+
+    'api_password' => env('API_PASSWORD', 'default_value'),
+
+    'libelula_app_key' => env('LIBELULA_APP_KEY', 'default_value'),
+
+    'libelula_callback_url' => env('LIBELULA_CALLBACK_URL', 'default_value'),
+
+    'libelula_url_return' => env('LIBELULA_URL_RETURN', 'default_value'),
+
+    'libelula_api_url' => env('LIBELULA_API_URL', 'default_value'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

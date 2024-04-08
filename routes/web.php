@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\QuoteController;
 use App\Http\Controllers\GradeController;
@@ -38,13 +40,34 @@ Route::get('/quote/{id}/second-part/show', [QuoteController::class, 'show'])->na
 Route::get('/quote/second-part/update', [QuoteController::class, 'update'])->name('frontend.quote_second.update');
 
 Route::get('/quote/{id}/quote/final/proform', [QuoteController::class, 'finalQuote'])->name('frontend.quote.final.proform');
+Route::get('/quote/pdf/{quote_id}', [QuoteController::class, 'generatePDF'])->name('frontend.quote.pdf');
+Route::get('/quote/thanks/{id}', [QuoteController::class, 'thanks'])->name('frontend.thanks');
+Route::get('/quote/online/{id}/reservation', [QuoteController::class, 'online'])->name('frontend.online.reservation');
+Route::post('/frontend/contact/whatsapp/{id}', [QuoteController::class, 'whatsapp'])->name('frontend.contact.whatsapp');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/quote/online/reservation/bank/transfer', [QuoteController::class, 'bank_transfer'])->name('frontend.bank.transfer');
+Route::post('/quote/quote/store/voucher', [QuoteController::class, 'voucher'])->name('frontend.quote.store.voucher');
+Route::get('/quote/thanks/{id}/voucher', [QuoteController::class, 'thanksVoucher'])->name('frontend.thanks.voucher');
+
+Route::post('/quote/online/reservation/libelula/transfer', [QuoteController::class, 'libelula_transfer'])->name('frontend.quote.libelula.transfer');
+Route::get('/quote/online/reservation/libelula/successfulPayment', [QuoteController::class, 'successfulPayment'])->name('frontend.quote.libelula.successfulPayment');
+
 
 
 Route::middleware(['auth','verified'])->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('backend/quote/index', [QuoteController::class, 'index'])->name('backend.quote.index');
+    Route::get('backend/quote/index/online', [QuoteController::class, 'transferOnline'])->name('backend.quote.index.online');
+    Route::get('backend/quote/index/bank', [QuoteController::class, 'bank'])->name('backend.quote.index.bank');
+    Route::get('backend/quote/create', [QuoteController::class, 'create'])->name('backend.quote.create');
+    Route::post('backend/quote/store', [QuoteController::class, 'store'])->name('backend.quote.store');
+    Route::get('backend/quote/{id}/edit', [QuoteController::class, 'edit'])->name('backend.quote.edit');
+    Route::post('backend/quote/update', [QuoteController::class, 'update'])->name('backend.quote.update');
+    Route::post('backend/quote/delete', [QuoteController::class, 'destroy'])->name('backend.quote.delete');
+    Route::get('backend/quote/resend/{id}/information', [QuoteController::class, 'resend'])->name('backend.quote.resend.information');
+    Route::get('backend/quote/verify/{id}/payment', [QuoteController::class, 'verifyPayment'])->name('backend.quote.verify.payment');
 
     Route::get('backend/vehicle/grade/index', [GradeController::class, 'index'])->name('backend.vehicle.grade.index');
     Route::get('backend/vehicle/grade/create', [GradeController::class, 'create'])->name('backend.vehicle.grade.create');
@@ -98,6 +121,10 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('backend/configuration/agent/{id}/delete', [AgentController::class, 'destroy'])->name('backend.configuration.agent.delete');
 
 
+    Route::get('backend/whatsapp/index', [ContactFormController::class, 'index'])->name('backend.whatsapp.index');
+    Route::get('backend/configuration/whatsapp/{id}/edit', [ContactFormController::class, 'edit'])->name('backend.configuration.whatsapp.edit');
+    Route::post('backend/configuration/whatsapp/{id}/delete', [ContactFormController::class, 'destroy'])->name('backend.configuration.whatsapp.delete');
+    Route::get('backend/whatsapp/resend/{id}/information', [ContactFormController::class, 'resend'])->name('backend.whatsapp.resend.information');
 
 
 });

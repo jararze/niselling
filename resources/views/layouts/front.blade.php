@@ -7,23 +7,23 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <!-- Meta SEO -->
-        <meta name="title" content="Landwind - Tailwind CSS Landing Page">
-        <meta name="description" content="Get started with a free and open-source landing page built with Tailwind CSS and the Flowbite component library.">
+        <meta name="title" content="Cotizador Nissan Bolivia">
+        <meta name="description" content="Cotiza junto con Nissan Bolivia ru proximo vehiculo. Selecciona entre una gran variedad de modelos que tenemos.">
         <meta name="robots" content="index, follow">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="language" content="English">
-        <meta name="author" content="Themesberg">
+        <meta name="language" content="es">
+        <meta name="author" content="Teknicos Bolivia">
 
         <!-- Social media share -->
-        <meta property="og:title" content="Landwind - Tailwind CSS Landing Page">
-        <meta property="og:site_name" content="Themesberg">
-        <meta property="og:url" content="https://https://demo.themesberg.com/landwind/">
-        <meta property="og:description" content="Get started with a free and open-source landing page for Tailwind CSS built with the Flowbite component library featuring dark mode, hero sections, pricing cards, and more.">
+        <meta property="og:title" content="Cotizador Nissan Bolivia">
+        <meta property="og:site_name" content="Nissan Bolivia">
+        <meta property="og:url" content="https://https://contacto.cotizaciones.nissan.com.bo">
+        <meta property="og:description" content="Cotiza junto con Nissan Bolivia ru proximo vehiculo. Selecciona entre una gran variedad de modelos que tenemos.">
         <meta property="og:type" content="">
-        <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/github/landwind/og-image.png">
+        <meta property="og:image" content="hhttps://https://contacto.cotizaciones.nissan.com.bo">
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@themesberg" />
-        <meta name="twitter:creator" content="@themesberg" />
+        <meta name="twitter:site" content="@nissan" />
+        <meta name="twitter:creator" content="@nissan" />
 
         <!-- Favicon -->
         <link rel="shortcut icon" href="{{ asset('backend/assets/media/logos/favicon.ico') }}"/>
@@ -53,6 +53,11 @@
 
 
         @stack('script')
-
+        <script>
+            function toggleMenu() {
+                const menu = document.getElementById('menu-modal');
+                menu.classList.toggle('translate-x-full');
+            }
+        </script>
     </body>
 </html>

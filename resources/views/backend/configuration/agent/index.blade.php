@@ -31,7 +31,7 @@
                         <!--begin::Card body-->
                         <div class="card-body p-5 p-lg-10">
                             <!--begin::Title-->
-                            <h1 class="fw-bold text-gray-900 ps-0">Agent</h1>
+                            <h1 class="fw-bold text-gray-900 ps-0">Agentes</h1>
                             <!--end::Title-->
                         </div>
                         <!--end::Card body-->
@@ -196,13 +196,13 @@
                                                    value="1"/>
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Nombre</th>
-                                    <th class="min-w-125px">Showroom</th>
-                                    <th class="min-w-125px">Email</th>
-                                    <th class="min-w-125px">Celular</th>
-                                    <th class="min-w-125px">¿Activo?</th>
-                                    <th class="min-w-125px"># Asignaciones</th>
-                                    <th class="min-w-125px">Fecha Creación</th>
+                                    <th class="min-w-90px">Nombre</th>
+                                    <th class="min-w-90px">Showroom</th>
+                                    <th class="min-w-90px">Email</th>
+                                    <th class="min-w-90px">Celular</th>
+                                    <th class="min-w-90px">¿Activo?</th>
+                                    <th class="min-w-90px"># Asignaciones</th>
+                                    <th class="min-w-90px">Fecha Creación</th>
                                     <th class="text-end min-w-70px"></th>
                                 </tr>
                                 </thead>
@@ -233,7 +233,7 @@
                                                 <div class="badge badge-light-danger fw-bold">No habilitado</div>
                                             @endif
                                         </td>
-                                        <td>0</td>
+                                        <td>{{ $agent->quotes_count }}</td>
                                         <td>{{ $agent->created_at->format('d M Y, h:i a') }}</td>
                                         <td class="text-end">
                                             <a href="#"
@@ -332,7 +332,7 @@
                                                         id="showroom"
                                                         required
                                                         data-placeholder="Seleccione una opcion" data-allow-clear="true">
-                                                    <option value="0"></option>
+                                                    <option value="0">Seleccione una opcion</option>
                                                     @foreach($showrooms as $showroom)
                                                         <option value="{{ $showroom->id }}">{{ $showroom->name }}</option>
                                                     @endforeach

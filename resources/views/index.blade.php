@@ -3,7 +3,6 @@
 @endpush
 @push('script')
 
-
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script type="text/javascript">
         window.Laravel = {
@@ -46,12 +45,15 @@
                     <label for="models"
                            class="font-bold block mb-2 text-gray-900 after:content-['*'] after:ml-0.5 after:text-nissan">
                         Modelo
-                        <span x-show="selected" class="text-green ml-2">✔</span>
+                        <span x-show="selected" class="text-green ml-2" style="color: #00A261">&#10003;</span>
                     </label>
                     <select id="models"
                             name="models"
                             x-on:change="selected = $event.target.value !== '0'"
-                            class="border border-black text-gray-900 focus-within:border-green block w-full px-2.5 py-3 uppercase"
+                            x-on:focus="focus = true"
+                            x-on:blur="focus = false"
+                            x-bind:class="{ 'outline-none ring-2 ring-green-800 border-green-900': selected, 'focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-green-900': focus }"
+                            class="border border-black text-gray-900 !focus-within:border-green-500 block w-full px-2.5 py-3 uppercase"
                             required>
                         <option value="0">Selecciona un modelo</option>
                         @foreach($models as $model)
@@ -59,20 +61,22 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="mb-6" x-data="{isSelect: false}">
+                <div class="mb-6" x-data="{isSelected: false, focus:false}">
                     <label for="grade"
-                           class="font-bold block mb-2 text-gray-900 after:content-['*'] after:ml-0.5 after:text-nissan"
-                           :class="{'border-red': isSelect}">
+                           class="font-bold block mb-2 text-gray-900 after:content-['*'] after:ml-0.5 after:text-nissan">
                         Grado
-                        <span x-show="isSelect">&#10003;</span> <!-- This checkmark will appear next to label text -->
+                        <span x-show="isSelected" class="text-green ml-2" style="color: #00A261">&#10003;</span>
+                        <!-- This checkmark will appear next to label text -->
                     </label>
                     <select
                         id="grade"
                         name="grade"
-                        class="border border-black text-gray-900 focus:ring-black focus:border-red block w-full px-2.5 py-3 uppercase"
+                        class="border !focus-within:border-green-500 border-black text-gray-900 block w-full px-2.5 py-3 uppercase"
                         required
-                        @change="isSelect = $event.target.value !== ''"
-                        x-bind:class="{'border-green': isSelect}">
+                        x-on:change="isSelected = $event.target.value !== ''"
+                        x-on:focus="focus = true"
+                        x-on:blur="focus = false"
+                        x-bind:class="{ 'border-green-900 ring-2 ring-green-800': isSelected, 'focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-green-900': focus }">
                         <option value="">Selecciona un grado</option>
                         <!-- Add other options here -->
                     </select>
