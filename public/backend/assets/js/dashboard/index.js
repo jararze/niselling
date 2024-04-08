@@ -196,7 +196,7 @@ KTUtil.onDOMContentLoaded(function () {
 });
 
 
-var typeOfContact = {
+const typeOfContact = {
     init: function () {
         let contactCard = document.getElementById("typeOfContact");
 
@@ -274,4 +274,91 @@ if ("undefined" != typeof module) {
 
 KTUtil.onDOMContentLoaded(function () {
     typeOfContact.init();
+});
+
+
+class KTChartsWidget6 {
+    data = {self: null, rendered: false};
+
+    constructor() {
+        this.init();
+    }
+
+    chartConfig() {
+        const a = KTUtil.getCssVariableValue("--bs-gray-800");
+        const l = KTUtil.getCssVariableValue("--bs-border-dashed-color");
+
+        return {
+            series: [{name: "Sales", data: [15, 12, 10, 8, 7]}],
+            chart: {fontFamily: "inherit", type: "bar", height: 350, toolbar: {show: false}},
+            plotOptions: {
+                bar: {
+                    borderRadius: 8,
+                    horizontal: true,
+                    distributed: true,
+                    barHeight: 50,
+                    dataLabels: {position: "bottom"}
+                }
+            },
+            dataLabels: {
+                enabled: true, textAnchor: "start", offsetX: 0, formatter: function (e, t) {
+                    e *= 1e3;
+                    return wNumb({thousand: ","}).to(e)
+                }, style: {fontSize: "14px", fontWeight: "600", align: "left"}
+            },
+            legend: {show: false},
+            colors: ["#3E97FF", "#F1416C", "#50CD89", "#FFC700", "#7239EA"],
+            xaxis: {
+                categories: ["ECR - 90%", "FGI - 82%", "EOQ - 75%", "FMG - 60%", "PLG - 50%"],
+                labels: {
+                    formatter: function (e) {
+                        return e + "K"
+                    },
+                    style: {colors: [a], fontSize: "14px", fontWeight: "600", align: "left"}
+                },
+                axisBorder: {show: false}
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (e, t) {
+                        return Number.isInteger(e) ? e + " - " + parseInt(100 * e / 18).toString() + "%" : e
+                    }, style: {colors: a, fontSize: "14px", fontWeight: "600"}, offsetY: 2, align: "left"
+                }
+            },
+            grid: {borderColor: l, xaxis: {lines: {show: true}}, yaxis: {lines: {show: false}}, strokeDashArray: 4},
+            tooltip: {
+                style: {fontSize: "12px"}, y: {
+                    formatter: function (e) {
+                        return e + "K"
+                    }
+                }
+            }
+        };
+    }
+
+    renderChart(target) {
+        const t = document.getElementById(target);
+
+        if (t) {
+            this.data.self = new ApexCharts(t, this.chartConfig());
+            setTimeout(() => {
+                this.data.self.render();
+                this.data.rendered = true;
+            }, 200);
+        }
+    }
+
+    init() {
+        this.renderChart("kt_charts_widget_6");
+        KTThemeMode.on("kt.thememode.change", () => {
+            if (this.data.rendered) {
+                this.data.self.destroy();
+                this.renderChart("kt_charts_widget_6");
+            }
+        });
+    }
+}
+
+KTUtil.onDOMContentLoaded(() => {
+    new KTChartsWidget6();
 });

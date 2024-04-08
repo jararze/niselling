@@ -40,7 +40,7 @@
                                 <!--begin::Card body-->
                                 <div class="card-body text-center pt-0">
                                     <!--begin::Image input-->
-                                    @php $imageAvatar = ($data->image) ? asset('storage/vehicles/color/'.$data->modelOfCar->name.'/thumbnail/'.$data->image) : asset('backend/assets/media/svg/files/blank-image.svg')  @endphp
+                                    @php $imageAvatar = ($data->image) ? asset('storage/vehicles/'.$data->modelOfCar->slug.'/thumbnail/'.$data->image) : asset('backend/assets/media/svg/files/blank-image.svg')  @endphp
                                     <style>
                                         .image-input-placeholder {
                                             background-image: url('{{ $imageAvatar }}');

@@ -1264,13 +1264,13 @@
                                         <div class="card-header py-7 mb-3">
                                             <!--begin::Title-->
                                             <h3 class="card-title align-items-start flex-column">
-                                                <span class="card-label fw-bold text-gray-800">Top Selling Categories</span>
-                                                <span class="text-gray-500 mt-1 fw-semibold fs-6">8k social visitors</span>
+                                                <span class="card-label fw-bold text-gray-800">Modelos más vendidos</span>
+{{--                                                <span class="text-gray-500 mt-1 fw-semibold fs-6">8k social visitors</span>--}}
                                             </h3>
                                             <!--end::Title-->
                                             <!--begin::Toolbar-->
                                             <div class="card-toolbar">
-                                                <a href="apps/ecommerce/sales/listing.html" class="btn btn-sm btn-light">View All</a>
+                                                <a href="apps/ecommerce/sales/listing.html" class="btn btn-sm btn-light">Ver todos los modelos</a>
                                             </div>
                                             <!--end::Toolbar-->
                                         </div>

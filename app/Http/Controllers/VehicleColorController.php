@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\backend\vehicle\Grade;
 use App\Models\backend\vehicle\ModelOfCar;
 use App\Models\backend\vehicle\VehicleColor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -41,59 +40,67 @@ class VehicleColorController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:vehicle_colors,name'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'status_available' => ['required'],
-            'mode_type' => ['required'],
-            'order' => ['required'],
-            'color_code' => ['required', 'string', 'max:255'],
-        ]);
 
-        $color = new VehicleColor();
-        $color->name = $validatedData['name'];
-        $color->model_of_cars_id = $validatedData['mode_type'];
-        $color->color_code = $validatedData['color_code'];
-        $color->order = $validatedData['order'];
-        $color->status = $validatedData['status_available'] ? '1' : '0';
+        try {
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'status_available' => ['required'],
+                'mode_type' => ['required'],
+                'order' => ['required'],
+                'color_code' => ['required', 'string', 'max:255'],
+            ]);
 
-        $modelCar = ModelOfCar::find($validatedData['mode_type']);
-        $modelCarSlug = $modelCar->slug;
+            $color = new VehicleColor();
+            $color->name = $validatedData['name'];
+            $color->model_of_cars_id = $validatedData['mode_type'];
+            $color->color_code = $validatedData['color_code'];
+            $color->order = $validatedData['order'];
+            $color->status = $validatedData['status_available'] ? '1' : '0';
 
-        if ($request->hasFile('avatar')) {
-            $originalImage = $request->file('avatar');
-            $filename = time() . '_' . $originalImage->getClientOriginalName();
+            $modelCar = ModelOfCar::find($validatedData['mode_type']);
+            $modelCarSlug = $modelCar->slug;
 
-            // Define the paths
-            $originalPath = 'public/vehicles/' . $modelCarSlug . '/';
-            $thumbnailPath = 'public/vehicles/' . $modelCarSlug . '/thumbnail/';
+            if ($request->hasFile('avatar')) {
+                $originalImage = $request->file('avatar');
+                $filename = time() . '_' . $originalImage->getClientOriginalName();
 
-            // Ensure the directories exist
-            Storage::makeDirectory($originalPath);
-            Storage::makeDirectory($thumbnailPath);
+                // Define the paths
+                $originalPath = 'public/vehicles/' . $modelCarSlug . '/';
+                $thumbnailPath = 'public/vehicles/' . $modelCarSlug . '/thumbnail/';
 
-            // Create the image with Intervention Image
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read($originalImage);
+                // Ensure the directories exist
+                Storage::makeDirectory($originalPath);
+                Storage::makeDirectory($thumbnailPath);
 
-            // Save the original image
-            Storage::put($originalPath . $filename, (string)$image->encode());
+                // Create the image with Intervention Image
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($originalImage);
 
-            // Create and save the thumbnail image
-            $thumbnailImage = $manager->read($originalImage);
-            $thumbnailImage->scale(width: 300);
+                // Save the original image
+                Storage::put($originalPath . $filename, (string)$image->encode());
 
-            Storage::put($thumbnailPath . $filename, (string)$thumbnailImage->encode());
+                // Create and save the thumbnail image
+                $thumbnailImage = $manager->read($originalImage);
+                $thumbnailImage->scale(width: 300);
 
-            $color->image = $filename;
+                Storage::put($thumbnailPath . $filename, (string)$thumbnailImage->encode());
 
+                $color->image = $filename;
+
+            }
+
+            $color->save();
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors(),
+            ], 422);
         }
-
-        $color->save();
-
-        return response()->json([
-            'success' => true,
-        ]);
     }
 
     /**

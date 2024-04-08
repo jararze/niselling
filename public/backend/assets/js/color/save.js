@@ -72,9 +72,9 @@ const Save = {
                     const jsonFormData = JSON.stringify(formDataObject);
 
 
-                    for (const [key, value] of Object.entries(formDataObject)) {
-                        console.log(`${key}: ${value}`);
-                    }
+                    // for (const [key, value] of Object.entries(formDataObject)) {
+                    //     console.log(`${key}: ${value}`);
+                    // }
 
 
 
@@ -87,7 +87,12 @@ const Save = {
                         credentials: 'same-origin',
                         body: formData
                     })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => { throw err; });
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             console.log(data.success);
                             if (data.success != true) {
@@ -119,6 +124,8 @@ const Save = {
                         })
                         .catch(error => {
                             console.error('Error:', error);
+                            console.error('Error:', error);
+                            console.log(error.errors); // log the error data
                             Swal.fire({
                                 text: "Ok, ¡entendido! Lo sentimos, parece que se han detectado algunos errores, inténtalo de nuevo.",
                                 icon: "error",
