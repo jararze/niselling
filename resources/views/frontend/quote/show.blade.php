@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
-                            <div class="flex space-x-4" id="colorContainer">
+                            <div class="flex space-x-2" id="colorContainer">
 
                                 @if(!empty($colors))
                                     @foreach($colors as $color)

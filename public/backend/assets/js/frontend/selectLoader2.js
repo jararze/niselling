@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         colorLink.className = "relative w-12 h-12 rounded-full focus:outline-none color-button"
                         colorLink.dataset.colorCode = color.color_code;
 
-                        colorLink.dataset.imgUrl = window.Laravel.imagePath + "/color/" + ModelName + "/" +color.image;
+                        colorLink.dataset.imgUrl = window.Laravel.imagePath + "/" + ModelName + "/" +color.image;
 
                         colorLink.title = color.name;
                         colorLink.style.background = "linear-gradient(45deg, " + color.color_code + ", #333333)";
