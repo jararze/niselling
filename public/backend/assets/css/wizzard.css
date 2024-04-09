@@ -1,3 +1,20 @@
+/* Medium devices (tablets - 768px and up) */
+@media (max-width: 768px) {
+    .step, .respon {
+        padding: 0 30px;
+    }
+    .suu {
+        left: 18.4% !important;
+    }
+    #nextBtn {
+        font-size: 12px;
+    }
+    .step2 {
+        width: 380px !important;
+    }
+}
+
+
 #signUpForm {
     max-width: 1000px;
 }

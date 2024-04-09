@@ -27,20 +27,19 @@
         <form id="signUpForm" class="mx-auto mb-8" action="{{ route('frontend.quote.save') }}" method="POST">
             @csrf
             <!-- start step indicators -->
-            <div class="form-header flex gap-3 text-xs text-center mb-[50px]">
+            <div class="form-header flex gap-3 text-xs text-center mb-[50px] md:mb-[70px] lg:mb-[50px]">
                 <span class="stepIndicator flex-1 pb-8 relative">1</span>
                 <span class="stepIndicator flex-1 pb-8 relative">2</span>
             </div>
             <!-- end step indicators -->
 
-            <div
-                class="relative w-full max-w-screen-xl px-1 py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-24 lg:py-4 border-t-2 mb-[70px]">
+            <div class="respon relative w-full max-w-screen-xl py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-24 lg:py-4 border-t-2 mb-6 md:mb-[80px] lg:mb-[70px]">
                 <h2 class="mt-3 text-3xl tracking-tight text-gray-900 md:text-3xl uppercase">Cotiza en línea</h2>
-                <div class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%]"></div>
+                <div class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%] suu"></div>
             </div>
 
             <!-- step one -->
-            <div class="step mx-auto" style="width: 400px">
+            <div class="step  mx-auto md:w-3/4 lg:w-1/2 xl:w-1/3" style="width: 400px">
                 <div class="mb-6" x-data="{ selected: false }">
                     <label for="models"
                            class="font-bold block mb-2 text-gray-900 after:content-['*'] after:ml-0.5 after:text-nissan">
@@ -87,7 +86,7 @@
             </div>
 
             <!-- step two -->
-            <div class="step">
+            <div class="step ">
                 <div class="space-y-12">
 
                     <div class="border-b border-gray-900/10 pb-12">
@@ -104,16 +103,6 @@
                             </div>
 
                             <div class="sm:col-span-3">
-                                <label for="phone"
-                                       class="font-bold block mb-2 text-gray-900  after:content-['*'] after:ml-0.5 after:text-nissan ">Celular</label>
-                                <div class="mt-2">
-                                    <input type="tel" name="phone" id="phone" autocomplete="given-cellphone"
-                                           class="border border-black text-gray-900 focus:ring-black focus:border-black block w-full px-2.5 py-3"
-                                           placeholder="Número de teléfono celular" pattern="[0-9]{8}" required/>
-                                </div>
-                            </div>
-
-                            <div class="sm:col-span-3">
                                 <label for="last-name"
                                        class="font-bold block mb-2 text-gray-900  after:content-['*'] after:ml-0.5 after:text-nissan ">Apellido</label>
                                 <div class="mt-2">
@@ -124,17 +113,12 @@
                             </div>
 
                             <div class="sm:col-span-3">
-                                <label for="city"
-                                       class="font-bold block mb-2 text-gray-900  after:content-['*'] after:ml-0.5 after:text-nissan ">Ciudad</label>
+                                <label for="phone"
+                                       class="font-bold block mb-2 text-gray-900  after:content-['*'] after:ml-0.5 after:text-nissan ">Celular</label>
                                 <div class="mt-2">
-                                    <select id="city" name="city" id="city"
-                                            class="border border-black text-gray-900 focus:ring-black focus:border-black block w-full px-2.5 py-3"
-                                            required>
-                                        <option value="0">Selecciona una ciudad</option>
-                                        @foreach($cities as $city)
-                                            <option value="{{$city->id}}">{{$city->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="tel" name="phone" id="phone" autocomplete="given-cellphone"
+                                           class="border border-black text-gray-900 focus:ring-black focus:border-black block w-full px-2.5 py-3"
+                                           placeholder="Número de teléfono celular" pattern="[0-9]{8}" required/>
                                 </div>
                             </div>
 
@@ -159,6 +143,21 @@
                                         <option label="PT" value="PT">PT</option>
                                         <option label="SC" value="SC">SC</option>
                                         <option label="TJ" value="TJ">TJ</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label for="city"
+                                       class="font-bold block mb-2 text-gray-900  after:content-['*'] after:ml-0.5 after:text-nissan ">Ciudad</label>
+                                <div class="mt-2">
+                                    <select id="city" name="city" id="city"
+                                            class="border border-black text-gray-900 focus:ring-black focus:border-black block w-full px-2.5 py-3"
+                                            required>
+                                        <option value="0">Selecciona una ciudad</option>
+                                        @foreach($cities as $city)
+                                            <option value="{{$city->id}}">{{$city->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -203,55 +202,6 @@
                         </div>
                     </div>
 
-                    {{--                    <div class="border-b border-gray-900/10 pb-5">--}}
-                    {{--                        <div class="sm:col-span-6">--}}
-                    {{--                            <div--}}
-                    {{--                                class="relative w-full max-w-screen-xl px-1 py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-24 lg:py-4 border-t-2 ">--}}
-                    {{--                                <h2 class="mt-3 text-3xl tracking-tight text-gray-900 md:text-3xl ">¿CÓMO DESEA SER--}}
-                    {{--                                    CONTACTADO? <span class="text-nissan">*</span></h2>--}}
-                    {{--                                <div--}}
-                    {{--                                    class="absolute bottom-0 left-[9%] w-[6%] h-1.5 bg-nissan transform -translate-x-[145%]"></div>--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-
-                    {{--                        <div class="space-y-10 mb-5">--}}
-                    {{--                            <fieldset>--}}
-                    {{--                                <div class="mt-6 space-y-6">--}}
-                    {{--                                    <div class="relative flex gap-x-3">--}}
-                    {{--                                        <div class="flex h-6 items-center">--}}
-                    {{--                                            <input id="whatsapp" name="whatsapp" type="checkbox"--}}
-                    {{--                                                   class="h-5 w-5 rounded border-gray-300 text-nissan focus:ring-nissan">--}}
-                    {{--                                        </div>--}}
-                    {{--                                        <div class="text-sm leading-6">--}}
-                    {{--                                            <label for="whatsapp" class="">Whatsapp</label>--}}
-                    {{--                                        </div>--}}
-                    {{--                                    </div>--}}
-                    {{--                                    <div class="relative flex gap-x-3">--}}
-                    {{--                                        <div class="flex h-6 items-center">--}}
-                    {{--                                            <input id="email2" name="email2" type="checkbox"--}}
-                    {{--                                                   class="h-5 w-5 rounded border-gray-300 text-nissan focus:ring-nissan">--}}
-                    {{--                                        </div>--}}
-                    {{--                                        <div class="text-sm leading-6">--}}
-                    {{--                                            <label for="email2" class="">Correo electrónico</label>--}}
-                    {{--                                        </div>--}}
-                    {{--                                    </div>--}}
-                    {{--                                    <div class="relative flex gap-x-3">--}}
-                    {{--                                        <div class="flex h-6 items-center">--}}
-                    {{--                                            <input id="call" name="call" type="checkbox"--}}
-                    {{--                                                   class="h-5 w-5 rounded border-gray-300 text-nissan focus:ring-nissan">--}}
-                    {{--                                        </div>--}}
-                    {{--                                        <div class="text-sm leading-6">--}}
-                    {{--                                            <label for="call" class="">Llamada telefónica</label>--}}
-                    {{--                                        </div>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </div>--}}
-                    {{--                            </fieldset>--}}
-                    {{--                        </div>--}}
-
-                    {{--                        <div class="mb-6">--}}
-                    {{--                            <p class="text-nissan font-bold">* Campos obligatorios</p>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
                 </div>
 
                 <div class="mt-6 flex items-center justify-end gap-x-6">

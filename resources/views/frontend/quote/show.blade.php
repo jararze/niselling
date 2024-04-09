@@ -73,19 +73,20 @@
             </div>
 
             <div
-                class="relative w-full max-w-screen-xl px-1 py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-24 lg:py-4 mb-[70px]"
+                class="relative w-full max-w-screen-xl px-1 py-8 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-24 lg:py-4 md:mb-[70px] mb-0"
                 style="width: 80%">
                 <h4 class="mt-1 text-1xl uppercase">ELIGE TU MODELO, GRADO, COLOR Y PULSA SIGUIENTE PARA OBTENER TU
                     PROFORMA</h4>
             </div>
 
-            <div class="mx-auto" style="width: 80%">
-                <div class="flex">
-                    <div class="flex-grow" style="flex-basis: 70%;">
-                        <div class="flex justify-between">
+            <div class="mx-auto md:w-4/5 w-full" sstyle="width: 80%">
+                <div class="flex flex-col md:flex-row">
+                    <div class="w-full md:flex-grow md:w-7/10 pb-4 md:pb-0" sstyle="flex-basis: 70%;">
+                        <div class="flex flex-col md:flex-row justify-evenly md:justify-between mx-auto" style="max-width: 960px;">
+                            <label for="models"></label>
                             <select id="models"
                                     name="models"
-                                    class="mx-auto border border-black text-gray-900 focus:ring-black focus:border-black block w-80 px-2.5 py-3 uppercase"
+                                    class="mx-auto border border-black text-gray-900 focus:ring-black focus:border-black block w-80 px-2.5 py-3 uppercase my-4 md:my-0"
                                     required>
                                 <option value="0">Selecciona un modelo</option>
                                 @php $selected_model = $quote->model; @endphp
@@ -94,6 +95,7 @@
                                         value="{{$model->id}}" {{ ($selected_model == $model->id) ? 'selected' : '' }}>{{$model->name}}</option>
                                 @endforeach
                             </select>
+                            <label for="grade"></label>
                             <select id="grade"
                                     name="grade"
                                     class="mx-auto border border-black text-gray-900 focus:ring-black focus:border-black block w-80 px-2.5 py-3 uppercase"
@@ -106,14 +108,14 @@
 
                             </select>
                         </div>
-                        <div class="flex justify-between mt-10">
+                        <div class="flex justify-center md:justify-between mt-10">
                             <img id="carImage"
                                  src="{{ asset('storage/vehicles/'.$quote->modelOfCar->slug .'/'.$quote->modelOfCar->image) }}"
                                  alt="{{ $quote->modelOfCar->name }}">
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
-                            <div class="flex space-x-2" id="colorContainer">
+                            <div class="flex flex-wrap space-x-2" id="colorContainer">
 
                                 @if(!empty($colors))
                                     @foreach($colors as $color)
@@ -121,7 +123,7 @@
                                             $escaped_code = e($color->color_code);
                                             $escaped_name = e($color->name);
                                         @endphp
-                                        <div class="flex flex-col items-center relative">
+                                        <div class="flex flex-col items-center relative m-4 md:m-0">
                                             <span
                                                 class="absolute text-sm text-center hidden mb-2 title top-[-2rem] translate-x-[-2rem] left-[82%]"
                                                 id="{{ $escaped_code }}">{{ $first_word = explode(' ', trim($escaped_name))[0] }}</span>
@@ -143,7 +145,7 @@
 
 
                     </div>
-                    <div class="flex-grow" style="flex-basis: 30%;">
+                    <div class="w-full md:flex-grow md:w-3/10  md:text-left mx-auto md:mx-0 text-center" style="flex-basis: 30%;">
                         <div class="text-sm">
                             <p><strong>Cilindrada:</strong> <span
                                     id="cylindered_span">{{ $quote->gradeOfCar->cylindered  }}</span></p>
@@ -155,33 +157,33 @@
                                     id="commercial_date_span">{{ $quote->gradeOfCar->commercial_date  }}</span></p>
                         </div>
 
-                        <div class="flex justify-between mt-10">
+                        <div class="flex justify-center md:justify-between mt-10">
                             <a id="data_sheet_span" target="_blank" href="{{ $quote->modelOfCar->data_sheet }}"
-                               class="w-full uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
+                               class="w-4/5 md:w-full mx-auto uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
                                 <span class="font-thin">descargar ficha técnica</span>
                                 <span class="font-bold text-xl mt-[-3px]"> > </span>
                             </a>
                         </div>
 
                         <div class="justify-between mt-10">
-                            <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
+                            <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio</p>
                                 <p class="font-bold">$us. <span
                                         id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
                             </div>
-                            <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
+                            <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Descuento</p>
                                 <p class="font-bold">$us. <span
                                         id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                                 </p>
                             </div>
-                            <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
+                            <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Costos Adicionales</p>
                                 <p class="font-bold">$us. <span
                                         id="aditional_costs_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                                 </p>
                             </div>
-                            <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
+                            <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio Final</p>
                                 <p class="font-bold text-nissan">
                                     $us. <span
@@ -235,13 +237,14 @@
             </div>
 
 
-
         </form>
 
 
         <div class="mx-auto mt-10" style="width: 80%">
 
-            <p class="uppercase text-center mt-5 text-xs"><a href="{{ route('frontend.quote_second.show', $quote->id) }}" class="uppercase text-center mt-5 text-xs hover:underline">Cambiar datos de proforma</a></p>
+            <p class="uppercase text-center mt-5 text-xs"><a
+                    href="{{ route('frontend.quote_second.show', $quote->id) }}"
+                    class="uppercase text-center mt-5 text-xs hover:underline">Cambiar datos de proforma</a></p>
 
         </div>
 
