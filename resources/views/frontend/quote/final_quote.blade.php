@@ -36,9 +36,9 @@
         <h4 class="text-1xl uppercase">{{ $quote->gradeOfCar->name }}</h4>
     </div>
 
-    <div class="mx-auto" style="width: 80%">
-        <div class="flex">
-            <div class="flex-grow" style="flex-basis: 70%;">
+    <div class="mx-auto md:w-4/5 w-full" sstyle="width: 80%">
+        <div class="flex flex-col md:flex-row">
+            <div class="w-full md:flex-grow md:w-7/10 pb-4 md:pb-0" sstyle="flex-basis: 70%;">
 
                 <div class="flex justify-between mt-10">
                     <img id="carImage"
@@ -48,7 +48,7 @@
                 </div>
 
             </div>
-            <div class="flex-grow" style="flex-basis: 30%; margin-top: -80px">
+            <div class="w-full md:flex-grow md:w-3/10  md:text-left mx-auto md:mx-0 text-center" style="flex-basis: 30%;">
                 <div class="text-sm">
                     <p><strong>Cilindrada:</strong> <span
                             id="cylindered_span">{{ $quote->gradeOfCar->cylindered  }}</span></p>
@@ -60,9 +60,9 @@
                             id="commercial_date_span">{{ $quote->gradeOfCar->commercial_date  }}</span></p>
                 </div>
 
-                <div class="flex justify-between mt-10">
+                <div class="flex justify-center md:justify-between mt-10">
                     <a id="data_sheet_span" target="_blank" href="{{ route('frontend.quote.pdf', $quote->id) }}"
-                       class="w-full uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
+                       class="w-4/5 md:w-full mx-auto uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
                         <span class="font-thin">descargar ficha tecnica</span>
                         <span class="font-bold text-xl mt-[-3px]"> > </span>
                     </a>
@@ -103,32 +103,28 @@
         </div>
     </div>
 
-    <div class="mx-auto mt-10 flex justify-center" style="width: 80%">
-        <a id="whatapp_contact" href="https://wa.me/591{{ $quote->agentOfCar->phone }}?text=¡Hola! Mi nombre es *{{ $quote->name . ' ' . $quote->last_name }}* y estoy interesado en saber más acerca del vehículo *{{ $quote->modelOfCar->name }} {{ $quote->gradeOfCar->name }}*, gracias." target="_blank" class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">chatear por whatsapp
+    <div class="mx-auto mt-10 flex flex-col sm:flex-row justify-center" style="width: 80%">
+        <a id="whatapp_contact" href="https://wa.me/591{{ $quote->agentOfCar->phone }}?text=¡Hola! Mi nombre es *{{ $quote->name . ' ' . $quote->last_name }}* y estoy interesado en saber más acerca del vehículo *{{ $quote->modelOfCar->name }} {{ $quote->gradeOfCar->name }}*, gracias." target="_blank" class="w-full flex items-center justify-center md:w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4 md:my-2 my-2">chatear por whatsapp
         </a>
         <a href="{{ route('frontend.online.reservation', $quote->id) }}"
-                class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-black hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
+                class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-black hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4 md:my-2 my-2">
             reservar con $us 200
         </a>
         <a href="{{ route('frontend.thanks', $quote->id) }}"
-                class="flex items-center justify-center w-64 border border-transparent focus:outline-none bg-gray-300 hover:opacity-80 text-md uppercase hover:underline p-3 text-black text-center mx-4">
+                class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-gray-300 hover:opacity-80 text-md uppercase hover:underline p-3 text-black text-center mx-4 md:my-2 my-2">
             solicitar llamada telefónica
         </a>
     </div>
-    {{--            <p class="uppercase text-center mt-5 text-xs">pulse el boton para ver proforma</p>--}}
 
+    <div class="mx-auto mt-12 bg-[#eeeeee] mb-[30px] p-10 sm:w-4/5" style="width: 80%">
 
-    <div class="mx-auto mt-12 bg-[#eeeeee] mb-[30px] p-10" style="width: 80%">
-
-        <div
-            class="relative w-full max-w-screen-xl px-1 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-16">
+        <div class="relative w-full max-w-screen-xl px-1 mx-auto lg:grid lg:grid-cols-1 lg:gap-16 xl:gap-16">
             <h2 class="mt-3 text-3xl tracking-tight text-gray-900 md:text-3xl pb-3 uppercase">DATOS DE LA
                 PROFORMA</h2>
-            <div
-                class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%]"></div>
+            <div class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%]"></div>
         </div>
 
-        <div class="grid grid-cols-6 gap-4 text-sm mt-5 p-2">
+        <div class="grid grid-cols-1 sm:grid-cols-6 gap-4 text-sm mt-5 p-2">
             <div class="col-span-2 border p-2 text-bold"><strong>Proforma a nombre de:</strong>
                 <br>{{ $quote->name . " " . $quote->last_name }}</div>
             <div class="col-span-2 border p-2"><strong>Número de Proforma:</strong>

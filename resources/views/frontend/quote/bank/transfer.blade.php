@@ -37,6 +37,28 @@
             upload.style.pointerEvents = "auto";
         });
 
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            const validTypes = ["image/jpg", "image/jpeg", "image/png", "application/pdf"];
+            const maxSizeInMB = 5;
+            const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (validTypes.indexOf(file.type) === -1) {
+                errorMessage.textContent = "Tipo de archivo inválido. Solo se permiten JPEG, PNG y PDF.";
+                event.target.value = "";
+                return;
+            }
+
+            if (file.size > maxSizeInBytes) {
+                errorMessage.textContent = "El archivo es demasiado grande. El tamaño máximo permitido es de " + maxSizeInMB + "MB.";
+                event.target.value = "";
+                return;
+            }
+
+            errorMessage.textContent = "";
+        });
+
         // const form = document.getElementById('signUpForm');
         // form.addEventListener('submit', function(event) {
         //     const fileInput = document.getElementById('fileInput');
@@ -112,8 +134,17 @@
                     </div>
                 </div>
                 <p class="text-sm text-gray-300">
-                    <span>Tipos de archivos aceptados: doc,pdf o imagenes</span>
+                    <span>Tipos de archivos aceptados: jpeg, jpg, png o pdf</span>
                 </p>
+
+                <p class="text-md text-nissan mt-4 text-center" id="errorMessage">
+                </p>
+                <ul class="text-md text-nissan mt-4 text-center">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+
                 <div>
                     <button type="submit"
                        class="mt-5 flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">

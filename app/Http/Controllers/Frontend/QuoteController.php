@@ -132,6 +132,19 @@ class QuoteController extends Controller
 
     public function voucher(Request $request)
     {
+        dd($request);
+        $validatedData = $request->validate([
+            'comprobante' => 'required|mimes:jpg,jpeg,png,pdf|max:5120', // max size 5MB
+        ]);
+
+
+
+        if ($validatedData->fails()) {
+            return view('frontend.quote.store.voucher')
+                ->withErrors($validatedData)
+                ->withInput();
+        }
+
         $quote = Quote::findOrFail($request->id);
 
         if ($request->hasFile('comprobante')) {

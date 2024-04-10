@@ -68,17 +68,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const colorContainer = document.getElementById("colorContainer");
                     colorContainer.innerHTML = "";
-                    data.colors.forEach(color => {
+                    data.colors.forEach((color, index) => {
                         const colorDiv = document.createElement("div");
-                        colorDiv.className = "flex flex-col items-center relative";
+                        colorDiv.className = `flex flex-col items-center justify-center mt-8 relative`;
 
                         const colorSpan = document.createElement("span");
-                        colorSpan.className = "absolute text-sm text-center hidden mb-2 title top-[-2rem] translate-x-[-2rem] left-[82%]";
+                        colorSpan.className = "absolute text-sm text-center mb-2 hidden title top-[-2rem]";
                         colorSpan.id = color.color_code;
                         colorSpan.innerText = color.name.trim().split(" ")[0];
 
                         const colorLink = document.createElement("a");
-                        colorLink.className = "relative w-12 h-12 rounded-full focus:outline-none color-button"
+                        colorLink.className = "w-12 h-12 rounded-full focus:outline-none color-button"
                         colorLink.dataset.colorCode = color.color_code;
 
                         colorLink.dataset.imgUrl = window.Laravel.imagePath + "/" + ModelName + "/" +color.image;
@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const colorCode = e.target.getAttribute('data-color-code');
         const imgUrl = e.target.getAttribute('data-img-url');
 
+
         changeColor(colorCode, imgUrl);
         document.getElementById('selected_color').value = colorCode;
         const rgbColor = hexToRgb(colorCode);
@@ -191,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const carImage = document.getElementById('carImage');
         const titleElements = document.querySelectorAll('.title');
         const idElement = document.getElementById(id);
+
 
         if (!spinner || !carImage || !titleElements.length || !idElement) {
             console.warn('One or more elements not found');

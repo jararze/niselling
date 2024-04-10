@@ -115,19 +115,19 @@
                         </div>
 
                         <div class="flex flex-col items-center justify-center">
-                            <div class="flex flex-wrap space-x-2" id="colorContainer">
+                            <div class="flex flex-wrap justify-center items-center space-x-2 space-y-8" id="colorContainer">
 
                                 @if(!empty($colors))
-                                    @foreach($colors as $color)
+                                    @foreach($colors as $key => $color)
                                         @php
                                             $escaped_code = e($color->color_code);
                                             $escaped_name = e($color->name);
                                         @endphp
-                                        <div class="flex flex-col items-center relative m-4 md:m-0">
+                                        <div class="flex flex-col items-center justify-center relative {{ $key == 0 ? 'mt-8' : 'mt-2' }}">
                                             <span
-                                                class="absolute text-sm text-center hidden mb-2 title top-[-2rem] translate-x-[-2rem] left-[82%]"
+                                                class="absolute text-sm text-center mb-2 hidden title top-[-2rem] "
                                                 id="{{ $escaped_code }}">{{ $first_word = explode(' ', trim($escaped_name))[0] }}</span>
-                                            <a class="relative w-12 h-12 rounded-full focus:outline-none color-button"
+                                            <a class="w-12 h-12 rounded-full focus:outline-none color-button"
                                                data-color-code="{{ $escaped_code }}"
                                                data-img-url="{{ asset('storage/vehicles/'. $quote->modelOfCar->slug . "/" . $color->image) }}"
                                                href="#"
@@ -200,12 +200,12 @@
                 </div>
             </div>
 
-            <div class="mx-auto mt-10" style="width: 80%">
+            <div class="mx-auto mt-10 w-full md:w-[450px]">
 
                 <button type="submit"
                         class="flex items-center justify-between w-1/3 mx-auto border border-transparent focus:outline-none bg-nissan hover:opacity-50 text-md uppercase p-3 text-white text-center">
-                    <span>Siguiente</span>
-                    <span class="font-bold text-2xl -mt-1">></span>
+                    <span class="px-0 md:px-3">Siguiente</span>
+                    <span class="font-bold text-2xl -mt-1 ml-5 md:ml-0">></span>
                 </button>
                 <p class="uppercase text-center mt-5 text-xs">pulse el boton para ver proforma</p>
 

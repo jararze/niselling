@@ -3,15 +3,15 @@
 @endpush
 @push('script')
     <script>
-        window.onload = function() {
+        window.onload = function () {
             var onlineRadio = document.getElementById('payment-online');
             var transferRadio = document.getElementById('payment-transfer');
 
-            onlineRadio.addEventListener('change', function() {
+            onlineRadio.addEventListener('change', function () {
                 document.getElementById('bank_accounts').classList.add('hidden');
             });
 
-            transferRadio.addEventListener('change', function() {
+            transferRadio.addEventListener('change', function () {
                 document.getElementById('bank_accounts').classList.remove('hidden');
             });
         };
@@ -42,7 +42,7 @@
                         <div class="sm:col-span-3">
                             <div class="relative flex gap-x-3">
                                 <div class="flex h-6 items-center">
-                                    <input id="payment-online" name="payment" type="radio" value="0"
+                                    <input id="payment-online" name="payment" type="radio" value="0" checked
                                            class="h-6 w-6 rounded border-gray-300 text-nissan focus:ring-nissan">
                                 </div>
                                 <div class="leading-6">
@@ -105,22 +105,27 @@
                 </div>
             </div>
 
-            <div class="flex flex-col items-center mx-auto mt-10" style="width: 500px; text-align: center">
-                <p style="font-size: 12px" class="mt-3">* El grado y color seleccionado están sujetos a disponibilidad.
-                    No se preocupe, ante cualquier inconformidad usted podrá acceder a un reembolso.</p>
-                <p style="font-size: 12px; text-align: center" class="mt-3"><a href="https://www.nissan.com.bo/terminos-condiciones.html" target="_blank">Ver nuestros terminos y
-                        condiciones.</a></p>
+            <div class="flex flex-col items-center mx-auto mt-10 sm:col-span-3 w-68 lg:w-[300px]">
+                <div class="sm:col-span-3">
+                    <p style="font-size: 12px" class="mt-3">* El grado y color seleccionado están sujetos a
+                        disponibilidad.
+                        No se preocupe, ante cualquier inconformidad usted podrá acceder a un reembolso.</p>
+                    <p style="font-size: 12px; text-align: center" class="mt-3"><a
+                            href="https://www.nissan.com.bo/terminos-condiciones.html" target="_blank">Ver nuestros
+                            terminos y
+                            condiciones.</a></p>
+                </div>
             </div>
 
-            <div class="flex flex-col items-center mx-auto mt-10 " style="width: 80%">
+            <div class="flex flex-col items-center mx-auto mt-10 sm:col-span-3">
                 <button type="submit"
-                   class="mt-5 flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
+                        class="mt-5 flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
                     reservar con $us 200
                 </button>
             </div>
 
 
-            <div class="flex flex-col items-center mx-auto mt-10" style="width: 500px; text-align: center">
+            <div class="flex flex-col items-center mx-auto mt-10 sm:col-span-3 w-68 lg:w-[300px]">
                 <p style="font-size: 12px" class="mt-3">Una vez finalizado el proceso de pago, un Asesor Profesional de
                     Ventas se pondrá en contacto con usted para confirmar su reserva.</p>
                 <p style="font-size: 12px; text-align: center" class="mt-3"><a
