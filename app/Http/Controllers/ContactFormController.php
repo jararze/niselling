@@ -14,9 +14,14 @@ class ContactFormController extends Controller
     public function submit(Request $request)
     {
         try {
-            $formData = $request->only(['name', 'email', 'cellphone', 'pageUrl']);
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'cellphone' => 'required|string|min:7|max:15',
+                'pageUrl' => 'required|string|url|max:255',
+            ]);
 
-            ContactForm::create($formData);
+            ContactForm::create($validatedData);
 
             return response()->json(['message' => 'Form data submitted successfully'], 200);
         } catch (\Exception $e) {
