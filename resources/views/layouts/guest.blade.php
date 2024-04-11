@@ -66,15 +66,15 @@
             </div>
             <!--end::Form-->
             <!--begin::Footer-->
-            <div class="w-lg-500px d-flex flex-stack px-10 mx-auto">
-                <!--begin::Links-->
-                <div class="d-flex fw-semibold text-primary fs-base gap-5">
-                    <a href="pages/team.html" target="_blank">Terms</a>
-                    <a href="pages/pricing/column.html" target="_blank">Plans</a>
-                    <a href="pages/contact.html" target="_blank">Contact Us</a>
-                </div>
-                <!--end::Links-->
-            </div>
+{{--            <div class="w-lg-500px d-flex flex-stack px-10 mx-auto">--}}
+{{--                <!--begin::Links-->--}}
+{{--                <div class="d-flex fw-semibold text-primary fs-base gap-5">--}}
+{{--                    <a href="pages/team.html" target="_blank">Terms</a>--}}
+{{--                    <a href="pages/pricing/column.html" target="_blank">Plans</a>--}}
+{{--                    <a href="pages/contact.html" target="_blank">Contact Us</a>--}}
+{{--                </div>--}}
+{{--                <!--end::Links-->--}}
+{{--            </div>--}}
             <!--end::Footer-->
         </div>
         <!--end::Body-->
@@ -93,16 +93,11 @@
                      src="{{ asset('backend/assets/media/misc/auth-screens.png') }}" alt=""/>
                 <!--end::Image-->
                 <!--begin::Title-->
-                <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">Fast, Efficient and
-                    Productive</h1>
+                <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">Velocidad, precisión y eficacia a la hora de vender vehículos</h1>
                 <!--end::Title-->
                 <!--begin::Text-->
-                <div class="d-none d-lg-block text-white fs-base text-center">In this kind of post,
-                    <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>introduces a person
-                    they’ve interviewed
-                    <br/>and provides some background information about
-                    <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the interviewee</a>and their
-                    <br/>work following this is a transcript of the interview.
+                <div class="d-none d-lg-block text-white fs-base text-center">En <span class="opacity-75-hover text-warning fw-bold me-1">nuestro CRM</span>, la velocidad, precisión y eficacia no son solo palabras, son nuestro mantra a la hora de vender vehículos. Imagínate un cohete, pero en lugar de ir al espacio, va directo a cerrar ventas. Nuestro sistema es tan rápido que, si parpadeas, <span class="opacity-75-hover text-warning fw-bold me-1">¡podrías perderte una venta! Pero no te preocupes</span>, con nuestra precisión milimétrica, nos aseguramos de que cada detalle esté en su lugar, garantizando una experiencia sin contratiempos. Porque al final del día, lo que importa es la eficacia, y en eso, somos como un auto de carreras en la recta final: <span class="opacity-75-hover text-warning fw-bold me-1">imparables</span>.
+
                 </div>
                 <!--end::Text-->
             </div>

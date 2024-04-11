@@ -180,7 +180,7 @@
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Costos Adicionales</p>
                                 <p class="font-bold">$us. <span
-                                        id="aditional_costs_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
+                                        id="aditional_costs_span">{{ number_format(0, 2) }} </span>
                                 </p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">

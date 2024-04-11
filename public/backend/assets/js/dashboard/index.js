@@ -16,7 +16,7 @@ const leadsCount = (() => {
             const values = Object.values(leadsData);
             const dates = Object.keys(leadsData);
 
-            console.log(leadsData)
+            // console.log(leadsData)
 
             const chartOptions = {
                 series: [{name: "Leads", data: values}],
@@ -276,8 +276,7 @@ KTUtil.onDOMContentLoaded(function () {
     typeOfContact.init();
 });
 
-
-class KTChartsWidget6 {
+class topModelSell {
     data = {self: null, rendered: false};
 
     constructor() {
@@ -288,8 +287,14 @@ class KTChartsWidget6 {
         const a = KTUtil.getCssVariableValue("--bs-gray-800");
         const l = KTUtil.getCssVariableValue("--bs-border-dashed-color");
 
+        let categories = window.Laravel.topSellingModels.map(item => item.model_of_car.name);
+        let salesData = window.Laravel.topSellingModels.map(item => item.count);
+
+        // console.log(window.Laravel.topSellingModels)
+        // console.log(categories)
+
         return {
-            series: [{name: "Sales", data: [15, 12, 10, 8, 7]}],
+            series: [{name: "Venta", data: salesData}],
             chart: {fontFamily: "inherit", type: "bar", height: 350, toolbar: {show: false}},
             plotOptions: {
                 bar: {
@@ -302,17 +307,17 @@ class KTChartsWidget6 {
             },
             dataLabels: {
                 enabled: true, textAnchor: "start", offsetX: 0, formatter: function (e, t) {
-                    e *= 1e3;
+
                     return wNumb({thousand: ","}).to(e)
                 }, style: {fontSize: "14px", fontWeight: "600", align: "left"}
             },
             legend: {show: false},
             colors: ["#3E97FF", "#F1416C", "#50CD89", "#FFC700", "#7239EA"],
             xaxis: {
-                categories: ["ECR - 90%", "FGI - 82%", "EOQ - 75%", "FMG - 60%", "PLG - 50%"],
+                categories: categories,
                 labels: {
                     formatter: function (e) {
-                        return e + "K"
+                        return e
                     },
                     style: {colors: [a], fontSize: "14px", fontWeight: "600", align: "left"}
                 },
@@ -329,7 +334,7 @@ class KTChartsWidget6 {
             tooltip: {
                 style: {fontSize: "12px"}, y: {
                     formatter: function (e) {
-                        return e + "K"
+                        return e
                     }
                 }
             }
@@ -349,16 +354,86 @@ class KTChartsWidget6 {
     }
 
     init() {
-        this.renderChart("kt_charts_widget_6");
+        this.renderChart("topModelSell");
+        // console.log(window.Laravel.topSellingModels)
         KTThemeMode.on("kt.thememode.change", () => {
             if (this.data.rendered) {
                 this.data.self.destroy();
-                this.renderChart("kt_charts_widget_6");
+                this.renderChart("topModelSell");
             }
         });
     }
 }
 
 KTUtil.onDOMContentLoaded(() => {
-    new KTChartsWidget6();
+    new topModelSell();
+});
+
+const topSellingModels = {
+    init: function () {
+        (function initiateChartWidget() {
+            if (typeof am5 !== "undefined") {
+                const chartElement = document.getElementById("kt_charts_widget_17_chart");
+                if (chartElement) {
+                    let root, chartSetupFunction = function () {
+                        root = am5.Root.new(chartElement);
+                        root.setThemes([am5themes_Animated.new(root)]);
+
+                        let pieChart = root.container.children.push(am5percent.PieChart.new(root, {
+                            startAngle: 180,
+                            endAngle: 360,
+                            layout: root.verticalLayout,
+                            innerRadius: am5.percent(50)
+                        }));
+
+                        let pieSeries = pieChart.series.push(am5percent.PieSeries.new(root, {
+                            startAngle: 180,
+                            endAngle: 360,
+                            valueField: "value",
+                            categoryField: "category",
+                            alignLabels: false
+                        }));
+
+                        pieSeries.labels.template.setAll({
+                            fontWeight: "400",
+                            fontSize: 13,
+                            fill: am5.color(KTUtil.getCssVariableValue("--bs-gray-500"))
+                        });
+
+                        pieSeries.states.create("hidden", {
+                            startAngle: 180,
+                            endAngle: 180
+                        });
+
+                        pieSeries.slices.template.setAll({cornerRadius: 5});
+                        pieSeries.ticks.template.setAll({forceHidden: true});
+                        console.log(window.Laravel.topSellingGrades)
+                        let colorList = ["--bs-primary", "--bs-success", "--bs-danger", "--bs-warning", "--bs-info", "--bs-secondary","--bs-blue", "--bs-indigo", "--bs-purple", "--bs-pink", "--bs-red" , "--bs-orange" , "--bs-yellow" , "--bs-green" , "--bs-teal"];
+                        pieSeries.data.setAll(window.Laravel.topSellingGrades.map((item, index) => {
+                            return {
+                                value: item.count,
+                                category: item.grade_of_car.name,
+                                fill: am5.color(KTUtil.getCssVariableValue(colorList[index % colorList.length]))
+                            };
+                        }));
+
+                        pieSeries.appear(1000, 100);
+                    };
+
+                    am5.ready(chartSetupFunction);
+                    KTThemeMode.on("kt.thememode.change", function () {
+                        root.dispose(), chartSetupFunction()
+                    });
+                }
+            }
+        })();
+    }
+};
+
+if ("undefined" !== typeof module) {
+    module.exports = topSellingModels;
+}
+
+KTUtil.onDOMContentLoaded(() => {
+    topSellingModels.init();
 });

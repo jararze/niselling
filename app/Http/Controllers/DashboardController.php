@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\backend\vehicle\Grade;
+use App\Models\backend\vehicle\ModelOfCar;
+use App\Models\backend\vehicle\Type;
 use App\Models\backend\vehicle\VehicleColor;
 use App\Models\Frontend\Quote;
 use Carbon\Carbon;
 use DB;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -14,6 +16,9 @@ class DashboardController extends Controller
     {
 
         $quotesCount = Quote::count();
+        $modelCount = ModelOfCar::count();
+        $gradeCount = Grade::count();
+
         $lastMonth = Carbon::now()->subDays(15);
 
         $quotesPastMonth = Quote::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
@@ -36,6 +41,13 @@ class DashboardController extends Controller
             return [$key => $item['percentage']];
         })->toArray();
 
+        $topSellingModels = Quote::with('modelOfCar')
+            ->select('model', DB::raw('count(*) as count'))
+            ->groupBy('model')
+            ->orderBy('count', 'desc')
+            ->take(5)
+            ->get();
+
         $totalColors = VehicleColor::count();
         $lastThreeColors = VehicleColor::latest()->take(5)->get();
 
@@ -43,6 +55,16 @@ class DashboardController extends Controller
         $results = [];
         $results2 = [];
         $results3 = $typeContactePercentageArray;
+
+        $topOneModel = $topSellingModels[0]->model;
+
+        $topSellingGrades = Quote::with('gradeOfCar')
+            ->select('grade', DB::raw('count(*) as count'))
+            ->where('model', $topOneModel)
+            ->groupBy('grade')
+            ->orderBy('count', 'desc')
+//            ->take(5)
+            ->get();
 
         $startDate = Carbon::now()->startOfMonth()->subDays(15);
         $endDate = Carbon::now();
@@ -62,7 +84,17 @@ class DashboardController extends Controller
         $total = array_sum($results);
         $total2 = array_sum($results2);
 
+        $types = Type::with(['modelType', 'modelType.grades', 'modelType.quotes'])->get();
 
+//        dd($types);
+        $typeModelGradeQuote = $types->map(function ($type) {
+            $typeArray = ['type_name' => $type->name, 'type_icon' => $type->icon, 'model_of_cars_count' => $type->modelType->count(), 'grades_count' => 0, 'quotes_count' => 0];
+            foreach ($type->modelType as $model) {
+                $typeArray['grades_count'] += $model->grades->count();
+                $typeArray['quotes_count'] += $model->quotes->count();
+            }
+            return $typeArray;
+        });
 
         return view('dashboard', [
             'quotesPastMonth' => $total,
@@ -73,6 +105,11 @@ class DashboardController extends Controller
             'totalQuotes' => $quotesCount,
             'totalColors' => $totalColors,
             'lastThreeColors' => $lastThreeColors,
+            'topSellingModels' => $topSellingModels,
+            'topSellingGrades' => $topSellingGrades,
+            'modelCount' => $modelCount,
+            'gradeCount' => $gradeCount,
+            'typeModelGradeQuote' => $typeModelGradeQuote,
         ]);
 
 //        $showrooms = Showroom::where('status', 1)

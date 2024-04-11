@@ -2,6 +2,7 @@
 
 namespace App\Models\backend\vehicle;
 
+use App\Models\Frontend\Quote;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,11 @@ class ModelOfCar extends Model
     public function grades()
     {
         return $this->hasMany(Grade::class, 'model_of_cars_id');
+    }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class, 'model');
     }
 
 }

@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const discount_span = document.getElementById("discount_span");
     const aditional_costs_span = document.getElementById("aditional_costs_span");
     const final_price_span = document.getElementById("final_price_span");
+    const form = document.getElementById('signUpForm');
 
     modelSelect.addEventListener('change', function () {
         const modelId = this.value;
@@ -102,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
     grade.addEventListener('change', function () {
         const modelId = this.value;
 
@@ -185,8 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         e.target.style.background = `linear-gradient(45deg, ${rgbColor}, ${darkerRgbColor})`;
     });
-
-
     function changeColor(id, source) {
         const spinner = document.getElementById('spinner');
         const carImage = document.getElementById('carImage');
@@ -214,11 +212,15 @@ document.addEventListener('DOMContentLoaded', function () {
         img.src = source;
     }
 
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        spinner.style.display = 'flex';
+
+        form.submit();
+    });
 
 });
-
-
-
 
 function darkenRgb(rgbColor, percent) {
     let rgbValues = rgbColor.replace(/[rgba()]/g, '').split(',').map(Number);

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Frontend\Quote;
+use App\Models\ContactForm;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\ContactForm;
 
 class ContactFormController extends Controller
 {
@@ -21,7 +20,30 @@ class ContactFormController extends Controller
                 'pageUrl' => 'required|string|url|max:255',
             ]);
 
-            ContactForm::create($validatedData);
+            $contactForm = ContactForm::create($validatedData);
+            $validatedData['contactFormId'] = $contactForm->id;
+//            dd($validatedData);
+            $apiData = $this->getApiData($validatedData);
+
+            try {
+                $response = $this->sendAPIRequest($apiData);
+                $statusCode = $response->getStatusCode();
+
+                if ($statusCode == 200) {
+                    $result = json_decode($response->getBody()->getContents(), true);
+                    $contactForm->tecnom_id = $result['id'];
+                    $contactForm->status = 'Send';
+                } elseif ($statusCode == 400) { // Expected error case
+                    $contactForm->error_tecnom = $statusCode;
+                } else { // Unexpected error case
+                    $contactForm->error_tecnom = $response->getBody();
+                }
+
+                $contactForm->save();
+
+            } catch (GuzzleException $e) {
+                dd($e->getCode(), $e->getMessage());
+            }
 
             return response()->json(['message' => 'Form data submitted successfully'], 200);
         } catch (\Exception $e) {
@@ -87,31 +109,35 @@ class ContactFormController extends Controller
             'password' => config('app.api_password'),
         ];
     }
-    private function getApiData(ContactForm $whatsapp): array
+
+    private function getApiData($whatsapp): array
     {
         // Build and return the 'apiData' array...
+//        dd('jorge');
+//        dd($whatsapp);
+//        dd($whatsapp['name']);
         $apiData = [
             'prospect' => [
                 'requestdate' => date('c'),
                 'customer' => [
-                    'comments' => 'Contacto de whatsapp Nissan.: ' . $whatsapp->id,
+                    'comments' => 'Contacto de whatsapp Nissan.: ' . $whatsapp['contactFormId'],
                     'contacts' => [
                         [
                             'emails' => [
                                 [
-                                    'value' => $whatsapp->email
+                                    'value' => $whatsapp['email']
                                 ]
                             ],
                             'names' => [
                                 [
                                     'part' => 'first',
-                                    'value' => $whatsapp->name
+                                    'value' => $whatsapp['name']
                                 ],
                             ],
                             'phones' => [
                                 [
                                     'type' => 'cellphone',
-                                    'value' => $whatsapp->cellphone
+                                    'value' => $whatsapp['cellphone']
                                 ]
                             ],
                             'addresses' => [
@@ -128,7 +154,7 @@ class ContactFormController extends Controller
                         'make' => "whatsapp",
                         'model' => "whatsapp",
                         'trim' => "whatsapp",
-                        'year' => "whatsapp"
+                        'year' => date('Y')
                     ]
                 ],
                 'provider' => [
@@ -140,7 +166,7 @@ class ContactFormController extends Controller
                 'vendor' => [
                     'contacts' => [],
                     'vendorname' => [
-                        'value' => "whatsapp"
+                        'value' => "whatsapp@nissan.com.bo"
                     ]
                 ]
             ],
@@ -148,6 +174,7 @@ class ContactFormController extends Controller
         ];
         return $apiData;
     }
+
     private function sendAPIRequest(array $apiData)
     {
         $client = new Client();
@@ -161,6 +188,7 @@ class ContactFormController extends Controller
 
         return $response;
     }
+
 
     public function destroy(Request $request): JsonResponse
     {
