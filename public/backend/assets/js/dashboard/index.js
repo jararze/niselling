@@ -407,7 +407,7 @@ const topSellingModels = {
 
                         pieSeries.slices.template.setAll({cornerRadius: 5});
                         pieSeries.ticks.template.setAll({forceHidden: true});
-                        console.log(window.Laravel.topSellingGrades)
+                        // console.log(window.Laravel.topSellingGrades)
                         let colorList = ["--bs-primary", "--bs-success", "--bs-danger", "--bs-warning", "--bs-info", "--bs-secondary","--bs-blue", "--bs-indigo", "--bs-purple", "--bs-pink", "--bs-red" , "--bs-orange" , "--bs-yellow" , "--bs-green" , "--bs-teal"];
                         pieSeries.data.setAll(window.Laravel.topSellingGrades.map((item, index) => {
                             return {
@@ -437,3 +437,308 @@ if ("undefined" !== typeof module) {
 KTUtil.onDOMContentLoaded(() => {
     topSellingModels.init();
 });
+
+const vehiclesMoreView = {
+    init: function () {
+        (function () {
+            if (typeof am5 !== "undefined") {
+                const chartContainer = document.getElementById("vehiclesMoreView");
+                let myData = window.Laravel.modelQuotesCount;
+
+                myData.sort((a, b) => b.quotes_count - a.quotes_count);
+
+                if (chartContainer) {
+                    let chartRoot;
+
+                    const initializeChart = function () {
+                        chartRoot = am5.Root.new(chartContainer);
+                        chartRoot.setThemes([am5themes_Animated.new(chartRoot)]);
+
+                        const chart = chartRoot.container.children.push(am5xy.XYChart.new(chartRoot, {
+                            panX: false,
+                            panY: false,
+                            wheelX: "panX",
+                            wheelY: "zoomX",
+                            layout: chartRoot.verticalLayout
+                        }));
+
+                        const data = myData.map(obj => ({
+                            country: obj.model_name,
+                            visits: obj.quotes_count
+                        }));
+
+                        (function () {
+                            const totalVisits = data.reduce(function (acc, item) {
+                                return acc + item.visits;
+                            }, 0);
+
+                            let cumulativeVisits = 0;
+                            data.forEach(function (item) {
+                                cumulativeVisits += item.visits;
+                                item.pareto = (cumulativeVisits / totalVisits) * 100;
+                            });
+                        })();
+
+                        const xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(chartRoot, {
+                            categoryField: "country",
+                            renderer: am5xy.AxisRendererX.new(chartRoot, {minGridDistance: 30})
+                        }));
+
+                        xAxis.get("renderer").labels.template.setAll({
+                            paddingTop: 10,
+                            fontWeight: "400",
+                            fontSize: 13,
+                            fill: am5.color(KTUtil.getCssVariableValue("--bs-gray-500"))
+                        });
+
+                        xAxis.get("renderer").grid.template.setAll({
+                            disabled: true,
+                            strokeOpacity: 0
+                        });
+
+                        xAxis.data.setAll(data);
+
+                        const yAxis = chart.yAxes.push(am5xy.ValueAxis.new(chartRoot, {
+                            renderer: am5xy.AxisRendererY.new(chartRoot, {})
+                        }));
+
+                        yAxis.get("renderer").labels.template.setAll({
+                            paddingLeft: 10,
+                            fontWeight: "400",
+                            fontSize: 13,
+                            fill: am5.color(KTUtil.getCssVariableValue("--bs-gray-500"))
+                        });
+
+                        yAxis.get("renderer").grid.template.setAll({
+                            stroke: am5.color(KTUtil.getCssVariableValue("--bs-gray-300")),
+                            strokeWidth: 1,
+                            strokeOpacity: 1,
+                            strokeDasharray: [3]
+                        });
+
+                        const secondaryYAxis = chart.yAxes.push(am5xy.ValueAxis.new(chartRoot, {
+                            renderer: am5xy.AxisRendererY.new(chartRoot, {opposite: true}),
+                            min: 0,
+                            max: 100,
+                            strictMinMax: true,
+                            numberFormat: "#'%"
+                        }));
+
+                        secondaryYAxis.get("renderer").labels.template.setAll({
+                            fontWeight: "400",
+                            fontSize: 13,
+                            fill: am5.color(KTUtil.getCssVariableValue("--bs-gray-500"))
+                        });
+
+                        const columnSeries = chart.series.push(am5xy.ColumnSeries.new(chartRoot, {
+                            xAxis: xAxis,
+                            yAxis: yAxis,
+                            valueYField: "visits",
+                            categoryXField: "country"
+                        }));
+
+                        columnSeries.columns.template.setAll({
+                            tooltipText: "{categoryX}: {valueY}",
+                            tooltipY: 0,
+                            strokeOpacity: 0,
+                            cornerRadiusTL: 6,
+                            cornerRadiusTR: 6
+                        });
+
+                        columnSeries.columns.template.adapters.add("fill", function (fill, target) {
+                            return chart.get("colors").getIndex(columnSeries.dataItems.indexOf(target.dataItem));
+                        });
+
+                        const lineSeries = chart.series.push(am5xy.LineSeries.new(chartRoot, {
+                            xAxis: xAxis,
+                            yAxis: secondaryYAxis,
+                            valueYField: "pareto",
+                            categoryXField: "country",
+                            stroke: am5.color(KTUtil.getCssVariableValue("--bs-dark")),
+                            maskBullets: false
+                        }));
+
+                        lineSeries.bullets.push(function () {
+                            return am5.Bullet.new(chartRoot, {
+                                locationY: 1,
+                                sprite: am5.Circle.new(chartRoot, {
+                                    radius: 5,
+                                    fill: am5.color(KTUtil.getCssVariableValue("--bs-primary")),
+                                    stroke: am5.color(KTUtil.getCssVariableValue("--bs-dark"))
+                                })
+                            });
+                        });
+
+                        columnSeries.data.setAll(data);
+                        lineSeries.data.setAll(data);
+                        columnSeries.appear();
+                        chart.appear(1000, 100);
+                    };
+
+                    am5.ready(function () {
+                        initializeChart();
+                    });
+
+                    KTThemeMode.on("kt.thememode.change", function () {
+                        chartRoot.dispose();
+                        initializeChart();
+                    });
+                }
+            }
+        })();
+    }
+};
+
+if (typeof module !== "undefined") {
+    module.exports = vehiclesMoreView;
+}
+
+KTUtil.onDOMContentLoaded(function() {
+    vehiclesMoreView.init();
+});
+
+
+const KTChartsWidget10 = (function () {
+
+    const initChart = function (chartConfig, tabSelector, chartSelector, data, renderImmediately) {
+        const chartElement = document.querySelector(chartSelector);
+        if (chartElement) {
+            const height = parseInt(KTUtil.css(chartElement, "height"));
+            const gray900 = KTUtil.getCssVariableValue("--bs-gray-900");
+            const dashedBorderColor = KTUtil.getCssVariableValue("--bs-border-dashed-color");
+
+            const options = {
+                series: [{name: "Cotizaciones:", data: data}],
+                chart: {
+                    fontFamily: "inherit",
+                    type: "bar",
+                    height: height,
+                    toolbar: {show: false}
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "22%",
+                        borderRadius: 5,
+                        dataLabels: {position: "top"},
+                        startingShape: "flat"
+                    }
+                },
+                legend: {show: false},
+                dataLabels: {
+                    enabled: true,
+                    offsetY: -30,
+                    style: {fontSize: "13px", colors: [gray900]},
+                    formatter: function (val) {
+                        return val;
+                    }
+                },
+                stroke: {show: true, width: 2, colors: ["transparent"]},
+                xaxis: {
+                    categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                    axisBorder: {show: false},
+                    axisTicks: {show: false},
+                    labels: {
+                        style: {
+                            colors: KTUtil.getCssVariableValue("--bs-gray-500"),
+                            fontSize: "13px"
+                        }
+                    },
+                    crosshairs: {
+                        fill: {
+                            gradient: {
+                                opacityFrom: 0,
+                                opacityTo: 0
+                            }
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: KTUtil.getCssVariableValue("--bs-gray-500"),
+                            fontSize: "13px"
+                        },
+                        formatter: function (val) {
+                            return parseInt(val);
+                        }
+                    }
+                },
+                fill: {opacity: 1},
+                states: {
+                    normal: {filter: {type: "none", value: 0}},
+                    hover: {filter: {type: "none", value: 0}},
+                    active: {allowMultipleDataPointsSelection: false, filter: {type: "none", value: 0}}
+                },
+                tooltip: {
+                    style: {fontSize: "12px"},
+                    y: {
+                        formatter: function (val) {
+                            return val;
+                        }
+                    }
+                },
+                colors: [KTUtil.getCssVariableValue("--bs-primary"), KTUtil.getCssVariableValue("--bs-primary-light")],
+                grid: {
+                    borderColor: dashedBorderColor,
+                    strokeDashArray: 4,
+                    yaxis: {lines: {show: true}}
+                }
+            };
+
+            chartConfig.self = new ApexCharts(chartElement, options);
+            const tabElement = document.querySelector(tabSelector);
+
+            if (renderImmediately) {
+                setTimeout(function () {
+                    chartConfig.self.render();
+                    chartConfig.rendered = true;
+                }, 200);
+            }
+
+            tabElement.addEventListener("shown.bs.tab", function () {
+                if (!chartConfig.rendered) {
+                    chartConfig.self.render();
+                    chartConfig.rendered = true;
+                }
+            });
+        }
+    };
+
+    console.log(window.Laravel.typesMonth)
+    let charts = {};
+    let counter = 1;
+
+    for (let [key, value] of Object.entries(window.Laravel.typesMonth)) {
+        let chart = { self: null, rendered: false };
+        let quotesArray = Object.values(value.quotes);
+        charts[`chart${counter}`] = chart;
+        initChart(chart, `#kt_charts_widget_10_tab_${counter}`, `#kt_charts_widget_10_chart_${counter}`, quotesArray, counter === 1);
+        counter++;
+    }
+    console.log(charts)
+    console.log(counter)
+
+
+    return {
+        init: function () {
+            KTThemeMode.on("kt.thememode.change", function () {
+                Object.values(charts).forEach(function (chart) {
+                    if (chart.rendered) {
+                        chart.self.destroy();
+                    }
+                    initChart(chart, chart.tabSelector, chart.chartSelector, chart.data, chart.rendered);
+                });
+            });
+        }
+    };
+})();
+
+if (typeof module !== "undefined") {
+    module.exports = KTChartsWidget10;
+}
+
+KTUtil.onDOMContentLoaded(function() {
+    KTChartsWidget10.init();
+});
+

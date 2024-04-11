@@ -86,9 +86,14 @@ class DashboardController extends Controller
 
         $types = Type::with(['modelType', 'modelType.grades', 'modelType.quotes'])->get();
 
-//        dd($types);
         $typeModelGradeQuote = $types->map(function ($type) {
-            $typeArray = ['type_name' => $type->name, 'type_icon' => $type->icon, 'model_of_cars_count' => $type->modelType->count(), 'grades_count' => 0, 'quotes_count' => 0];
+            $typeArray = [
+                'type_name' => $type->name,
+                'type_icon' => $type->icon,
+                'model_of_cars_count' => $type->modelType->count(),
+                'grades_count' => 0,
+                'quotes_count' => 0
+            ];
             foreach ($type->modelType as $model) {
                 $typeArray['grades_count'] += $model->grades->count();
                 $typeArray['quotes_count'] += $model->quotes->count();
@@ -96,6 +101,30 @@ class DashboardController extends Controller
             return $typeArray;
         });
 
+        $modelQuotesCount = ModelOfCar::withCount('quotes')
+            ->get()
+            ->map(function ($model) {
+                return ['model_name' => $model->name, 'quotes_count' => $model->quotes_count];
+            });
+
+        $types = ModelOfCar::all();
+        $months = range(1, 12);
+        $typesMonth = [];
+
+        foreach ($types as $type) {
+            $typeOfCar = $type->typeOfCar()->first();
+            $typeName = $typeOfCar->name;
+            $typeIcon = $typeOfCar->icon;
+            foreach ($months as $month) {
+                // Obtenemos la cantidad de quotes para cada tipo en el mes dado
+                $count = $type->quotes()
+                    ->whereMonth('created_at', $month)
+                    ->count();
+
+                $typesMonth[$typeName]['icon'] = $typeIcon;
+                $typesMonth[$typeName]['quotes'][$month] = $count;
+            }
+        }
         return view('dashboard', [
             'quotesPastMonth' => $total,
             'arrayWithDates' => $results,
@@ -110,21 +139,10 @@ class DashboardController extends Controller
             'modelCount' => $modelCount,
             'gradeCount' => $gradeCount,
             'typeModelGradeQuote' => $typeModelGradeQuote,
+            'modelQuotesCount' => $modelQuotesCount,
+            'typesMonth' => $typesMonth,
         ]);
 
-//        $showrooms = Showroom::where('status', 1)
-//            ->orderBy('name', 'ASC')
-//            ->get();
-//
-//        $agents = Agent::where('status', 1)
-//            ->orderBy('name', 'ASC')
-//            ->get();
-//
-//
-//        return view('backend.configuration.agent.index', [
-//            'showrooms' => $showrooms,
-//            'agents' => $agents,
-//        ]);
 
 
     }
