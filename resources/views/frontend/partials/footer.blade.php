@@ -17,19 +17,19 @@
 
                 <ul class="mb-0 list-none text-[12px]/7" style="color: #c1c1c1">
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Vehículos Nuevos</a>
+                        <a href="https://www.nissan.com.bo/vehiculos/nuevos-vehiculos.html" class="text-[#c1c1c1] hover:underline">Vehículos Nuevos</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Seminuevos</a>
+                        <a href="https://www.nissan.com.bo/vehiculos/vehiculos-usados.html" class="text-[#c1c1c1] hover:underline">Seminuevos</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Sobre la marca</a>
+                        <a href="https://www.nissan.com.bo/experiencia-nissan.html" class="text-[#c1c1c1] hover:underline">Sobre la marca</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Posventa Nissan</a>
+                        <a href="https://www.nissan.com.bo/postventa.html" class="text-[#c1c1c1] hover:underline">Posventa Nissan</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Noticias</a>
+                        <a href="https://www.nissan.com.bo/experiencia-nissan/novedades.html" class="text-[#c1c1c1] hover:underline">Noticias</a>
                     </li>
                 </ul>
             </div>
@@ -39,10 +39,10 @@
 
                 <ul class="mb-0 list-none text-[12px]/7">
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Encuentra tu distribuidor más cercano</a>
+                        <a href="https://www.nissan.com.bo/buscar-concesionario.html" class="text-[#c1c1c1] hover:underline">Encuentra tu distribuidor más cercano</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Solicita una cotización</a>
+                        <a href="https://cotizaciones.contacto-nissan.com.bo/?_ga=2.244016837.1749901597.1712955344-2086677318.1704726276&_gac=1.22273737.1711233082.Cj0KCQjw-_mvBhDwARIsAA-Q0Q630ZPFi5NJfQGAQz2XmypmfzTC2JwvyQO6jtv_L9Ok-0z41uzKO-oaAsY0EALw_wcB&_gl=1*dvexuz*_ga*MjA4NjY3NzMxOC4xNzA0NzI2Mjc2*_ga_5CLRM7FCZK*MTcxMjk1NTM0My42OC4xLjE3MTI5NTU1ODguNDIuMC4w" class="text-[#c1c1c1] hover:underline">Solicita una cotización</a>
                     </li>
                 </ul>
             </div>
@@ -52,15 +52,15 @@
 
                 <ul class="mb-0 list-none text-[12px]/7">
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Taiyo Motors S.A. Representante de Nissan en
+                        <a href="https://www.nissan.com.bo/informacion-corporativa.html" class="text-[#c1c1c1] hover:underline">Taiyo Motors S.A. Representante de Nissan en
                             Bolivias</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Política de privacidad: Términos y
+                        <a href="https://www.nissan.com.bo/terminos-condiciones.html" class="text-[#c1c1c1] hover:underline">Política de privacidad: Términos y
                             condiciones.</a>
                     </li>
                     <li>
-                        <a href="#!" class="text-[#c1c1c1] hover:underline">Contáctanos</a>
+                        <a href="https://technoaid.startlogic.com/paginasweb/formulariosnissan/index.php?r=contactos/create" class="text-[#c1c1c1] hover:underline">Contáctanos</a>
                     </li>
                 </ul>
             </div>
@@ -70,7 +70,8 @@
 
                 <div class="mb-6 flex">
                     <a
-                        href="#!"
+                        href="https://www.facebook.com/nissanenbolivia/"
+                        target="_blank"
                         type="button"
                         class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-[#c1c1c1] transition duration-150 ease-in-out hover:bg-white hover:text-black hover:border-black"
                         data-te-ripple-init
@@ -86,7 +87,8 @@
                     </a>
 
                     <a
-                        href="#!"
+                        href="https://www.youtube.com/channel/UCrYXcV9-xMadoSm3l6fYI2Q"
+                        target="_blank"
                         type="button"
                         class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-[#c1c1c1] transition duration-150 ease-in-out hover:bg-white hover:text-black hover:border-black"
                         data-te-ripple-init

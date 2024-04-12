@@ -11,13 +11,13 @@
                  id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-small lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="#"
+                        <a href="https://www.nissan.com.bo/"
                            class="block py-2 pl-3 pr-4 text-black lg:bg-transparent lg:p-0 text-transform: uppercase text-sm duration-200 ease-in-out transition-transform  hover:scale-102 hover:opacity-75 custom"
                            aria-current="page">Vehículos</a>
                     </li>
                     <li>
-                        <a href="#"
-                           class="block py-2 pl-3 pr-4 text-black hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:p-0 text-transform: uppercase text-sm transition-colors duration-200 ease-in-out transition-transform transition-opacity hover:scale-102 hover:opacity-75 custom">Showroom
+                        <a href="https://www.nissan.com.bo/showroom_virtual_nissan.html"
+                           class="block py-2 pl-3 pr-4 text-black hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:p-0 text-transform: uppercase text-sm transition-colors duration-200 ease-in-out hover:scale-102 hover:opacity-75 custom">Showroom
                             Virtual</a>
                     </li>
                     <li class="relative group">
@@ -35,9 +35,9 @@
                         <div
                             class="absolute hidden group-hover:block bg-white text-gray-900 rounded shadow-lg p-5  w-72 z-50 text-xss"
                             style="margin-left: -80px">
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Solicitar cita por
+                            <a href="https://wa.me/59161011116?text=Iniciar%20web%20cita%20de%20servicio" class="block px-4 py-2 text-sm hover:bg-gray-100">Solicitar cita por
                                 WhatsApp</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Agendar cita en el sistema
+                            <a href="https://nissan3.netfirms.com/subdom/acn/" class="block px-4 py-2 text-sm hover:bg-gray-100">Agendar cita en el sistema
                                 automático</a>
                         </div>
                     </li>
@@ -56,21 +56,21 @@
                         <div
                             class="absolute hidden group-hover:block bg-white text-gray-900 rounded shadow-lg p-5  w-72 z-50 text-xss"
                             style="margin-left: -80px">
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Descubre accesorios
+                            <a href="https://www.nissan.com.bo/postventa/AccesoriosOriginalesNissan.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Descubre accesorios
                                 ogiginales</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Cotiza repuestos
+                            <a href="https://wa.me/59161011116?text=Iniciar%20web%20cotizacion%20de%20repuestos" class="block px-4 py-2 text-sm hover:bg-gray-100">Cotiza repuestos
                                 originales</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Ofertas en Shopping
+                            <a href="https://www.nissan.com.bo/postventa/shopping_posventa_1.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Ofertas en Shopping
                                 Posventa</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Direcciones de centros de
+                            <a href="https://www.nissan.com.bo/buscar-concesionario.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Direcciones de centros de
                                 servicio y repuestos</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Nissan renta</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Campañas Recall</a>
+                            <a href="https://www.nissan.com.bo/nissanrenta-lapaz.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Nissan renta</a>
+                            <a href="https://www.nissan.com.bo/recall.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Campañas Recall</a>
                         </div>
                     </li>
                     <li>
-                        <a href="#"
-                           class="block py-2 pl-3 pr-4 text-black hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:p-0 text-transform: uppercase text-sm transition-colors duration-200 ease-in-out transition-transform transition-opacity hover:scale-102 hover:opacity-75 custom">seminuevos</a>
+                        <a href="https://www.nissan.com.bo/vehiculos/vehiculos-usados.html"
+                           class="block py-2 pl-3 pr-4 text-black hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:p-0 text-transform: uppercase text-sm transition-colors duration-200 ease-in-out hover:scale-102 hover:opacity-75 custom">seminuevos</a>
                     </li>
                     <li class="relative group">
                         <button
@@ -87,11 +87,11 @@
                         <div
                             class="absolute hidden group-hover:block bg-white text-gray-900 rounded shadow-lg p-5  w-72 z-50 text-xss"
                             style="margin-left: -140px">
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Esto es Nissan</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Nissan Intelligent
+                            <a href="https://www.nissan.com.bo/estoesnissan.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Esto es Nissan</a>
+                            <a href="https://www.nissan.com.bo/experiencia-nissan/nissan-intelligent-mobility.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Nissan Intelligent
                                 Mobility</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Desempeño Nismo</a>
-                            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Novedades</a>
+                            <a href="https://www.nissan.com.bo/experiencia-nissan/nismo.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Desempeño Nismo</a>
+                            <a href="https://www.nissan.com.bo/experiencia-nissan.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Novedades</a>
                         </div>
                     </li>
                 </ul>
