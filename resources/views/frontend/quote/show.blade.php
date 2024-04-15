@@ -187,7 +187,7 @@
                                 <p class="text-gray-600">Precio Final</p>
                                 <p class="font-bold text-nissan">
                                     $us. <span
-                                        id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount + $quote->gradeOfCar->discount), 2) }} </span>
+                                        id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount), 2) }} </span>
                                 </p>
                                 <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y
                                     SOAT.</p>
@@ -242,9 +242,9 @@
 
         <div class="mx-auto mt-10" style="width: 80%">
 
-            <p class="uppercase text-center mt-5 text-xs"><a
-                    href="{{ route('frontend.quote_second.show', $quote->id) }}"
-                    class="uppercase text-center mt-5 text-xs hover:underline">Cambiar datos de proforma</a></p>
+{{--            <p class="uppercase text-center mt-5 text-xs"><a--}}
+{{--                    href="{{ route('frontend.quote_second.show', $quote->id) }}"--}}
+{{--                    class="uppercase text-center mt-5 text-xs hover:underline">Cambiar datos de proforma</a></p>--}}
 
         </div>
 

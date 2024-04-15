@@ -120,7 +120,7 @@ class ContactFormController extends Controller
             'prospect' => [
                 'requestdate' => date('c'),
                 'customer' => [
-                    'comments' => 'Contacto de whatsapp Nissan.: ' . $whatsapp['contactFormId'],
+                    'comments' => 'Contacto de whatsapp Nissan.: ' . $whatsapp['contactFormId'], // aqui la URL directo
                     'contacts' => [
                         [
                             'emails' => [
@@ -142,7 +142,7 @@ class ContactFormController extends Controller
                             ],
                             'addresses' => [
                                 [
-                                    'city' => 'CIudad',
+                                    'city' => 'Sin ciudad',
                                     'postalcode' => '591'
                                 ]
                             ],
@@ -151,22 +151,22 @@ class ContactFormController extends Controller
                 ],
                 'vehicles' => [
                     [
-                        'make' => "whatsapp",
-                        'model' => "whatsapp",
-                        'trim' => "whatsapp",
+                        'make' => "Sin Auto",
+                        'model' => " ",
+                        'trim' => " ",
                         'year' => date('Y')
                     ]
                 ],
                 'provider' => [
                     'name' => [
-                        'value' => 'Cotizador Nissan'
+                        'value' => 'Whatsapp'
                     ],
-                    'service' => 'Cotizador Nissan'
+                    'service' => 'Cotizador Nissan' //URL
                 ],
                 'vendor' => [
                     'contacts' => [],
                     'vendorname' => [
-                        'value' => "whatsapp@nissan.com.bo"
+                        'value' => "ajfernandez@nissan.com.bo"
                     ]
                 ]
             ],

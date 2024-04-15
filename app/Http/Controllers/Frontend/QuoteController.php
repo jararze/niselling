@@ -617,22 +617,23 @@ class QuoteController extends Controller
                 ],
                 'vehicles' => [
                     [
-                        'make' => $quote->modelOfCar->name,
-                        'model' => $quote->gradeOfCar->name,
+                        'make' => 'Nissan',
+                        'model' => $quote->modelOfCar->name,
                         'trim' => $quote->gradeOfCar->name,
                         'year' => $quote->gradeOfCar->commercial_date
                     ]
                 ],
                 'provider' => [
                     'name' => [
-                        'value' => 'Cotizador Nissan'
+                        'value' => 'Sitio web'
                     ],
-                    'service' => 'Cotizador Nissan'
+                    'service' => ''
                 ],
                 'vendor' => [
                     'contacts' => [],
                     'vendorname' => [
                         'value' => $quote->agentOfCar->email
+//                        'value' => 'pcarrasco@nissan.com.bo'
                     ]
                 ]
             ],
