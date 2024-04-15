@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', [IndexController::class, 'index'])->name('frontend.index');
+Route::get('/{id?}', [IndexController::class, 'index'])->name('frontend.index');
 Route::post('/getGrades/{id}', [IndexController::class, 'getGrades'])->name('frontend.getGrades');
 Route::post('/getShowrooms/{id}', [IndexController::class, 'getShowrooms'])->name('frontend.getShowrooms');
 

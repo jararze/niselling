@@ -18,7 +18,6 @@
 
 <x-front-layout>
 
-
     <section class="bg-white mb-[100px] mt-[20px]">
 
         <div id="spinner" class="spinner-overlay" style="display: none;">
@@ -56,7 +55,13 @@
                             required>
                         <option value="0">Selecciona un modelo</option>
                         @foreach($models as $model)
-                            <option value="{{$model->id}}">{{$model->name}}</option>
+                            <option value="{{$model->id}}"
+                            @isset($id)
+                                @isset($model)
+                                    {{ ((int)$id === (int)$model->id) ? 'selected' : "" }}
+                                    @endisset
+                                @endisset
+                            >{{$model->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -76,7 +81,13 @@
                         x-on:focus="focus = true"
                         x-on:blur="focus = false"
                         x-bind:class="{ 'border-green-900 ring-2 ring-green-800': isSelected, 'focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-green-900': focus }">
-                        <option value="">Selecciona un grado</option>
+                        @if(empty($grades))
+                            <option value="">Selecciona un grado</option>
+                        @else
+                            @foreach($grades as $grade)
+                                <option value="{{$grade->id}}">{{$grade->name}}</option>
+                            @endforeach
+                        @endif
                         <!-- Add other options here -->
                     </select>
                 </div>

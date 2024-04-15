@@ -17,17 +17,33 @@ class IndexController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id = null)
     {
-        $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
-        $cities = City::where('status', 1)
-            ->has('showrooms')
-            ->orderBy('name', 'ASC')
-            ->get();
-        return view('index', [
-            'models' => $models,
-            'cities' => $cities,
-        ]);
+        if(empty($id)) {
+            $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
+            $cities = City::where('status', 1)
+                ->has('showrooms')
+                ->orderBy('name', 'ASC')
+                ->get();
+            return view('index', [
+                'cities' => $cities,
+                'models' => $models,
+            ]);
+        } else{
+            $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
+            $grades = Grade::where('model_of_cars_id' , $id)->orderBy('order', 'ASC')->get();
+            $cities = City::where('status', 1)
+                ->has('showrooms')
+                ->orderBy('name', 'ASC')
+                ->get();
+            return view('index', [
+                'models' => $models,
+                'cities' => $cities,
+                'grades' => $grades,
+                'id' => $id,
+            ]);
+        }
+
     }
 
     public function getGrades($id):JsonResponse
