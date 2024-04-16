@@ -146,8 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         commercial_date_span.innerHTML = grade.commercial_date;
                         price_span.innerHTML = parseFloat(grade.price).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         discount_span.innerHTML = parseFloat(grade.discount).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        aditional_costs_span.innerHTML = parseFloat(grade.discount).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        final_price_span.innerHTML = parseFloat((grade.price + grade.discount - grade.discount)).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        aditional_costs_span.innerHTML = parseFloat(0).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        final_price_span.innerHTML = parseFloat((grade.price  - grade.discount)).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
                         const data_sheet_span = document.getElementById("data_sheet_span");
                         data_sheet_span.href = grade.data_sheet;
