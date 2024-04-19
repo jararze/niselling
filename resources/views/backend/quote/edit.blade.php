@@ -33,6 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body text-center pt-0">
+{{--                                    @dd($quote)--}}
                                     @php $imageAvatar = ($quote->colorOfCar->image) ? asset('storage/vehicles/'.$quote->colorOfCar->modelOfCar->slug .'/thumbnail/'.$quote->colorOfCar->image) : asset('backend/assets/media/svg/files/blank-image.svg')  @endphp
                                     <style>
                                         .image-input-placeholder {
@@ -359,7 +360,7 @@
                                                                 </label>
                                                                 <input type="text" class="form-control mb-2 bg-gray-300"
                                                                        name="order" id="order"
-                                                                       value="{{ $quote->agentOfCar->name }}"
+                                                                       value="{{ $quote->agentOfCar->name ?? 'Sin Informacion' }}"
                                                                        readonly>
                                                             </div>
                                                         </div>

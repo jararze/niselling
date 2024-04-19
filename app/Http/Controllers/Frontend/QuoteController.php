@@ -212,6 +212,15 @@ class QuoteController extends Controller
         $quote->email = $validatedData['email'];
         $quote->test_drive = $request->has('testDrive') ? $request->get('testDrive') : 0;
 
+        $colorCode = VehicleColor::where('model_of_cars_id', $validatedData['models'])
+            ->whereNotNull('color_code')
+            ->where('color_code', '<>', '')
+            ->orderBy('id')
+            ->limit(1)
+            ->value('color_code');
+
+        $quote->color = $colorCode;
+
         $quote->save();
 
         return Redirect::route('frontend.quote_second.show', $quote->id)->with('status', 'created');
@@ -447,78 +456,10 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $apiData = $this->getApiData($quote);
-//        $client = new Client();
-//
-//        $username = 'paginaWeb@api.com';
-//        $password = 'paginaWeb123';
-//        $apiUrl = 'https://test-nissanbolivia.tecnomcrm.com/api/v1/webconnector/consultas/adf';
-//
-//        $apiData = [
-//            'prospect' => [
-//                'requestdate' => date('c'),
-//                'customer' => [
-//                    'comments' => 'Esta compra viene del cotizador de NIssan Bolivia: ' . $quote->id,
-//                    'contacts' => [
-//                        [
-//                            'emails' => [
-//                                [
-//                                    'value' => $quote->email
-//                                ]
-//                            ],
-//                            'names' => [
-//                                [
-//                                    'part' => 'first',
-//                                    'value' => $quote->name
-//                                ],
-//                                [
-//                                    'part' => 'last',
-//                                    'value' => $quote->last_name
-//                                ]
-//                            ],
-//                            'phones' => [
-//                                [
-//                                    'type' => 'cellphone',
-//                                    'value' => $quote->phone
-//                                ]
-//                            ],
-//                            'addresses' => [
-//                                [
-//                                    'city' => $quote->cityOfCar->name,
-//                                    'postalcode' => '591'
-//                                ]
-//                            ],
-//                        ],
-//                    ]
-//                ],
-//                'vehicles' => [
-//                    [
-//                        'make' => $quote->modelOfCar->name,
-//                        'model' => $quote->gradeOfCar->name,
-//                        'trim' => $quote->gradeOfCar->name,
-//                        'year' => $quote->gradeOfCar->commercial_date
-//                    ]
-//                ],
-//                'provider' => [
-//                    'name' => [
-//                        'value' => 'Cotizador Nissan'
-//                    ],
-//                    'service' => 'Cotizador Nissan'
-//                ],
-//                'vendor' => [
-//                    'contacts' => [],
-//                    'vendorname' => [
-//                        'value' => $quote->agentOfCar->email
-//                    ]
-//                ]
-//            ]
-//        ];
+
 
         try {
 
-//            $response = $client->post($apiUrl, [
-//                'json' => $apiData,
-//                'auth' => [$username, $password]
-//            ]);
             $response = $this->sendAPIRequest($apiData);
 
             $statusCode = $response->getStatusCode();
