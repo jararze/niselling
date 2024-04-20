@@ -100,7 +100,7 @@ class QuoteController extends Controller
             "ci" => $quote->dni,
             "fecha_vencimiento" => $quote->created_at->addDays(1)->format('Y-m-d H:i'),
             "lineas_detalle_deuda" => [
-                ["concepto" => "Reserva del vehiculo " . $quote->modelOfCar->name . " " . $quote->gradeOfCar->name . " " . $quote->colorOfCar->name, "cantidad" => 1, "costo_unitario" => 1, "descuento_unitario" => 0],
+                ["concepto" => "Reserva del vehiculo " . $quote->modelOfCar->name . " " . $quote->gradeOfCar->name . " " . $quote->colorOfCar->name, "cantidad" => 1, "costo_unitario" => 1392, "descuento_unitario" => 0],
             ],
             "lineas_metadatos" => [
                 ["nombre" => "Vendedor", "dato" => $quote->agentOfCar->name],
@@ -132,7 +132,7 @@ class QuoteController extends Controller
 
     public function voucher(Request $request)
     {
-        dd($request);
+//        dd($request);
         $validatedData = $request->validate([
             'comprobante' => 'required|mimes:jpg,jpeg,png,pdf|max:5120', // max size 5MB
         ]);
