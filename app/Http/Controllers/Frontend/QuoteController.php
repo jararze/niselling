@@ -199,6 +199,7 @@ class QuoteController extends Controller
         ]);
 
 
+
         $quote = new Quote();
         $quote->name = $validatedData['name'];
         $quote->last_name = $validatedData['last-name'];
@@ -220,6 +221,21 @@ class QuoteController extends Controller
             ->value('color_code');
 
         $quote->color = $colorCode;
+
+        $agents = Agent::where('showroom_id', $validatedData['showroom'])->get();
+
+        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
+        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
+            return $agent->id == $lastAssignedAgentId;
+        });
+        $nextKey = ($currentKey + 1) % $agents->count();
+        $nextAgent = $agents[$nextKey];
+        $quote->agent_id = $nextAgent->id;
+
+        Cache::put('last_assigned_agent', $nextAgent->id);
+//        dd($nextAgent->id);
+
+
 
         $quote->save();
 
@@ -246,92 +262,22 @@ class QuoteController extends Controller
         $oldQuote->grade = $validatedData['grade'];
         $oldQuote->color = $validatedData['selected_color'];
 
-        $agents = Agent::where('showroom_id', $oldQuote->showroom)->get();
-
-        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
-        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
-            return $agent->id == $lastAssignedAgentId;
-        });
-        $nextKey = ($currentKey + 1) % $agents->count();
-        $nextAgent = $agents[$nextKey];
-        $oldQuote->agent_id = $nextAgent->id;
-        Cache::put('last_assigned_agent', $nextAgent->id);
+//        $agents = Agent::where('showroom_id', $oldQuote->showroom)->get();
+//
+//        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
+//        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
+//            return $agent->id == $lastAssignedAgentId;
+//        });
+//        $nextKey = ($currentKey + 1) % $agents->count();
+//        $nextAgent = $agents[$nextKey];
+//        $oldQuote->agent_id = $nextAgent->id;
+//        Cache::put('last_assigned_agent', $nextAgent->id);
 
         $apiData = $this->getApiData($oldQuote);
 
-// aqui esta mi antiguo codigo para envio de la api volver aqui si falla en produccion
 
-//        $client = new Client();
-//
-//        $username = 'paginaWeb@api.com';
-//        $password = 'paginaWeb123';
-//        $apiUrl = 'https://test-nissanbolivia.tecnomcrm.com/api/v1/webconnector/consultas/adf';
-//
-//        $apiData = [
-//            'prospect' => [
-//                'requestdate' => date('c'),
-//                'customer' => [
-//                    'comments' => 'Esta compra viene del cotizador de NIssan Bolivia: ' . $oldQuote->id,
-//                    'contacts' => [
-//                        [
-//                            'emails' => [
-//                                [
-//                                    'value' => $oldQuote->email
-//                                ]
-//                            ],
-//                            'names' => [
-//                                [
-//                                    'part' => 'first',
-//                                    'value' => $oldQuote->name
-//                                ],
-//                                [
-//                                    'part' => 'last',
-//                                    'value' => $oldQuote->last_name
-//                                ]
-//                            ],
-//                            'phones' => [
-//                                [
-//                                    'type' => 'cellphone',
-//                                    'value' => $oldQuote->phone
-//                                ]
-//                            ],
-//                            'addresses' => [
-//                                [
-//                                    'city' => $oldQuote->cityOfCar->name,
-//                                    'postalcode' => '591'
-//                                ]
-//                            ],
-//                        ],
-//                    ]
-//                ],
-//                'vehicles' => [
-//                    [
-//                        'make' => $oldQuote->modelOfCar->name,
-//                        'model' => $oldQuote->gradeOfCar->name,
-//                        'trim' => $oldQuote->gradeOfCar->name,
-//                        'year' => $oldQuote->gradeOfCar->commercial_date
-//                    ]
-//                ],
-//                'provider' => [
-//                    'name' => [
-//                        'value' => 'Cotizador Nissan'
-//                    ],
-//                    'service' => 'Cotizador Nissan'
-//                ],
-//                'vendor' => [
-//                    'contacts' => [],
-//                    'vendorname' => [
-//                        'value' => $nextAgent->email
-//                    ]
-//                ]
-//            ]
-//        ];
 
         try {
-//            $response = $client->post($apiUrl, [
-//                'json' => $apiData,
-//                'auth' => [$username, $password]
-//            ]);
             $response = $this->sendAPIRequest($apiData);
             $statusCode = $response->getStatusCode();
 
@@ -341,10 +287,8 @@ class QuoteController extends Controller
                 $oldQuote->status = 'crm';
             } elseif ($statusCode == 400) { // Expected error case
                 $oldQuote->error_tecnom = $statusCode;
-//                dd('Error: '. $response->getBody()->getContents());
             } else { // Unexpected error case
                 $oldQuote->error_tecnom = $response->getBody();
-//                dd('Unexpected status code: ' . $statusCode . ', Response: ' . $response->getBody()->getContents());
             }
 
         } catch (GuzzleException $e) {
