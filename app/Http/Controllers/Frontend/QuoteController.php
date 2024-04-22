@@ -233,9 +233,26 @@ class QuoteController extends Controller
         $quote->agent_id = $nextAgent->id;
 
         Cache::put('last_assigned_agent', $nextAgent->id);
-//        dd($nextAgent->id);
 
+        $apiData = $this->getApiData($quote);
 
+        try {
+            $response = $this->sendAPIRequest($apiData);
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode == 200) { // Success case
+                $result = json_decode($response->getBody()->getContents(), true);
+                $quote->tecnom_id = $result['id'];
+                $quote->status = 'crm';
+            } elseif ($statusCode == 400) { // Expected error case
+                $quote->error_tecnom = $statusCode;
+            } else { // Unexpected error case
+                $quote->error_tecnom = $response->getBody();
+            }
+
+        } catch (GuzzleException $e) {
+            $quote->error_tecnom = $e->getCode();
+        }
 
         $quote->save();
 
@@ -262,38 +279,9 @@ class QuoteController extends Controller
         $oldQuote->grade = $validatedData['grade'];
         $oldQuote->color = $validatedData['selected_color'];
 
-//        $agents = Agent::where('showroom_id', $oldQuote->showroom)->get();
-//
-//        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
-//        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
-//            return $agent->id == $lastAssignedAgentId;
-//        });
-//        $nextKey = ($currentKey + 1) % $agents->count();
-//        $nextAgent = $agents[$nextKey];
-//        $oldQuote->agent_id = $nextAgent->id;
-//        Cache::put('last_assigned_agent', $nextAgent->id);
-
-        $apiData = $this->getApiData($oldQuote);
 
 
 
-        try {
-            $response = $this->sendAPIRequest($apiData);
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode == 200) { // Success case
-                $result = json_decode($response->getBody()->getContents(), true);
-                $oldQuote->tecnom_id = $result['id'];
-                $oldQuote->status = 'crm';
-            } elseif ($statusCode == 400) { // Expected error case
-                $oldQuote->error_tecnom = $statusCode;
-            } else { // Unexpected error case
-                $oldQuote->error_tecnom = $response->getBody();
-            }
-
-        } catch (GuzzleException $e) {
-            $oldQuote->error_tecnom = $e->getCode();
-        }
         $oldQuote->save();
         return Redirect::route('frontend.quote.final.proform', $oldQuote->id)->with('status', 'created');
 
@@ -462,6 +450,7 @@ class QuoteController extends Controller
 
     private function getApiData(Quote $quote): array
     {
+//        dd($quote);
         // Build and return the 'apiData' array...
         $apiData = [
             'prospect' => [
@@ -526,6 +515,8 @@ class QuoteController extends Controller
         ];
         return $apiData;
     }
+
+
 
     private function sendAPIRequest(array $apiData)
     {
