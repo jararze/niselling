@@ -8,34 +8,21 @@ use App\Models\backend\vehicle\Grade;
 use App\Models\backend\vehicle\ModelOfCar;
 use App\Models\backend\vehicle\VehicleColor;
 use App\Models\Frontend\Quote;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use GuzzleHttp\Client;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-use JetBrains\PhpStorm\NoReturn;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver\QueryParameterValueResolver;
+use Intervention\Image\ImageManager;
 
 class QuoteController extends Controller
 {
 
     const PAYMENT_METHOD_BANK_TRANSFER = 1;
-
-    public function updateContactType($id, string $contactType)
-    {
-        $quote = Quote::findOrFail($id);
-        $quote->type_contact = $contactType;
-        $quote->save();
-        return $quote;
-    }
 
     public function whatsapp($id)
     {
@@ -45,6 +32,14 @@ class QuoteController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function updateContactType($id, string $contactType)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->type_contact = $contactType;
+        $quote->save();
+        return $quote;
     }
 
     public function thanks($id)
@@ -84,7 +79,7 @@ class QuoteController extends Controller
     public function libelula_transfer(Request $request)
     {
         $quote = Quote::findOrFail($request->id);
-        $send_id = strtotime($quote->created_at) . $quote->id;
+        $send_id = strtotime($quote->created_at).$quote->id;
 
         $body = [
             "appkey" => config('app.libelula_app_key'),
@@ -92,15 +87,18 @@ class QuoteController extends Controller
             "identificador" => $send_id,
             "callback_url" => config('app.libelula_callback_url'),
             "url_retorno" => config('app.libelula_url_return'),
-            "descripcion" => "Reserva del vehiculo " . $quote->modelOfCar->name . " " . $quote->gradeOfCar->name . " " . $quote->colorOfCar->name . " a nombre de: " . $quote->name . " " . $quote->last_name . " con CI: " . $quote->dni . " en la ciudad de: " . $quote->cityOfCar->name . " con un monto de: " . $quote->gradeOfCar->price,
+            "descripcion" => "Reserva del vehiculo ".$quote->modelOfCar->name." ".$quote->gradeOfCar->name." ".$quote->colorOfCar->name." a nombre de: ".$quote->name." ".$quote->last_name." con CI: ".$quote->dni." en la ciudad de: ".$quote->cityOfCar->name." con un monto de: ".$quote->gradeOfCar->price,
             "nombre_cliente" => $quote->name,
             "apellido_cliente" => $quote->last_name,
             "nit" => $quote->dni,
-            "razón_social" => $quote->name . " " . $quote->last_name,
+            "razón_social" => $quote->name." ".$quote->last_name,
             "ci" => $quote->dni,
             "fecha_vencimiento" => $quote->created_at->addDays(1)->format('Y-m-d H:i'),
             "lineas_detalle_deuda" => [
-                ["concepto" => "Reserva del vehiculo " . $quote->modelOfCar->name . " " . $quote->gradeOfCar->name . " " . $quote->colorOfCar->name, "cantidad" => 1, "costo_unitario" => 1392, "descuento_unitario" => 0],
+                [
+                    "concepto" => "Reserva del vehiculo ".$quote->modelOfCar->name." ".$quote->gradeOfCar->name." ".$quote->colorOfCar->name,
+                    "cantidad" => 1, "costo_unitario" => 1392, "descuento_unitario" => 0
+                ],
             ],
             "lineas_metadatos" => [
                 ["nombre" => "Vendedor", "dato" => $quote->agentOfCar->name],
@@ -138,7 +136,6 @@ class QuoteController extends Controller
         ]);
 
 
-
         if ($validatedData->fails()) {
             return view('frontend.quote.store.voucher')
                 ->withErrors($validatedData)
@@ -150,8 +147,8 @@ class QuoteController extends Controller
         if ($request->hasFile('comprobante')) {
 
             $originalImage = $request->file('comprobante');
-            $filename = time() . '_' . $originalImage->getClientOriginalName();
-            $originalPath = 'public/vaucher/' . $quote->id . '/';
+            $filename = time().'_'.$originalImage->getClientOriginalName();
+            $originalPath = 'public/vaucher/'.$quote->id.'/';
             Storage::makeDirectory($originalPath);
 
             $extension = strtolower($originalImage->getClientOriginalExtension());
@@ -159,7 +156,7 @@ class QuoteController extends Controller
                 $manager = new ImageManager(new Driver());
                 $image = $manager->read($originalImage);
 
-                Storage::put($originalPath . $filename, (string)$image->encode());
+                Storage::put($originalPath.$filename, (string) $image->encode());
             } elseif ($extension == 'pdf') {
                 Storage::putFileAs($originalPath, $originalImage, $filename);
             } else {
@@ -197,7 +194,6 @@ class QuoteController extends Controller
             'email' => ['required'],
             'testDrive' => 'sometimes',
         ]);
-
 
 
         $quote = new Quote();
@@ -260,6 +256,96 @@ class QuoteController extends Controller
 
     }
 
+    private function getApiData(Quote $quote): array
+    {
+        $test_drive = $quote->test_drive == 1 ? 'Si' : "No";
+        $apiData = [
+            'prospect' => [
+                'requestdate' => date('c'),
+                'customer' => [
+                    'comments' => 'Cotizacion de pagina web, el id es el:'.$quote->id.". \n Datos: \n Ciudad: ".$quote->cityOfCar->name."\n CI: ".$quote->dni." ".$quote->ext." \n Color: ".$quote->colorOfCar->name."\n Requiere Test Drive: ".$test_drive." \n Contacto por: ".$quote->type_contact,
+                    'contacts' => [
+                        [
+                            'emails' => [
+                                [
+                                    'value' => $quote->email
+                                ]
+                            ],
+                            'names' => [
+                                [
+                                    'part' => 'first',
+                                    'value' => $quote->name
+                                ],
+                                [
+                                    'part' => 'last',
+                                    'value' => $quote->last_name
+                                ]
+                            ],
+                            'phones' => [
+                                [
+                                    'type' => 'cellphone',
+                                    'value' => $quote->phone
+                                ]
+                            ],
+                            'addresses' => [
+                                [
+                                    'city' => $quote->cityOfCar->name,
+                                    'postalcode' => '591'
+                                ]
+                            ],
+                        ],
+                    ]
+                ],
+                'vehicles' => [
+                    [
+                        'make' => 'Nissan',
+                        'model' => $quote->modelOfCar->name,
+                        'trim' => $quote->gradeOfCar->name,
+                        'year' => $quote->gradeOfCar->commercial_date
+                    ]
+                ],
+                'provider' => [
+                    'name' => [
+                        'value' => 'Sitio web'
+                    ],
+                    'service' => ''
+                ],
+                'vendor' => [
+                    'contacts' => [],
+                    'vendorname' => [
+                        'value' => $quote->agentOfCar->email
+//                        'value' => 'pcarrasco@nissan.com.bo'
+                    ]
+                ]
+            ],
+            // Rest of the array elements...
+        ];
+        return $apiData;
+    }
+
+    private function sendAPIRequest(array $apiData)
+    {
+        $client = new Client();
+        $credentials = $this->getAPICredentials();
+        $apiUrl = config('app.api_url');
+//        dd(config('app'));
+//        dd('usario',$apiUrl);
+
+        $response = $client->post($apiUrl, [
+            'json' => $apiData,
+            'auth' => [$credentials['username'], $credentials['password']],
+        ]);
+
+        return $response;
+    }
+
+    private function getAPICredentials(): array
+    {
+        return [
+            'username' => config('app.api_username'),
+            'password' => config('app.api_password'),
+        ];
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -278,8 +364,6 @@ class QuoteController extends Controller
         $oldQuote->model = $validatedData['models'];
         $oldQuote->grade = $validatedData['grade'];
         $oldQuote->color = $validatedData['selected_color'];
-
-
 
 
         $oldQuote->save();
@@ -320,7 +404,7 @@ class QuoteController extends Controller
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('frontend.quote.pdf', compact('quote', 'colors', 'models', 'grades'));
 //        return view('frontend.quote.pdf', compact('quote', 'colors', 'models', 'grades'));
-        $name = 'proforma_' . str_pad($quote->id, 6, '0', STR_PAD_LEFT) . '.pdf';
+        $name = 'proforma_'.str_pad($quote->id, 6, '0', STR_PAD_LEFT).'.pdf';
         return $pdf->download($name);
 //        return $pdf->stream('quote.pdf');
     }
@@ -329,7 +413,8 @@ class QuoteController extends Controller
     {
         $grades = DB::table('grades as g')
             ->join('model_of_cars as m', 'm.id', '=', 'g.model_of_cars_id')
-            ->select('g.cylindered', 'g.transmission', 'g.traction', 'g.commercial_date', 'g.price', 'g.discount', 'm.data_sheet')
+            ->select('g.cylindered', 'g.transmission', 'g.traction', 'g.commercial_date', 'g.price', 'g.discount',
+                'm.data_sheet')
             ->where('g.id', $id)
             ->get();
 
@@ -438,100 +523,6 @@ class QuoteController extends Controller
                 'data' => null
             ], 404);
         }
-    }
-
-    private function getAPICredentials(): array
-    {
-        return [
-            'username' => config('app.api_username'),
-            'password' => config('app.api_password'),
-        ];
-    }
-
-    private function getApiData(Quote $quote): array
-    {
-//        dd($quote);
-        // Build and return the 'apiData' array...
-        $apiData = [
-            'prospect' => [
-                'requestdate' => date('c'),
-                'customer' => [
-                    'comments' => 'Esta compra viene del cotizador de NIssan Bolivia: ' . $quote->id,
-                    'contacts' => [
-                        [
-                            'emails' => [
-                                [
-                                    'value' => $quote->email
-                                ]
-                            ],
-                            'names' => [
-                                [
-                                    'part' => 'first',
-                                    'value' => $quote->name
-                                ],
-                                [
-                                    'part' => 'last',
-                                    'value' => $quote->last_name
-                                ]
-                            ],
-                            'phones' => [
-                                [
-                                    'type' => 'cellphone',
-                                    'value' => $quote->phone
-                                ]
-                            ],
-                            'addresses' => [
-                                [
-                                    'city' => $quote->cityOfCar->name,
-                                    'postalcode' => '591'
-                                ]
-                            ],
-                        ],
-                    ]
-                ],
-                'vehicles' => [
-                    [
-                        'make' => 'Nissan',
-                        'model' => $quote->modelOfCar->name,
-                        'trim' => $quote->gradeOfCar->name,
-                        'year' => $quote->gradeOfCar->commercial_date
-                    ]
-                ],
-                'provider' => [
-                    'name' => [
-                        'value' => 'Sitio web'
-                    ],
-                    'service' => ''
-                ],
-                'vendor' => [
-                    'contacts' => [],
-                    'vendorname' => [
-                        'value' => $quote->agentOfCar->email
-//                        'value' => 'pcarrasco@nissan.com.bo'
-                    ]
-                ]
-            ],
-            // Rest of the array elements...
-        ];
-        return $apiData;
-    }
-
-
-
-    private function sendAPIRequest(array $apiData)
-    {
-        $client = new Client();
-        $credentials = $this->getAPICredentials();
-        $apiUrl = config('app.api_url');
-//        dd(config('app'));
-//        dd('usario',$apiUrl);
-
-        $response = $client->post($apiUrl, [
-            'json' => $apiData,
-            'auth' => [$credentials['username'], $credentials['password']],
-        ]);
-
-        return $response;
     }
 
     public function successfulPayment(Request $request)
