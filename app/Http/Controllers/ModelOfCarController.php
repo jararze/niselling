@@ -71,7 +71,9 @@ class ModelOfCarController extends Controller
             $thumbnailPath = 'public/vehicles/' . $vehicle->slug . '/thumbnail/';
 
             Storage::makeDirectory($originalPath);
+            chmod(storage_path('app/' . $originalPath), 0775);
             Storage::makeDirectory($thumbnailPath);
+            chmod(storage_path('app/' . $thumbnailPath), 0775);
 
             $manager = new ImageManager(new Driver());
             $image = $manager->read($originalImage);
@@ -176,7 +178,9 @@ class ModelOfCarController extends Controller
 
             // Ensure the directories exist
             Storage::makeDirectory($originalPath);
+            chmod(storage_path('app/' . $originalPath), 0775);
             Storage::makeDirectory($thumbnailPath);
+            chmod(storage_path('app/' . $thumbnailPath), 0775);
 
             // Create the image with Intervention Image
             $manager = new ImageManager(new Driver());
