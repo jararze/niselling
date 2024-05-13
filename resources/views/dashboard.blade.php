@@ -335,7 +335,7 @@
                                 <div class="card-body d-flex align-items-end mb-3">
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center">
-                                        <span class="fs-4hx text-white fw-bold me-6">1.2k</span>
+                                        <span class="fs-4hx text-white fw-bold me-6">{{ $totalQuotes }}</span>
                                         <div class="fw-bold fs-6 text-white">
                                             <span class="d-block">Tecnom</span>
                                             <span class="">solicitudes</span>
@@ -349,7 +349,7 @@
                                      style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
                                     <!--begin::Progress-->
                                     <div class="fw-bold text-white py-2">
-                                        <span class="fs-1 d-block">935</span>
+                                        <span class="fs-1 d-block">{{ $errorTecnom->count() }}</span>
                                         <span class="opacity-50">Con errores. <a href="#">Reprocesar aqui</a></span>
                                     </div>
                                     <!--end::Progress-->
@@ -381,7 +381,7 @@
                                 <div class="card-body d-flex align-items-end mb-3">
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center">
-                                        <span class="fs-4hx text-white fw-bold me-6">427</span>
+                                        <span class="fs-4hx text-white fw-bold me-6">{{ $totalQuotes }}</span>
                                         <div class="fw-bold fs-6 text-white">
                                             <span class="d-block">Libelua</span>
                                             <span class="">Solicitudes</span>
@@ -395,7 +395,7 @@
                                      style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
                                     <!--begin::Progress-->
                                     <div class="fw-bold text-white py-2">
-                                        <span class="fs-1 d-block">386</span>
+                                        <span class="fs-1 d-block">{{ ($result_libelula['count_second']) }}</span>
                                         <span class="opacity-50">Con errores. <a href="#">Reprocesar aqui</a></span>
                                     </div>
                                     <!--end::Progress-->
@@ -424,7 +424,7 @@
                                 <div class="card-body d-flex align-items-end mb-3">
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center">
-                                        <span class="fs-4hx text-white fw-bold me-6">1.2k</span>
+                                        <span class="fs-4hx text-white fw-bold me-6">{{ ($result_transferencia['count_first']) }}</span>
                                         <div class="fw-bold fs-6 text-white">
                                             <span class="d-block">Transferencias</span>
                                             <span class="">Bancarias</span>
@@ -438,7 +438,7 @@
                                      style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
                                     <!--begin::Progress-->
                                     <div class="fw-bold text-white py-2">
-                                        <span class="fs-1 d-block">935</span>
+                                        <span class="fs-1 d-block">{{ ($result_transferencia['count_second']) }}</span>
                                         <span class="opacity-50">Total solicitudes</span>
                                     </div>
                                     <!--end::Progress-->
@@ -466,7 +466,7 @@
                                 <div class="card-body d-flex align-items-end mb-3">
                                     <!--begin::Info-->
                                     <div class="d-flex align-items-center">
-                                        <span class="fs-4hx text-white fw-bold me-6">1.2k</span>
+                                        <span class="fs-4hx text-white fw-bold me-6">{{ ($result_libelula['count_first']) }}</span>
                                         <div class="fw-bold fs-6 text-white">
                                             <span class="d-block">Transferencias por</span>
                                             <span class="">Libelula</span>
@@ -480,7 +480,7 @@
                                      style="border-top: 1px solid rgba(255, 255, 255, 0.3);background: rgba(0, 0, 0, 0.15);">
                                     <!--begin::Progress-->
                                     <div class="fw-bold text-white py-2">
-                                        <span class="fs-1 d-block">935</span>
+                                        <span class="fs-1 d-block">{{ ($result_libelula['count_second']) }}</span>
                                         <span class="opacity-50">Aprobadas</span>
                                     </div>
                                     <!--end::Progress-->

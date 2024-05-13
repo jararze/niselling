@@ -23,38 +23,7 @@
         </div>
         <!--end::Page title-->
         <div class="d-none d-md-block h-40px border-start border-gray-200 mx-10"></div>
-        <div class="d-flex gap-3 gap-lg-8 flex-wrap">
-            <div class="d-flex align-items-center gap-2">
-                <div class="rounded d-flex flex-center w-40px h-40px flex-shrink-0 bg-warning">
-                    <i class="ki-outline ki-abstract-13 fs-2 text-inverse-warning"></i>
-                </div>
-                <div class="d-flex flex-column">
-                    <span class="fw-bold fs-base text-gray-900">Target A</span>
-                    <span class="fw-semibold fs-7 text-gray-500">Uplift: 64%</span>
-                </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="rounded d-flex flex-center w-40px h-40px flex-shrink-0 bg-danger">
-                    <i class="ki-outline ki-abstract-24 fs-2 text-inverse-danger"></i>
-                </div>
-                <div class="d-flex flex-column">
-                    <span class="fw-bold fs-base text-gray-900">Target A</span>
-                    <span class="fw-semibold fs-7 text-gray-500">Uplift: 64%</span>
-                </div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="rounded d-flex flex-center w-40px h-40px flex-shrink-0 bg-primary">
-                    <i class="ki-outline ki-abstract-25 fs-2 text-inverse-primary"></i>
-                </div>
-                <div class="d-flex flex-column">
-                    <span class="fw-bold fs-base text-gray-900">Target A</span>
-                    <span class="fw-semibold fs-7 text-gray-500">Uplift: 64%</span>
-                </div>
-            </div>
-            <a href="#" class="btn btn-icon border border-200 bg-gray-100 btn-color-gray-600 btn-active-primary ms-2 ms-lg-6">
-                <i class="ki-outline ki-plus fs-3"></i>
-            </a>
-        </div>
+
     </div>
     <!--begin::Navbar-->
     <div class="app-navbar flex-shrink-0 gap-2 gap-lg-4">
@@ -555,76 +524,9 @@
                 <!--end::Menu separator-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">
-                    <a href="account/overview.html" class="menu-link px-5">My Profile</a>
+                    <a href="{{ route("profile.edit") }}" class="menu-link px-5">My Profile</a>
                 </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-5">
-                    <a href="apps/projects/list.html" class="menu-link px-5">
-                        <span class="menu-text">My Projects</span>
-                        <span class="menu-badge">
-													<span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
-												</span>
-                    </a>
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
-                    <a href="#" class="menu-link px-5">
-                        <span class="menu-title">My Subscription</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <!--begin::Menu sub-->
-                    <div class="menu-sub menu-sub-dropdown w-175px py-4">
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="account/referrals.html" class="menu-link px-5">Referrals</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="account/billing.html" class="menu-link px-5">Billing</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="account/statements.html" class="menu-link px-5">Payments</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="account/statements.html" class="menu-link d-flex flex-stack px-5">Statements
-                                <span class="ms-2 lh-0" data-bs-toggle="tooltip" title="View your statements">
-														<i class="ki-outline ki-information-5 fs-5"></i>
-													</span></a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu separator-->
-                        <div class="separator my-2"></div>
-                        <!--end::Menu separator-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <div class="menu-content px-3">
-                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                    <input class="form-check-input w-30px h-20px" type="checkbox" value="1" checked="checked" name="notifications" />
-                                    <span class="form-check-label text-muted fs-7">Notifications</span>
-                                </label>
-                            </div>
-                        </div>
-                        <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu sub-->
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-5">
-                    <a href="account/statements.html" class="menu-link px-5">My Statements</a>
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu separator-->
-                <div class="separator my-2"></div>
-                <!--end::Menu separator-->
-                <!--begin::Menu item-->
+
                 <div class="menu-item px-5 my-1">
                     <a href="account/settings.html" class="menu-link px-5">Account Settings</a>
                 </div>

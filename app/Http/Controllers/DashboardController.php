@@ -32,7 +32,8 @@ class DashboardController extends Controller
             ->groupBy('date')
             ->get();
 
-        $typeContactePercentage = Quote::select('type_contact', DB::raw('COUNT(*)  / (select COUNT(*) from quotes) as percentage'))
+        $typeContactePercentage = Quote::select('type_contact',
+            DB::raw('COUNT(*)  / (select COUNT(*) from quotes) as percentage'))
             ->groupBy('type_contact')
             ->get();
 
@@ -125,6 +126,29 @@ class DashboardController extends Controller
                 $typesMonth[$typeName]['quotes'][$month] = $count;
             }
         }
+
+        $errorTecnom = Quote::whereNotNull('error_tecnom')
+            ->orWhereNull('tecnom_id')
+            ->get();
+
+        $result_libelula = [];
+
+        $result_libelula['count_first'] = Quote::where('way_to_pay', 'online_libelula')->count();
+
+        $result_libelula['count_second'] = Quote::where('way_to_pay', 'online_libelula')
+            ->whereNull('libelula_id')
+            ->count();
+
+
+        $result_transferencia = [];
+
+        $result_transferencia['count_first'] = Quote::where('way_to_pay', 'transferencia_bancaria')->count();
+
+        $result_transferencia['count_second'] = Quote::where('way_to_pay', 'transferencia_bancaria')
+            ->whereNull('way_to_pay_image')
+            ->count();
+
+
         return view('dashboard', [
             'quotesPastMonth' => $total,
             'arrayWithDates' => $results,
@@ -141,8 +165,10 @@ class DashboardController extends Controller
             'typeModelGradeQuote' => $typeModelGradeQuote,
             'modelQuotesCount' => $modelQuotesCount,
             'typesMonth' => $typesMonth,
+            'errorTecnom' => $errorTecnom,
+            'result_libelula' => $result_libelula,
+            'result_transferencia' => $result_transferencia,
         ]);
-
 
 
     }

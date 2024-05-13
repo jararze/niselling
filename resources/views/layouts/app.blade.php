@@ -46,7 +46,7 @@
                 <!--begin::Logo-->
                 <div class="app-header-logo d-flex flex-center">
                     <!--begin::Logo image-->
-                    <a href="index.html">
+                    <a href="{{ route("dashboard") }}">
                         <img alt="Logo" src="{{ asset('backend/assets/media/logos/Nissan_2020_logo.svg') }}" class="mh-65px" />
                     </a>
                     <!--end::Logo image-->

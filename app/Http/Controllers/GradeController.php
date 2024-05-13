@@ -37,7 +37,7 @@ class GradeController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
-            'model_name' => ['required', 'string', 'max:255', 'unique:grades,name'],
+            'model_name' => ['required', 'string', 'max:255'],
             'engine' => ['required', 'string', 'max:255'],
             'cylindered' => ['required', 'string', 'max:255'],
             'transmission' => ['required', 'string', 'max:255'],
