@@ -228,7 +228,8 @@ class QuoteController extends Controller
         $nextAgent = $agents[$nextKey];
         $quote->agent_id = $nextAgent->id;
 
-        Cache::put('last_assigned_agent', $nextAgent->id);
+//        Cache::put('last_assigned_agent', $nextAgent->id);
+        Cache::put("last_assigned_agent_" . $validatedData["showroom"], $nextAgent->id);
 
         $apiData = $this->getApiData($quote);
 
