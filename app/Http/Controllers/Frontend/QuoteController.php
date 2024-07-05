@@ -220,16 +220,26 @@ class QuoteController extends Controller
 
         $agents = Agent::where('showroom_id', $validatedData['showroom'])->get();
 
-        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
-        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
-            return $agent->id == $lastAssignedAgentId;
-        });
+//        $lastAssignedAgentId = Cache::get('last_assigned_agent', $agents->first()->id);
+
+//        $currentKey = $agents->search(function ($agent) use ($lastAssignedAgentId) {
+//            return $agent->id == $lastAssignedAgentId;
+//        });
+
+        $lastAssignedAgentId = $agents->firstWhere('last_assigned_agent_id', true);
+
+        $currentKey = $agents->search(fn($agent) => $agent->id == optional($lastAssignedAgentId)->id);
         $nextKey = ($currentKey + 1) % $agents->count();
         $nextAgent = $agents[$nextKey];
         $quote->agent_id = $nextAgent->id;
 
 //        Cache::put('last_assigned_agent', $nextAgent->id);
-        Cache::put("last_assigned_agent_" . $validatedData["showroom"], $nextAgent->id);
+//        Cache::put("last_assigned_agent_" . $validatedData["showroom"], $nextAgent->id);
+
+        $agents->each(function ($agent) use ($nextAgent) {
+            $agent->last_assigned_agent_id = $agent->id === $nextAgent->id;
+            $agent->save();
+        });
 
         $apiData = $this->getApiData($quote);
 
