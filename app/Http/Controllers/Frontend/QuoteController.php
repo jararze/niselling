@@ -219,29 +219,29 @@ class QuoteController extends Controller
         $quote->color = $colorCode;
 
 
-        $hashed_email = hash('sha256', $validatedData['email']);
-        $hashed_phone = hash('sha256', $validatedData['phone']);
-        $hashed_ci = hash('sha256', $validatedData['dni']);
-        $hashed_fn = hash('sha256', $validatedData['name']);
-        $hashed_ln = hash('sha256', $validatedData['last-name']);
-
-        $event = [
-            "event_name" => "Lead",
-            "event_time" => time(),
-            "user_data" => [
-                "fn" => $hashed_fn,
-                "ln" => $hashed_ln,
-                "ph" => $hashed_phone,
-                "em" => $hashed_email,
-                "external_id" => $hashed_ci
-            ],
-            "custom_data" => [
-                "lead_type" => "Vehicle cotizacion",
-                "vehicle_model" => $validatedData['models'],
-                "vehicle_grade" => $validatedData['grade']
-            ],
-            "action_source" => "website"
-        ];
+//        $hashed_email = hash('sha256', $validatedData['email']);
+//        $hashed_phone = hash('sha256', $validatedData['phone']);
+//        $hashed_ci = hash('sha256', $validatedData['dni']);
+//        $hashed_fn = hash('sha256', $validatedData['name']);
+//        $hashed_ln = hash('sha256', $validatedData['last-name']);
+//
+//        $event = [
+//            "event_name" => "Lead",
+//            "event_time" => time(),
+//            "user_data" => [
+//                "fn" => $hashed_fn,
+//                "ln" => $hashed_ln,
+//                "ph" => $hashed_phone,
+//                "em" => $hashed_email,
+//                "external_id" => $hashed_ci
+//            ],
+//            "custom_data" => [
+//                "lead_type" => "Vehicle cotizacion",
+//                "vehicle_model" => $validatedData['models'],
+//                "vehicle_grade" => $validatedData['grade']
+//            ],
+//            "action_source" => "website"
+//        ];
 
 
         $agents = Agent::where('showroom_id', $validatedData['showroom'])->get();
