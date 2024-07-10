@@ -152,7 +152,7 @@ class ContactFormController extends Controller
                 'vehicles' => [
                     [
                         'make' => "Sin Auto",
-                        'model' => " ",
+                        'model' => "None",
                         'trim' => " ",
                         'year' => date('Y')
                     ]
