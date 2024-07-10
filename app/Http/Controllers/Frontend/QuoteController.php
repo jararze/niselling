@@ -12,7 +12,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -218,30 +217,29 @@ class QuoteController extends Controller
 
         $quote->color = $colorCode;
 
+        $event = $this->getApiDataFacebook($quote);
 
-//        $hashed_email = hash('sha256', $validatedData['email']);
-//        $hashed_phone = hash('sha256', $validatedData['phone']);
-//        $hashed_ci = hash('sha256', $validatedData['dni']);
-//        $hashed_fn = hash('sha256', $validatedData['name']);
-//        $hashed_ln = hash('sha256', $validatedData['last-name']);
-//
-//        $event = [
-//            "event_name" => "Lead",
-//            "event_time" => time(),
-//            "user_data" => [
-//                "fn" => $hashed_fn,
-//                "ln" => $hashed_ln,
-//                "ph" => $hashed_phone,
-//                "em" => $hashed_email,
-//                "external_id" => $hashed_ci
-//            ],
-//            "custom_data" => [
-//                "lead_type" => "Vehicle cotizacion",
-//                "vehicle_model" => $validatedData['models'],
-//                "vehicle_grade" => $validatedData['grade']
-//            ],
-//            "action_source" => "website"
-//        ];
+        try {
+            $responseFb = $this->sendAPIRequestFacebook($event);
+            $responseContent = $responseFb->getBody();
+            $responseData = json_decode($responseContent, true);
+            $statusCode = $responseFb->getStatusCode();
+
+            if($statusCode >= 200 && $statusCode < 300 && isset($responseData['fbtrace_id'])) {
+                $quote->fb_trace_id = $responseData['fbtrace_id'];
+                $quote->fb_code_id = $statusCode;
+                $quote->fb_message_id = "Cotización enviada y evento registrado.";
+            } else {
+                $quote->fb_trace_id = '';
+                $quote->fb_code_id = $statusCode;
+                $quote->fb_message_id = 'Error';
+            }
+
+
+        } catch (GuzzleException $e) {
+            $quote->fb_code_id = $e->getCode();
+        }
+
 
 
         $agents = Agent::where('showroom_id', $validatedData['showroom'])->get();
@@ -282,6 +280,38 @@ class QuoteController extends Controller
 
         return Redirect::route('frontend.quote_second.show', $quote->id)->with('status', 'created');
 
+    }
+
+    public function getApiDataFacebook(Quote $quote): array
+    {
+
+        $hashed_email = hash('sha256', $quote['email']);
+        $hashed_phone = hash('sha256', $quote['phone']);
+        $hashed_ci = hash('sha256', $quote['dni']);
+        $hashed_fn = hash('sha256', $quote['name']);
+        $hashed_ln = hash('sha256', $quote['last-name']);
+
+        $event = [
+            "event_name" => "Lead",
+            "event_time" => time(),
+            "user_data" => [
+                "client_user_agent" => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                "client_ip_address" => $_SERVER['REMOTE_ADDR'] ?? '',
+                "fn" => $hashed_fn,
+                "ln" => $hashed_ln,
+                "ph" => $hashed_phone,
+                "em" => $hashed_email,
+                "external_id" => $hashed_ci
+            ],
+            "custom_data" => [
+                "lead_type" => "vehiculo cotizacion",
+                "vehicle_model" => $quote->modelOfCar->name,
+                "vehicle_grade" => $quote->gradeOfCar->name
+            ],
+            "action_source" => "website"
+        ];
+
+        return $event;
     }
 
     private function getApiData(Quote $quote): array
@@ -351,6 +381,20 @@ class QuoteController extends Controller
         return $apiData;
     }
 
+    private function sendAPIRequestFacebook(array $apiData)
+    {
+        $facebook_client = new Client();
+        $response = $facebook_client->post('https://graph.facebook.com/v20.0/'.config('app.facebook_pixel_id').'/events', [
+            'headers' => [
+                'Authorization' => 'Bearer '.config('app.facebook_access_token'),
+            ],
+            'json' => [
+                'data' => [$apiData]
+            ]
+        ]);
+
+        return $response;
+    }
     private function sendAPIRequest(array $apiData)
     {
         $client = new Client();

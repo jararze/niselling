@@ -73,6 +73,11 @@ return [
 
     'libelula_api_url' => env('LIBELULA_API_URL', 'default_value'),
 
+    'facebook_access_token' => env('FACEBOOK_ACCESS_TOKEN', 'default_value'),
+
+    'facebook_pixel_id' => env('FACEBOOK_PIXEL_ID', 'default_value'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
