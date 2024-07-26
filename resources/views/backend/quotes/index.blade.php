@@ -203,7 +203,7 @@
                                         <td>{{ $quote->phone  }}</td>
                                         <td>{{ $quote->email  }}</td>
                                         <td>{{ $quote->showroomOfCar->name }}, {{ $quote->cityOfCar->name }}</td>
-                                        <td>{{ $quote->modelOfCar->name }}, {{ $quote->gradeOfCar->name }}</td>
+                                        <td>{{ $quote->modelOfCar->name ?? 'ERROR'  }}, {{ $quote->gradeOfCar->name ?? 'ERROR'  }}</td>
                                         <td>{{ $quote->agentOfCar->name ?? 'Sin agente' }} </td>
                                         <td><span class="badge badge-lg badge-light-primary fw-bold my-2 fs-8">{{ $quote->tecnom_id }}</span></td>
                                         <td>{{ $quote->created_at->format('d M Y, h:i a') }}</td>
