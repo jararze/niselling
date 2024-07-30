@@ -242,7 +242,9 @@ class QuoteController extends Controller
 
 
 
-        $agents = Agent::where('showroom_id', $validatedData['showroom'])->get();
+        $agents = Agent::where('showroom_id', $validatedData['showroom'])
+            ->where('status',1)
+            ->get();
 
         $lastAssignedAgentId = $agents->firstWhere('last_assigned_agent_id', true);
 
