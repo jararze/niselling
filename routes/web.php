@@ -60,6 +60,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('backend/quote/index', [QuoteController::class, 'index'])->name('backend.quote.index');
+    Route::post('backend/quote/index/export', [QuoteController::class, 'export'])->name('backend.quote.index.export');
     Route::get('backend/quote/index/online', [QuoteController::class, 'transferOnline'])->name('backend.quote.index.online');
     Route::get('backend/quote/index/bank', [QuoteController::class, 'bank'])->name('backend.quote.index.bank');
     Route::get('backend/quote/create', [QuoteController::class, 'create'])->name('backend.quote.create');

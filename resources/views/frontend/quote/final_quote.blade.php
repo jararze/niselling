@@ -71,25 +71,25 @@
                 <div class="justify-between mt-10">
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Precio</p>
-                        <p class="font-bold">$us. <span
+                        <p class="font-bold">Bs. <span
                                 id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Descuento</p>
-                        <p class="font-bold">$us. <span
+                        <p class="font-bold">Bs. <span
                                 id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                         </p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Costos Adicionales</p>
-                        <p class="font-bold">$us. <span
+                        <p class="font-bold">Bs. <span
                                 id="aditional_costs_span">{{ number_format(0, 2) }} </span>
                         </p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Precio Final</p>
                         <p class="font-bold text-nissan">
-                            $us. <span
+                            Bs. <span
                                 id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount ), 2) }} </span>
                         </p>
                         <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y
@@ -108,7 +108,7 @@
         </a>
         <a href="{{ route('frontend.online.reservation', $quote->id) }}"
                 class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-black hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4 md:my-2 my-2">
-            reservar con $us 200
+            reservar con Bs 1394
         </a>
         <a href="{{ route('frontend.thanks', $quote->id) }}"
                 class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-gray-300 hover:opacity-80 text-md uppercase hover:underline p-3 text-black text-center mx-4 md:my-2 my-2">

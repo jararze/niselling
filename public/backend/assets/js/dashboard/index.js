@@ -144,7 +144,7 @@ const quotesWithPayment = function () {
                 }
             },
             y: {
-                formatter: (value) => `${value}` * 200 + '$us (' + `${value}` + ')'
+                formatter: (value) => `${value}` * 200 + 'Bs (' + `${value}` + ')'
             }
         },
         colors: [KTUtil.getCssVariableValue("--bs-success")],

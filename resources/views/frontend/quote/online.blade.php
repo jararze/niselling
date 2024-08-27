@@ -120,7 +120,7 @@
             <div class="flex flex-col items-center mx-auto mt-10 sm:col-span-3">
                 <button type="submit"
                         class="mt-5 flex items-center justify-center w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4">
-                    reservar con $us 200
+                    reservar con Bs 1394
                 </button>
             </div>
 

@@ -172,25 +172,25 @@
                         <div class="mt-10 justify-between">
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio</p>
-                                <p class="font-bold">$us. <span
+                                <p class="font-bold">Bs. <span
                                         id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Descuento</p>
-                                <p class="font-bold">$us. <span
+                                <p class="font-bold">Bs. <span
                                         id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                                 </p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Costos Adicionales</p>
-                                <p class="font-bold">$us. <span
+                                <p class="font-bold">Bs. <span
                                         id="aditional_costs_span">{{ number_format(0, 2) }} </span>
                                 </p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio Final</p>
                                 <p class="font-bold text-nissan">
-                                    $us. <span
+                                    Bs. <span
                                         id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount), 2) }} </span>
                                 </p>
                                 <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y

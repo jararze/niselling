@@ -32,7 +32,7 @@
                     <div class="mt-2">
                         <input type="hidden" value="{{ $id }}" name="id">
                         <input type="text" name="name" id="name" autocomplete="given-name"
-                               value="200 $us"
+                               value="1394 Bs"
                                class="border-[#eeeeee] bg-[#eeeeee] text-gray-900 focus:ring-black focus:border-black block w-full px-2.5 py-3"
                                readonly
                                placeholder=""

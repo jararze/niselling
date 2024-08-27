@@ -201,7 +201,7 @@
                                         </td>
                                         <td>{{ $grade->name  }}</td>
                                         <td>{{ $grade->commercial_date }}</td>
-                                        <td>$us {{ number_format($grade->price, 2, ',', '.') }}</td>
+                                        <td>Bs {{ number_format($grade->price, 2, ',', '.') }}</td>
                                         <td>
                                             {{ $grade->order  }}
                                         </td>

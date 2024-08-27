@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exports\DataExport;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Configuration\Agent;
 use App\Models\backend\vehicle\Grade;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuoteController extends Controller
 {
@@ -510,6 +512,33 @@ class QuoteController extends Controller
         return view('backend.quotes.index', [
             'values' => $values,
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $format = $request->input('format');
+        $dateRange = $request->input('date_range');
+
+//        $fileName = 'exported_data.' . $format;
+
+        switch ($format) {
+            case 'excel':
+//                dd($fileName, $dateRange);
+                $fileName = 'exported_data.xlsx';
+                return Excel::download(new DataExport($dateRange), $fileName);
+//                return new DataExport($dateRange);
+            case 'pdf':
+                // Handle PDF export
+                break;
+            case 'cvs':
+                // Handle CVS export
+                break;
+            case 'zip':
+                // Handle ZIP export
+                break;
+        }
+
+        return redirect()->back()->with('error', 'Invalid export format selected.');
     }
 
     public function transferOnline()
