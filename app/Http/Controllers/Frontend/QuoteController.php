@@ -454,7 +454,10 @@ class QuoteController extends Controller
     {
         $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
         $quote = Quote::findOrfail($id);
-        $grades = Grade::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
+        $grades = Grade::where('model_of_cars_id', $quote->model)
+            ->where('status', 1)
+            ->orderBy('order', 'ASC')
+            ->get();
         $colors = VehicleColor::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
         return view('frontend.quote.show', compact('quote', 'colors', 'models', 'grades'));
     }
@@ -466,7 +469,10 @@ class QuoteController extends Controller
     {
         $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
         $quote = Quote::findOrfail($id);
-        $grades = Grade::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
+        $grades = Grade::where('model_of_cars_id', $quote->model)
+            ->where('status', 1)
+            ->orderBy('order', 'ASC')
+            ->get();
         $colors = VehicleColor::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
         return view('frontend.quote.final_quote', compact('quote', 'colors', 'models', 'grades'));
     }
@@ -475,7 +481,10 @@ class QuoteController extends Controller
     {
         $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
         $quote = Quote::findOrfail($quote_id);
-        $grades = Grade::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
+        $grades = Grade::where('model_of_cars_id', $quote->model)
+            ->where('status', 1)
+            ->orderBy('order', 'ASC')
+            ->get();
         $colors = VehicleColor::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('frontend.quote.pdf', compact('quote', 'colors', 'models', 'grades'));
@@ -500,6 +509,7 @@ class QuoteController extends Controller
     public function getModels($id): JsonResponse
     {
         $grades = Grade::where("model_of_cars_id", $id)
+            ->where('status', 1)
             ->pluck("name", "id");
         $image = ModelOfCar::where('id', $id)->pluck('image', 'slug');
         $colors = VehicleColor::where('model_of_cars_id', $id)->get();
