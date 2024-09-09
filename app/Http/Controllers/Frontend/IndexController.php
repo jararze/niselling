@@ -31,7 +31,10 @@ class IndexController extends Controller
             ]);
         } else{
             $models = ModelOfCar::where('status', 1)->orderBy('order', 'ASC')->get();
-            $grades = Grade::where('model_of_cars_id' , $id)->orderBy('order', 'ASC')->get();
+            $grades = Grade::where('model_of_cars_id' , $id)
+                ->where('status', 1)
+                ->orderBy('order', 'ASC')
+                ->get();
             $cities = City::where('status', 1)
                 ->has('showrooms')
                 ->orderBy('name', 'ASC')
@@ -49,6 +52,7 @@ class IndexController extends Controller
     public function getGrades($id):JsonResponse
     {
         $grades = Grade::where("model_of_cars_id", $id)
+            ->where('status', 1)
             ->pluck("name", "id");
         return response()->json($grades);
     }
@@ -56,6 +60,7 @@ class IndexController extends Controller
     public function getShowrooms($id):JsonResponse
     {
         $showrooms = Showroom::where("city_id", $id)
+            ->where('status', 1)
             ->has('agents')
             ->pluck("name", "id");
 

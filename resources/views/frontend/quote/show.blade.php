@@ -174,7 +174,7 @@
                                 <p class="text-gray-600">Precio</p>
                                 <p class="font-bold">Bs. <span
                                         id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
-                            </div>
+                      git      </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Descuento</p>
                                 <p class="font-bold">Bs. <span
