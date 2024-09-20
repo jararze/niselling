@@ -164,7 +164,7 @@
                         <div class="mt-10 flex justify-center md:justify-between">
                             <a id="data_sheet_span" target="_blank" href="{{ $quote->modelOfCar->data_sheet }}"
                                class="mx-auto flex w-4/5 justify-between bg-gray-300 px-3 py-3 text-sm uppercase leading-6 hover:bg-gray-500 md:w-full">
-                                <span class="font-thin">descargar ficha técnica</span>
+                                <span class="font-thin">Descargar proforma</span>
                                 <span class="text-xl font-bold mt-[-3px]"> > </span>
                             </a>
                         </div>
@@ -174,7 +174,7 @@
                                 <p class="text-gray-600">Precio</p>
                                 <p class="font-bold">Bs. <span
                                         id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
-                      git      </div>
+                            </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Descuento</p>
                                 <p class="font-bold">Bs. <span
