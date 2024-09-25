@@ -63,7 +63,7 @@
                 <div class="flex justify-center md:justify-between mt-10">
                     <a id="data_sheet_span" target="_blank" href="{{ route('frontend.quote.pdf', $quote->id) }}"
                        class="w-4/5 md:w-full mx-auto uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
-                        <span class="font-thin">descargar ficha tecnica</span>
+                        <span class="font-thin">descargar proforma</span>
                         <span class="font-bold text-xl mt-[-3px]"> > </span>
                     </a>
                 </div>
