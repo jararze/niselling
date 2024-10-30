@@ -164,7 +164,7 @@
                         <div class="mt-10 flex justify-center md:justify-between">
                             <a id="data_sheet_span" target="_blank" href="{{ $quote->modelOfCar->data_sheet }}"
                                class="mx-auto flex w-4/5 justify-between bg-gray-300 px-3 py-3 text-sm uppercase leading-6 hover:bg-gray-500 md:w-full">
-                                <span class="font-thin">Descargar ficha tecnica</span>
+                                <span class="font-thin">Descargar ficha t&eacute;cnica</span>
                                 <span class="text-xl font-bold mt-[-3px]"> > </span>
                             </a>
                         </div>
@@ -172,25 +172,25 @@
                         <div class="mt-10 justify-between">
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio</p>
-                                <p class="font-bold">Bs. <span
+                                <p class="font-bold">$us. <span
                                         id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Descuento</p>
-                                <p class="font-bold">Bs. <span
+                                <p class="font-bold">$us. <span
                                         id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                                 </p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Costos Adicionales</p>
-                                <p class="font-bold">Bs. <span
+                                <p class="font-bold">$us. <span
                                         id="aditional_costs_span">{{ number_format(0, 2) }} </span>
                                 </p>
                             </div>
                             <div class="w-full border border-[#eeeeee] bg-white p-3 md:text-right text-center text-sm">
                                 <p class="text-gray-600">Precio Final</p>
                                 <p class="font-bold text-nissan">
-                                    Bs. <span
+                                    $us. <span
                                         id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount), 2) }} </span>
                                 </p>
                                 <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y

@@ -71,25 +71,25 @@
                 <div class="justify-between mt-10">
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Precio</p>
-                        <p class="font-bold">Bs. <span
+                        <p class="font-bold">$us. <span
                                 id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }} </span></p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Descuento</p>
-                        <p class="font-bold">Bs. <span
+                        <p class="font-bold">$us. <span
                                 id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }} </span>
                         </p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Costos Adicionales</p>
-                        <p class="font-bold">Bs. <span
+                        <p class="font-bold">$us. <span
                                 id="aditional_costs_span">{{ number_format(0, 2) }} </span>
                         </p>
                     </div>
                     <div class="w-full border border-[#eeeeee] bg-white p-3 text-right text-sm">
                         <p class="text-gray-600">Precio Final</p>
                         <p class="font-bold text-nissan">
-                            Bs. <span
+                            $us. <span
                                 id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount ), 2) }} </span>
                         </p>
                         <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y
