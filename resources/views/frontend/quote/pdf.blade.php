@@ -197,7 +197,7 @@
                     </p>
                     <p><strong>Ciudad:</strong> <span
                             id="commercial_date_span">{{ $quote->cityOfCar->name  }}</span></p>
-                    <p style="font-size: 12px">Validez de la oferta: 7 días. Las condiciones podrían variar</p>
+                    <p style="font-size: 12px">Validez de la oferta: 48 horas. Paga en bolivianos al tipo de cambio oficial (6.96).</p>
                 </div>
             </td>
             <td style="text-align: right; width: 50%">
