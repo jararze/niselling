@@ -59,10 +59,15 @@ class IndexController extends Controller
 
     public function getShowrooms($id):JsonResponse
     {
-        $showrooms = Showroom::where("city_id", $id)
+        $query = Showroom::where("city_id", $id)
             ->where('status', 1)
-            ->has('agents')
-            ->pluck("name", "id");
+            ->has('agents');
+
+            if ($id == 1) {
+                $showrooms = $query->orderBy('id', 'DESC')->pluck("name", "id");
+            } else {
+                $showrooms = $query->pluck("name", "id");
+            }
 
         return response()->json($showrooms);
     }
