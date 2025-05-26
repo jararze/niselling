@@ -204,26 +204,30 @@
                 <div class="justify-between" style="margin-left: 40px">
                     <div>
                         <p>Precio</p>
-                        <p class="font-bold">$us. <span
-                                id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }}</span></p>
+{{--                        <p class="font-bold">$us. <span--}}
+{{--                                id="price_span">{{ number_format($quote->gradeOfCar->price, 2) }}</span></p>--}}
+                        <p class="font-bold">Consulte con asesor</p>
                     </div>
                     <div>
                         <p>Descuento</p>
-                        <p class="font-bold">$us. <span
-                                id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }}</span></p>
+{{--                        <p class="font-bold">$us. <span--}}
+{{--                                id="discount_span">{{ number_format($quote->gradeOfCar->discount, 2) }}</span></p>--}}
+                        <p class="font-bold">Consulte con asesor</p>
                     </div>
                     <div>
                         <p>Costos Adicionales</p>
-                        <p class="font-bold">$us. <span
-                                id="aditional_costs_span">{{ number_format($quote->gradeOfCar->discount, 2) }}</span>
-                        </p>
+{{--                        <p class="font-bold">$us. <span--}}
+{{--                                id="aditional_costs_span">{{ number_format($quote->gradeOfCar->discount, 2) }}</span>--}}
+{{--                        </p>--}}
+                        <p class="font-bold">Consulte con asesor</p>
                     </div>
                     <div>
                         <p>Precio Final</p>
-                        <p class="font-bold text-nissan" style="color: #c3002f; font-weight: bold">$us. <span
-                                id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount + $quote->gradeOfCar->discount), 2) }}</span>
-                        </p>
-                        <p class="font-thin">El precio incluye placas, registros definitivos y SOAT.</p>
+{{--                        <p class="font-bold text-nissan" style="color: #c3002f; font-weight: bold">$us. <span--}}
+{{--                                id="final_price_span">{{ number_format(($quote->gradeOfCar->price - $quote->gradeOfCar->discount + $quote->gradeOfCar->discount), 2) }}</span>--}}
+{{--                        </p>--}}
+{{--                        <p class="font-thin">El precio incluye placas, registros definitivos y SOAT.</p>--}}
+                        <p class="font-bold">Consulte con asesor</p>
                     </div>
                 </div>
             </td>
