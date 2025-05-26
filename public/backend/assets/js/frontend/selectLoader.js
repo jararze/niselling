@@ -97,4 +97,54 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    document.getElementById('city').addEventListener('change', function () {
+        const cityId = this.value;
+        const showroom = document.getElementById('showroom');
+        const spinner = document.getElementById('spinner');
+
+        if (cityId == 0) {
+            showroom.innerHTML = '<option>Seleccione una ciudad primero.</option>';
+        } else {
+            spinner.style.display = 'flex'; // Show the spinner
+
+            const EndPoint = window.Laravel.showroomEndpoint.replace(':id', cityId);
+
+            fetch(EndPoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    id: cityId,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    spinner.style.display = "none";
+
+                    showroom.innerHTML = "";
+                    if(Object.keys(data).length === 0) {
+                        const option = document.createElement("option");
+                        option.text = 'No hay datos encontrados, seleccione otra ciudad';
+                        showroom.appendChild(option);
+                    } else {
+                        Object.entries(data).forEach(([key, value]) => {
+                            const option = document.createElement("option");
+                            option.value = key;
+                            option.text = value;
+                            showroom.appendChild(option);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    spinner.style.display = "none";
+                    console.error('Error:', error);
+                });
+        }
+    });
+
+
 });
