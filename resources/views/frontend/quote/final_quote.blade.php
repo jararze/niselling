@@ -150,7 +150,7 @@
     </div>
 
     <div class="mx-auto mt-10 mb-20" style="width: 80%">
-        <p class="uppercase text-center mt-5 text-xs hover:underline">Validez de la oferta: 48 horas. Paga en bolivianos al tipo de cambio oficial (6.96).</p>
+        <p class="uppercase text-center mt-5 text-xs hover:underline">Validez de la oferta: 48 horas.</p>
     </div>
 
 
