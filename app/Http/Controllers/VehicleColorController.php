@@ -63,7 +63,7 @@ class VehicleColorController extends Controller
 
             if ($request->hasFile('avatar')) {
                 $originalImage = $request->file('avatar');
-                $filename = time() . '_' . $originalImage->getClientOriginalName();
+                $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalImage->getClientOriginalName());
 
                 // Define the paths
                 $originalPath = 'public/vehicles/' . $modelCarSlug . '/';
@@ -152,15 +152,18 @@ class VehicleColorController extends Controller
 
         if ($request->hasFile('avatar')) {
 
-            Storage::deleteDirectory('public/vehicles/color/' . $oldModelCar->slug);
+            if ($color->image) {
+                Storage::delete('public/vehicles/' . $oldModelCar->slug . '/' . $color->image);
+                Storage::delete('public/vehicles/' . $oldModelCar->slug . '/thumbnail/' . $color->image);
+            }
 
 
             $originalImage = $request->file('avatar');
-            $filename = time() . '_' . $originalImage->getClientOriginalName();
+            $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalImage->getClientOriginalName());
 
             // Define the paths
-            $originalPath = 'public/vehicles/color/' . $modelCar->slug . '/';
-            $thumbnailPath = 'public/vehicles/color/' . $modelCar->slug . '/thumbnail/';
+            $originalPath = 'public/vehicles/' . $modelCar->slug . '/';
+            $thumbnailPath = 'public/vehicles/' . $modelCar->slug . '/thumbnail/';
 
             // Ensure the directories exist
             Storage::makeDirectory($originalPath);

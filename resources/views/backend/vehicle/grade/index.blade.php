@@ -177,6 +177,7 @@
                                                    value="1"/>
                                         </div>
                                     </th>
+                                    <th class="min-w-25px">ID</th>
                                     <th class="min-w-125px">Modelo</th>
                                     <th class="min-w-125px">Grado</th>
                                     <th class="min-w-125px">Año comercial</th>
@@ -196,6 +197,7 @@
                                                        value="{{ $grade->id }}"/>
                                             </div>
                                         </td>
+                                        <td>{{ $grade->id  }}</td>
                                         <td>
                                             <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar->name }}</p>
                                         </td>

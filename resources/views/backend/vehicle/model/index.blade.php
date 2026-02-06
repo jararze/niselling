@@ -177,6 +177,7 @@
                                                    value="1"/>
                                         </div>
                                     </th>
+                                    <th class="min-w-25px">Id</th>
                                     <th class="min-w-125px">Modelo</th>
                                     <th class="min-w-125px">Tipo</th>
                                     <th class="min-w-125px">Imagen</th>
@@ -197,12 +198,13 @@
                                                        value="{{ $vehicle_model->id }}"/>
                                             </div>
                                         </td>
+                                        <td>{{ $vehicle_model->id  }}</td>
                                         <td>
                                             <p
                                                 class="text-gray-800 text-hover-primary mb-1">{{ $vehicle_model->name }}</p>
                                         </td>
                                         <td data-filter="">
-                                            {{ $vehicle_model->typeOfCar->name}}
+                                        {{ $vehicle_model->typeOfCar->name}}
                                         </td>
                                         <td>
                                             <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
