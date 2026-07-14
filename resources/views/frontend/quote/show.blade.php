@@ -198,7 +198,7 @@
                                 </p>
 {{--                                <p class="font-thin text-[11px]">El precio incluye placas, registros definitivos y--}}
 {{--                                    SOAT.</p>--}}
-                                <p class="font-bold">Precio al tipo de cambio oficial: 6,96</p>
+                                <p class="font-bold">Precio al tipo de cambio oficial</p>
                             </div>
                         </div>
 
