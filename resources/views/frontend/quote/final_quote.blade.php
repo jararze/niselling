@@ -5,8 +5,8 @@
     <script type="text/javascript">
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}',
-            submitEndpoint: '{{ route("frontend.contact.whatsapp", ":id") }}',
-            thanksPoint: '{{ route("frontend.thanks", ":id") }}',
+            submitEndpoint: @js($whatsappEndpoint),
+            thanksPoint: @js($thanksUrl),
         };
     </script>
     <script src="{{ asset('backend/assets/js/frontend/updateType.js') }}"></script>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="flex justify-center md:justify-between mt-10">
-                    <a id="data_sheet_span" target="_blank" href="{{ route('frontend.quote.pdf', $quote->id) }}"
+                    <a id="data_sheet_span" target="_blank" href="{{ $pdfUrl }}"
                        class="w-4/5 md:w-full mx-auto uppercase py-3 px-3 bg-gray-300 hover:bg-gray-500 flex justify-between text-sm leading-6">
                         <span class="font-thin">descargar proforma</span>
                         <span class="font-bold text-xl mt-[-3px]"> > </span>
@@ -109,11 +109,11 @@
     <div class="mx-auto mt-10 flex flex-col sm:flex-row justify-center" style="width: 80%">
         <a id="whatapp_contact" href="https://wa.me/591{{ $quote->agentOfCar->phone }}?text=¡Hola! Mi nombre es *{{ $quote->name . ' ' . $quote->last_name }}* y estoy interesado en saber más acerca del vehículo *{{ $quote->modelOfCar->name }} {{ $quote->gradeOfCar->name }}*, gracias." target="_blank" class="w-full flex items-center justify-center md:w-64 border border-transparent focus:outline-none bg-nissan hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4 md:my-2 my-2">chatear por whatsapp
         </a>
-        <a href="{{ route('frontend.online.reservation', $quote->id) }}"
+        <a href="{{ $reservationUrl }}"
                 class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-black hover:opacity-80 text-md uppercase hover:underline p-3 text-white text-center mx-4 md:my-2 my-2">
             reservar con Bs 1394
         </a>
-        <a href="{{ route('frontend.thanks', $quote->id) }}"
+        <a href="{{ $thanksUrl }}"
                 class="w-full flex items-center justify-center md:w-64  border border-transparent focus:outline-none bg-gray-300 hover:opacity-80 text-md uppercase hover:underline p-3 text-black text-center mx-4 md:my-2 my-2">
             solicitar llamada telefónica
         </a>

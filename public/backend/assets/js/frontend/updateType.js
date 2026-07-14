@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const quote_id = document.getElementById('quote_id');
-    const EndPoint = window.Laravel.submitEndpoint.replace(':id', quote_id.value);
-    const thanksEndPoint = window.Laravel.thanksPoint.replace(':id', quote_id.value);
+    // Las URLs llegan firmadas y completas desde el blade: la firma cubre la
+    // URL exacta, así que ya no se arma con un patrón :id + replace().
+    const EndPoint = window.Laravel.submitEndpoint;
+    const thanksEndPoint = window.Laravel.thanksPoint;
     document.querySelector("#whatapp_contact").addEventListener('click', (e) => {
         e.preventDefault();
         let hreff = e.target.href;

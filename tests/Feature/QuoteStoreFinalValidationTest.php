@@ -8,6 +8,7 @@ use App\Models\backend\vehicle\Type;
 use App\Models\backend\vehicle\VehicleColor;
 use App\Models\Frontend\Quote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class QuoteStoreFinalValidationTest extends TestCase
@@ -94,11 +95,21 @@ class QuoteStoreFinalValidationTest extends TestCase
         $this->quote->save();
     }
 
+    /** La ruta ahora exige firma: los tests de validación postean a la action firmada. */
+    private function signedStoreFinalUrl(): string
+    {
+        return URL::temporarySignedRoute(
+            'frontend.quote.store.final',
+            now()->addHours(72),
+            ['quote_id' => $this->quote->id]
+        );
+    }
+
     public function test_placeholder_text_as_grade_is_rejected_with_422(): void
     {
         // Bug de producción: selectLoader2.js inyecta un <option> sin value y
         // el texto del placeholder llega como valor de grade.
-        $response = $this->postJson(route('frontend.quote.store.final'), [
+        $response = $this->postJson($this->signedStoreFinalUrl(), [
             'quote_id' => $this->quote->id,
             'models' => $this->model->id,
             'grade' => 'Seleccione un modelo primero.',
@@ -112,7 +123,7 @@ class QuoteStoreFinalValidationTest extends TestCase
 
     public function test_grade_belonging_to_another_model_is_rejected_with_422(): void
     {
-        $response = $this->postJson(route('frontend.quote.store.final'), [
+        $response = $this->postJson($this->signedStoreFinalUrl(), [
             'quote_id' => $this->quote->id,
             'models' => $this->model->id,
             'grade' => $this->gradeOfOtherModel->id,
@@ -126,7 +137,7 @@ class QuoteStoreFinalValidationTest extends TestCase
 
     public function test_nonexistent_model_is_rejected_with_422(): void
     {
-        $response = $this->postJson(route('frontend.quote.store.final'), [
+        $response = $this->postJson($this->signedStoreFinalUrl(), [
             'quote_id' => $this->quote->id,
             'models' => 999999,
             'grade' => $this->grade->id,
@@ -139,14 +150,15 @@ class QuoteStoreFinalValidationTest extends TestCase
 
     public function test_valid_update_persists_and_redirects(): void
     {
-        $response = $this->post(route('frontend.quote.store.final'), [
+        $response = $this->post($this->signedStoreFinalUrl(), [
             'quote_id' => $this->quote->id,
             'models' => $this->model->id,
             'grade' => $this->grade->id,
             'selected_color' => '#FFFFFF',
         ]);
 
-        $response->assertRedirect(route('frontend.quote.final.proform', $this->quote->id));
+        $response->assertRedirectContains(route('frontend.quote.final.proform', $this->quote->id));
+        $response->assertRedirectContains('signature=');
 
         $fresh = $this->quote->fresh();
         $this->assertSame($this->grade->id, (int) $fresh->grade);

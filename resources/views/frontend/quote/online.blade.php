@@ -31,7 +31,7 @@
         <div class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%]"></div>
     </div>
 
-    <form id="signUpForm" class="mx-auto mb-8" action="{{ route('frontend.bank.transfer') }}" method="POST">
+    <form id="signUpForm" class="mx-auto mb-8" action="{{ $bankTransferAction }}" method="POST">
         @csrf
         <input type="hidden" value="{{ $id }}" name="id">
         <div class="mx-auto" style="width: 80%">
@@ -129,7 +129,7 @@
                 <p style="font-size: 12px" class="mt-3">Una vez finalizado el proceso de pago, un Asesor Profesional de
                     Ventas se pondrá en contacto con usted para confirmar su reserva.</p>
                 <p style="font-size: 12px; text-align: center" class="mt-3"><a
-                        href="{{ route('frontend.quote.final.proform', $id) }}">VOLVER</a></p>
+                        href="{{ $proformUrl }}">VOLVER</a></p>
             </div>
 
 

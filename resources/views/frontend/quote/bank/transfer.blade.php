@@ -88,7 +88,7 @@
         <div class="absolute bottom-0 left-[10.4%] w-[7%] h-1 bg-nissan transform -translate-x-[145%]"></div>
     </div>
 
-    <form id="signUpForm" class="mx-auto mb-8" action="{{ route('frontend.quote.store.voucher') }}" method="POST" enctype="multipart/form-data">
+    <form id="signUpForm" class="mx-auto mb-8" action="{{ $voucherAction }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- component -->

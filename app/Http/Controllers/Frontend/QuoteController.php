@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -26,6 +27,19 @@ class QuoteController extends Controller
 {
 
     const PAYMENT_METHOD_BANK_TRANSFER = 1;
+
+    // Las URLs del flujo público llevan firma con expiración: la proforma
+    // caduca porque el tipo de cambio varía a diario.
+    const SIGNED_URL_TTL_HOURS = 72;
+
+    private function temporarySignedFlowUrl(string $routeName, mixed $parameters): string
+    {
+        return URL::temporarySignedRoute(
+            $routeName,
+            now()->addHours(self::SIGNED_URL_TTL_HOURS),
+            $parameters
+        );
+    }
 
     public function whatsapp($id)
     {
@@ -59,6 +73,8 @@ class QuoteController extends Controller
 
         return view('frontend.quote.online', [
             'id' => $id,
+            'bankTransferAction' => $this->temporarySignedFlowUrl('frontend.bank.transfer', ['id' => $quote->id]),
+            'proformUrl' => $this->temporarySignedFlowUrl('frontend.quote.final.proform', $quote->id),
         ]);
     }
 
@@ -70,12 +86,14 @@ class QuoteController extends Controller
         $wayToPay = $isBankTransfer ? 'transferencia_bancaria' : 'online_libelula';
         $route = $isBankTransfer ? 'frontend.quote.bank.transfer' : 'frontend.quote.libelula.transfer';
 
-        $quote = Quote::findOrFail($request->id);
+        // El id viene en el query string firmado, no del body (ver storeFinal).
+        $quote = Quote::findOrFail($request->query('id'));
         $quote->way_to_pay = $wayToPay;
         $quote->save();
 
         return view($route, [
-            'id' => $request->id,
+            'id' => $quote->id,
+            'voucherAction' => $this->temporarySignedFlowUrl('frontend.quote.store.voucher', ['id' => $quote->id]),
         ]);
     }
 
@@ -138,7 +156,8 @@ class QuoteController extends Controller
             'comprobante' => 'required|mimes:jpg,jpeg,png,pdf|max:5120', // max size 5MB
         ]);
 
-        $quote = Quote::findOrFail($request->id);
+        // El id viene en el query string firmado, no del body (ver storeFinal).
+        $quote = Quote::findOrFail($request->query('id'));
 
         if ($request->hasFile('comprobante')) {
 
@@ -294,7 +313,11 @@ class QuoteController extends Controller
 
         $quote->save();
 
-        return Redirect::route('frontend.quote_second.show', $quote->id)->with('status', 'created');
+        return redirect()->to(URL::temporarySignedRoute(
+            'frontend.quote_second.show',
+            now()->addHours(self::SIGNED_URL_TTL_HOURS),
+            $quote->id
+        ))->with('status', 'created');
 
     }
 
@@ -462,7 +485,10 @@ class QuoteController extends Controller
             ],
         ]);
 
-        $oldQuote = Quote::findOrfail($request->quote_id);
+        // El id de la quote se lee SOLO del query string, que está cubierto
+        // por la firma; el body no lo está y un atacante podría inyectar ahí
+        // el id de otra quote.
+        $oldQuote = Quote::findOrFail($request->query('quote_id'));
 
         $oldQuote->model = $validatedData['models'];
         $oldQuote->grade = $validatedData['grade'];
@@ -470,7 +496,11 @@ class QuoteController extends Controller
 
 
         $oldQuote->save();
-        return Redirect::route('frontend.quote.final.proform', $oldQuote->id)->with('status', 'created');
+        return redirect()->to(URL::temporarySignedRoute(
+            'frontend.quote.final.proform',
+            now()->addHours(self::SIGNED_URL_TTL_HOURS),
+            $oldQuote->id
+        ))->with('status', 'created');
 
     }
 
@@ -486,7 +516,8 @@ class QuoteController extends Controller
             ->orderBy('order', 'ASC')
             ->get();
         $colors = VehicleColor::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
-        return view('frontend.quote.show', compact('quote', 'colors', 'models', 'grades'));
+        $storeFinalAction = $this->temporarySignedFlowUrl('frontend.quote.store.final', ['quote_id' => $quote->id]);
+        return view('frontend.quote.show', compact('quote', 'colors', 'models', 'grades', 'storeFinalAction'));
     }
 
     /**
@@ -501,7 +532,13 @@ class QuoteController extends Controller
             ->orderBy('order', 'ASC')
             ->get();
         $colors = VehicleColor::where('model_of_cars_id', $quote->model)->orderBy('order', 'ASC')->get();
-        return view('frontend.quote.final_quote', compact('quote', 'colors', 'models', 'grades'));
+        $signedUrls = [
+            'pdfUrl' => $this->temporarySignedFlowUrl('frontend.quote.pdf', $quote->id),
+            'reservationUrl' => $this->temporarySignedFlowUrl('frontend.online.reservation', $quote->id),
+            'thanksUrl' => $this->temporarySignedFlowUrl('frontend.thanks', $quote->id),
+            'whatsappEndpoint' => $this->temporarySignedFlowUrl('frontend.contact.whatsapp', $quote->id),
+        ];
+        return view('frontend.quote.final_quote', compact('quote', 'colors', 'models', 'grades') + $signedUrls);
     }
 
     public function generatePDF($quote_id)

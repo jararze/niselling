@@ -36,19 +36,23 @@ Route::post('/getModels/{id}/second', [QuoteController::class, 'getModels'])->na
 Route::post('/getGrades/{id}/second', [QuoteController::class, 'getGrades'])->name('frontend.getGrades.second');
 
 Route::post('/quote/save', [QuoteController::class, 'store'])->name('frontend.quote.save');
-Route::post('/quote/store/final', [QuoteController::class, 'storeFinal'])->name('frontend.quote.store.final');
-Route::get('/quote/{id}/second-part/show', [QuoteController::class, 'show'])->name('frontend.quote_second.show');
-Route::get('/quote/second-part/update', [QuoteController::class, 'update'])->name('frontend.quote_second.update');
 
-Route::get('/quote/{id}/quote/final/proform', [QuoteController::class, 'finalQuote'])->name('frontend.quote.final.proform');
-Route::get('/quote/pdf/{quote_id}', [QuoteController::class, 'generatePDF'])->name('frontend.quote.pdf');
-Route::get('/quote/thanks/{id}', [QuoteController::class, 'thanks'])->name('frontend.thanks');
-Route::get('/quote/online/{id}/reservation', [QuoteController::class, 'online'])->name('frontend.online.reservation');
-Route::post('/frontend/contact/whatsapp/{id}', [QuoteController::class, 'whatsapp'])->name('frontend.contact.whatsapp');
+// Rutas del flujo de cotización del cliente: llevan el id secuencial de la
+// quote, así que exigen firma (URLs firmadas de 72h) para evitar que
+// cualquiera itere ids y lea o modifique cotizaciones ajenas (IDOR).
+Route::middleware('signed')->group(function () {
+    Route::post('/quote/store/final', [QuoteController::class, 'storeFinal'])->name('frontend.quote.store.final');
+    Route::get('/quote/{id}/second-part/show', [QuoteController::class, 'show'])->name('frontend.quote_second.show');
 
-Route::post('/quote/online/reservation/bank/transfer', [QuoteController::class, 'bank_transfer'])->name('frontend.bank.transfer');
-Route::post('/quote/quote/store/voucher', [QuoteController::class, 'voucher'])->name('frontend.quote.store.voucher');
-Route::get('/quote/thanks/{id}/voucher', [QuoteController::class, 'thanksVoucher'])->name('frontend.thanks.voucher');
+    Route::get('/quote/{id}/quote/final/proform', [QuoteController::class, 'finalQuote'])->name('frontend.quote.final.proform');
+    Route::get('/quote/pdf/{quote_id}', [QuoteController::class, 'generatePDF'])->name('frontend.quote.pdf');
+    Route::get('/quote/thanks/{id}', [QuoteController::class, 'thanks'])->name('frontend.thanks');
+    Route::get('/quote/online/{id}/reservation', [QuoteController::class, 'online'])->name('frontend.online.reservation');
+    Route::post('/frontend/contact/whatsapp/{id}', [QuoteController::class, 'whatsapp'])->name('frontend.contact.whatsapp');
+
+    Route::post('/quote/online/reservation/bank/transfer', [QuoteController::class, 'bank_transfer'])->name('frontend.bank.transfer');
+    Route::post('/quote/quote/store/voucher', [QuoteController::class, 'voucher'])->name('frontend.quote.store.voucher');
+});
 
 Route::post('/quote/online/reservation/libelula/transfer', [QuoteController::class, 'libelula_transfer'])->name('frontend.quote.libelula.transfer');
 Route::get('/quote/online/reservation/libelula/successfulPayment', [QuoteController::class, 'successfulPayment'])->name('frontend.quote.libelula.successfulPayment');
@@ -66,7 +70,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('backend/quote/create', [QuoteController::class, 'create'])->name('backend.quote.create');
     Route::post('backend/quote/store', [QuoteController::class, 'store'])->name('backend.quote.store');
     Route::get('backend/quote/{id}/edit', [QuoteController::class, 'edit'])->name('backend.quote.edit');
-    Route::post('backend/quote/update', [QuoteController::class, 'update'])->name('backend.quote.update');
     Route::post('backend/quote/delete', [QuoteController::class, 'destroy'])->name('backend.quote.delete');
     Route::get('backend/quote/resend/{id}/information', [QuoteController::class, 'resend'])->name('backend.quote.resend.information');
     Route::get('backend/quote/verify/{id}/payment', [QuoteController::class, 'verifyPayment'])->name('backend.quote.verify.payment');

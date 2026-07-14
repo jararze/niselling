@@ -127,7 +127,8 @@ class QuoteStoreTest extends TestCase
         $response = $this->post(route('frontend.quote.save'), $this->validPayload());
 
         $this->assertDatabaseHas('quotes', ['email' => 'juan@example.com']);
-        $response->assertRedirect(route('frontend.quote_second.show', Quote::firstOrFail()->id));
+        $response->assertRedirectContains(route('frontend.quote_second.show', Quote::firstOrFail()->id));
+        $response->assertRedirectContains('signature=');
     }
 
     public function test_quote_is_saved_when_the_referenced_model_was_soft_deleted(): void
@@ -142,7 +143,7 @@ class QuoteStoreTest extends TestCase
         $response = $this->post(route('frontend.quote.save'), $this->validPayload());
 
         $this->assertDatabaseHas('quotes', ['email' => 'juan@example.com']);
-        $response->assertRedirect(route('frontend.quote_second.show', Quote::firstOrFail()->id));
+        $response->assertRedirectContains(route('frontend.quote_second.show', Quote::firstOrFail()->id));
     }
 
     public function test_quote_is_saved_without_agent_when_showroom_has_no_active_agents(): void
@@ -154,7 +155,7 @@ class QuoteStoreTest extends TestCase
         $response = $this->post(route('frontend.quote.save'), $this->validPayload());
 
         $this->assertDatabaseHas('quotes', ['email' => 'juan@example.com', 'agent_id' => null]);
-        $response->assertRedirect(route('frontend.quote_second.show', Quote::firstOrFail()->id));
+        $response->assertRedirectContains(route('frontend.quote_second.show', Quote::firstOrFail()->id));
         Log::shouldHaveReceived('warning');
     }
 

@@ -63,7 +63,7 @@
         <div id="spinner" class="hidden spinner-overlay">
             <div class="spinner"></div>
         </div>
-        <form id="signUpForm" class="mx-auto mb-8" action="{{ route('frontend.quote.store.final') }}" method="POST">
+        <form id="signUpForm" class="mx-auto mb-8" action="{{ $storeFinalAction }}" method="POST">
             @csrf
             <div
                 class="relative mx-auto w-full max-w-screen-xl border-t-2 px-1 py-8 lg:grid lg:grid-cols-1 lg:gap-16 lg:py-4 xl:gap-16"
