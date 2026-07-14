@@ -50,7 +50,11 @@ class DashboardController extends Controller
             ->get();
 
         $totalColors = VehicleColor::count();
-        $lastThreeColors = VehicleColor::latest()->take(5)->get();
+        $lastThreeColors = VehicleColor::with('modelOfCar')
+            ->whereHas('modelOfCar')
+            ->latest()
+            ->take(5)
+            ->get();
 
 
         $results = [];
@@ -114,6 +118,9 @@ class DashboardController extends Controller
 
         foreach ($types as $type) {
             $typeOfCar = $type->typeOfCar()->first();
+            if (! $typeOfCar) {
+                continue;
+            }
             $typeName = $typeOfCar->name;
             $typeIcon = $typeOfCar->icon;
             foreach ($months as $month) {

@@ -36,9 +36,20 @@ var KTCustomersList = function () {
                                 },
                                 body: JSON.stringify({ids: typeVehicleId})
                             })
-                                .then(response => response.json())
-                                .then(data => {
+                                .then(response => response.json().then(data => {
                                     console.log(data);
+                                    if (!response.ok || data.status === 'error') {
+                                        Swal.fire({
+                                            text: data.message || "No se pudo borrar " + n + ".",
+                                            icon: "error",
+                                            buttonsStyling: false,
+                                            confirmButtonText: "Ok, lo tengo!",
+                                            customClass: {
+                                                confirmButton: "btn fw-bold btn-primary"
+                                            }
+                                        });
+                                        return;
+                                    }
                                     Swal.fire({
                                         text: "Usted acaba de borrar " + n + "!",
                                         icon: "success",
@@ -50,7 +61,7 @@ var KTCustomersList = function () {
                                     }).then(function () {
                                         t.row($(o)).remove().draw();
                                     });
-                                })
+                                }))
                                 .catch(error => {
                                     console.error('Error:', error);
                                 });
@@ -116,9 +127,20 @@ var KTCustomersList = function () {
                             },
                             body: JSON.stringify({ids: checkedIds})
                         })
-                            .then(response => response.json())
-                            .then(data => {
+                            .then(response => response.json().then(data => {
                                 console.log(data);
+                                if (!response.ok || data.status === 'error') {
+                                    Swal.fire({
+                                        text: data.message || "No se pudieron borrar los datos seleccionados.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, lo tengo!",
+                                        customClass: {
+                                            confirmButton: "btn fw-bold btn-primary"
+                                        }
+                                    });
+                                    return;
+                                }
                                 Swal.fire({
                                     text: "Usted borro todos los datos seleccionados!.",
                                     icon: "success",
@@ -137,7 +159,7 @@ var KTCustomersList = function () {
                                     });
                                     n.querySelectorAll('[type="checkbox"]')[0].checked = !1;
                                 });
-                            })
+                            }))
                             .catch(error => {
                                 console.error('Error:', error);
                             });

@@ -288,9 +288,9 @@
                                                 @foreach($lastThreeColors as $color)
                                                     <div class="symbol symbol-55px symbol-circle"
                                                          data-bs-toggle="tooltip"
-                                                         title="{{ $color->modelOfCar->name }} - {{ $color->name }}">
+                                                         title="{{ $color->modelOfCar?->name }} - {{ $color->name }}">
                                                         <img
-                                                            src="{{ asset('storage/vehicles/'.$color->modelOfCar->slug.'/thumbnail/'.$color->image) }}"
+                                                            src="{{ asset('storage/vehicles/'.$color->modelOfCar?->slug.'/thumbnail/'.$color->image) }}"
                                                             alt="{{ $color->name }}"/>
                                                     </div>
                                                 @endforeach

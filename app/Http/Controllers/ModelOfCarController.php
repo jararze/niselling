@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\backend\vehicle\ModelOfCar;
 use App\Models\backend\vehicle\Type;
 use App\Models\backend\vehicle\VehicleColor;
+use App\Models\Frontend\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -212,7 +213,14 @@ class ModelOfCarController extends Controller
     public function destroy(Request $request): JsonResponse
     {
         json_decode($request->getContent(), true);
-        $ids = $request->ids;
+        $ids = (array) $request->ids;
+
+        if (Quote::whereIn('model', $ids)->exists()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No se puede eliminar: existen cotizaciones asociadas a este modelo.'
+            ], 422);
+        }
 
         $deleted = ModelOfCar::destroy($ids);
 

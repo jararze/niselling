@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\backend\vehicle\ModelOfCar;
 use App\Models\backend\vehicle\Type;
+use App\Models\Frontend\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -115,7 +117,17 @@ class TypeController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
-        $ids = $request->input('ids');
+        $ids = (array) $request->input('ids');
+
+        $modelIds = ModelOfCar::whereIn('type_id', $ids)->pluck('id');
+        if (Quote::whereIn('model', $modelIds)->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se puede eliminar: existen cotizaciones asociadas a modelos de este tipo.',
+                'data' => null
+            ], 422);
+        }
+
         $deleted = Type::destroy($ids);
 
         if ($deleted) {

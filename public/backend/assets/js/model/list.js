@@ -81,11 +81,22 @@ var ModelList = function () {
                                     },
                                     body: JSON.stringify({ids: vehicleId})
                                 })
-                                    .then(response => response.json())
-                                    .then(data => {
+                                    .then(response => response.json().then(data => {
                                         console.log(data)
+                                        if (!response.ok || data.status === false) {
+                                            Swal.fire({
+                                                text: data.message || "No se pudo eliminar " + vehicleName + ".",
+                                                icon: "error",
+                                                buttonsStyling: false,
+                                                confirmButtonText: "Ok, lo tengo!",
+                                                customClass: {
+                                                    confirmButton: "btn fw-bold btn-primary"
+                                                }
+                                            });
+                                            return;
+                                        }
                                         clearTable(rowContainer, vehicleName, table)
-                                    });
+                                    }));
                             } else if (e.dismiss === Swal.DismissReason.cancel)
                                 cancelDelete(vehicleName);
                         });
@@ -160,16 +171,27 @@ var ModelList = function () {
                     },
                     body: JSON.stringify({ids: checkedIds})
                 })
-                    .then(response => response.json())
-                    .then(data => {
+                    .then(response => response.json().then(data => {
                         console.log(data);
+                        if (!response.ok || data.status === false) {
+                            Swal.fire({
+                                text: data.message || "No se pudieron eliminar los datos seleccionados.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, lo tengo!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary"
+                                }
+                            });
+                            return;
+                        }
                         Swal.fire(deleteSuccessOptions).then(function () {
                             checkBoxes.forEach((checkbox) => {
                                 checkbox.checked && table.row($(checkbox.closest("tbody tr"))).remove().draw();
                             });
                             dataTablePrin.querySelectorAll('[type="checkbox"]')[0].checked = false;
                         });
-                    })
+                    }))
                     .catch(error => {
                         console.error('Error:', error);
                     });
