@@ -199,7 +199,7 @@
                                         </td>
                                         <td>{{ $grade->id  }}</td>
                                         <td>
-                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar->name }}</p>
+                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar?->name }}</p>
                                         </td>
                                         <td>{{ $grade->name  }}</td>
                                         <td>{{ $grade->commercial_date }}</td>

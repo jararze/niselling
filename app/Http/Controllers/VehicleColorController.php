@@ -18,7 +18,10 @@ class VehicleColorController extends Controller
      */
     public function index()
     {
-        $values = VehicleColor::orderBy('name', 'ASC')->get();
+        $values = VehicleColor::with('modelOfCar')
+            ->whereHas('modelOfCar')
+            ->orderBy('name', 'ASC')
+            ->get();
         return view('backend.vehicle.color.index', [
             'values' => $values,
         ]);

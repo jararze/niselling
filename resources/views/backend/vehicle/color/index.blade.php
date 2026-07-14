@@ -196,13 +196,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar->name }}</p>
+                                            <p class="text-gray-800 text-hover-primary mb-1">{{ $grade->modelOfCar?->name }}</p>
                                         </td>
                                         <td>{{ $grade->name  }}</td>
                                         <td>
                                             <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                                 <div class="symbol-label">
-                                                    <img src="{{ asset('storage/vehicles/'.$grade->modelOfCar->slug.'/thumbnail/'.$grade->image) }}" alt="{{ $grade->name }}" class="w-100">
+                                                    <img src="{{ asset('storage/vehicles/'.$grade->modelOfCar?->slug.'/thumbnail/'.$grade->image) }}" alt="{{ $grade->name }}" class="w-100">
                                                 </div>
                                             </div>
                                         </td>

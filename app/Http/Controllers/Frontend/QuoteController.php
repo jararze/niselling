@@ -14,8 +14,10 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Maatwebsite\Excel\Facades\Excel;
@@ -212,9 +214,10 @@ class QuoteController extends Controller
 
         $quote->color = $colorCode;
 
-        $event = $this->getApiDataFacebook($quote);
-
+        // El envío del evento a Facebook nunca debe impedir que la
+        // cotización del cliente se guarde: se registra el fallo y se sigue.
         try {
+            $event = $this->getApiDataFacebook($quote);
             $responseFb = $this->sendAPIRequestFacebook($event);
             $responseContent = $responseFb->getBody();
             $responseData = json_decode($responseContent, true);
@@ -231,8 +234,12 @@ class QuoteController extends Controller
             }
 
 
-        } catch (GuzzleException $e) {
+        } catch (\Throwable $e) {
             $quote->fb_code_id = $e->getCode();
+            Log::error('Falló el envío del evento de cotización a Facebook', [
+                'email' => $quote->email,
+                'error' => $e->getMessage(),
+            ]);
         }
 
 
@@ -241,21 +248,29 @@ class QuoteController extends Controller
             ->where('status',1)
             ->get();
 
-        $lastAssignedAgentId = $agents->firstWhere('last_assigned_agent_id', true);
+        if ($agents->isEmpty()) {
+            Log::warning('Cotización sin agente asignado: el showroom no tiene agentes activos', [
+                'showroom_id' => $validatedData['showroom'],
+                'email' => $quote->email,
+            ]);
+        } else {
+            $lastAssignedAgentId = $agents->firstWhere('last_assigned_agent_id', true);
 
-        $currentKey = $agents->search(fn($agent) => $agent->id == optional($lastAssignedAgentId)->id);
-        $nextKey = ($currentKey + 1) % $agents->count();
-        $nextAgent = $agents[$nextKey];
-        $quote->agent_id = $nextAgent->id;
+            $currentKey = $agents->search(fn($agent) => $agent->id == optional($lastAssignedAgentId)->id);
+            $nextKey = ($currentKey + 1) % $agents->count();
+            $nextAgent = $agents[$nextKey];
+            $quote->agent_id = $nextAgent->id;
 
-        $agents->each(function ($agent) use ($nextAgent) {
-            $agent->last_assigned_agent_id = $agent->id === $nextAgent->id;
-            $agent->save();
-        });
+            $agents->each(function ($agent) use ($nextAgent) {
+                $agent->last_assigned_agent_id = $agent->id === $nextAgent->id;
+                $agent->save();
+            });
+        }
 
-        $apiData = $this->getApiData($quote);
-
+        // Mismo criterio que con Facebook: un fallo armando o enviando el
+        // prospecto a Tecnom no puede impedir que la cotización se guarde.
         try {
+            $apiData = $this->getApiData($quote);
             $response = $this->sendAPIRequest($apiData);
             $statusCode = $response->getStatusCode();
 
@@ -269,8 +284,12 @@ class QuoteController extends Controller
                 $quote->error_tecnom = $response->getBody();
             }
 
-        } catch (GuzzleException $e) {
+        } catch (\Throwable $e) {
             $quote->error_tecnom = $e->getCode();
+            Log::error('Falló el envío de la cotización a Tecnom', [
+                'email' => $quote->email,
+                'error' => $e->getMessage(),
+            ]);
         }
 
         $quote->save();
@@ -282,11 +301,11 @@ class QuoteController extends Controller
     public function getApiDataFacebook(Quote $quote): array
     {
 
-        $hashed_email = hash('sha256', $quote['email']);
-        $hashed_phone = hash('sha256', $quote['phone']);
-        $hashed_ci = hash('sha256', $quote['dni']);
-        $hashed_fn = hash('sha256', $quote['name']);
-        $hashed_ln = hash('sha256', $quote['last-name']);
+        $hashed_email = hash('sha256', $quote->email ?? '');
+        $hashed_phone = hash('sha256', $quote->phone ?? '');
+        $hashed_ci = hash('sha256', $quote->dni ?? '');
+        $hashed_fn = hash('sha256', $quote->name ?? '');
+        $hashed_ln = hash('sha256', $quote->last_name ?? '');
 
         $event = [
             "event_name" => "Lead",
@@ -302,8 +321,8 @@ class QuoteController extends Controller
             ],
             "custom_data" => [
                 "lead_type" => "vehiculo cotizacion",
-                "vehicle_model" => $quote->modelOfCar->name,
-                "vehicle_grade" => $quote->gradeOfCar->name
+                "vehicle_model" => $quote->modelOfCar?->name ?? '',
+                "vehicle_grade" => $quote->gradeOfCar?->name ?? ''
             ],
             "action_source" => "website"
         ];
@@ -318,7 +337,7 @@ class QuoteController extends Controller
             'prospect' => [
                 'requestdate' => date('c'),
                 'customer' => [
-                    'comments' => 'Cotizacion de pagina web, el id es el:'.$quote->id.". \n Datos: \n Ciudad: ".$quote->cityOfCar->name."\n CI: ".$quote->dni." ".$quote->ext." \n Color: ".$quote->colorOfCar->name."\n Requiere Test Drive: ".$test_drive." \n Contacto por: ".$quote->type_contact,
+                    'comments' => 'Cotizacion de pagina web, el id es el:'.$quote->id.". \n Datos: \n Ciudad: ".$quote->cityOfCar?->name."\n CI: ".$quote->dni." ".$quote->ext." \n Color: ".$quote->colorOfCar?->name."\n Requiere Test Drive: ".$test_drive." \n Contacto por: ".$quote->type_contact,
                     'contacts' => [
                         [
                             'emails' => [
@@ -344,7 +363,7 @@ class QuoteController extends Controller
                             ],
                             'addresses' => [
                                 [
-                                    'city' => $quote->cityOfCar->name,
+                                    'city' => $quote->cityOfCar?->name,
                                     'postalcode' => '591'
                                 ]
                             ],
@@ -354,9 +373,9 @@ class QuoteController extends Controller
                 'vehicles' => [
                     [
                         'make' => 'Nissan',
-                        'model' => $quote->modelOfCar->name,
-                        'trim' => $quote->gradeOfCar->name,
-                        'year' => $quote->gradeOfCar->commercial_date
+                        'model' => $quote->modelOfCar?->name,
+                        'trim' => $quote->gradeOfCar?->name,
+                        'year' => $quote->gradeOfCar?->commercial_date
                     ]
                 ],
                 'provider' => [
@@ -368,7 +387,7 @@ class QuoteController extends Controller
                 'vendor' => [
                     'contacts' => [],
                     'vendorname' => [
-                        'value' => $quote->agentOfCar->email
+                        'value' => $quote->agentOfCar?->email
 //                        'value' => 'pcarrasco@nissan.com.bo'
                     ]
                 ]
@@ -380,7 +399,7 @@ class QuoteController extends Controller
 
     private function sendAPIRequestFacebook(array $apiData)
     {
-        $facebook_client = new Client();
+        $facebook_client = app(Client::class);
         $response = $facebook_client->post('https://graph.facebook.com/v20.0/'.config('app.facebook_pixel_id').'/events', [
             'headers' => [
                 'Authorization' => 'Bearer '.config('app.facebook_access_token'),
@@ -394,7 +413,7 @@ class QuoteController extends Controller
     }
     private function sendAPIRequest(array $apiData)
     {
-        $client = new Client();
+        $client = app(Client::class);
         $credentials = $this->getAPICredentials();
         $apiUrl = config('app.api_url');
 //        dd(config('app'));
@@ -422,10 +441,25 @@ class QuoteController extends Controller
     public function storeFinal(Request $request)
     {
 
+        // model/grade llegan de dropdowns poblados por JS: si el fetch falla,
+        // el placeholder ("Seleccione un modelo primero.") viaja como valor.
         $validatedData = $request->validate([
-            'models' => ['required'],
-            'grade' => ['required'],
-            'selected_color' => ['required'],
+            'models' => [
+                'required', 'integer',
+                Rule::exists('model_of_cars', 'id')->whereNull('deleted_at'),
+            ],
+            'grade' => [
+                'required', 'integer',
+                Rule::exists('grades', 'id')
+                    ->where('model_of_cars_id', $request->input('models'))
+                    ->whereNull('deleted_at'),
+            ],
+            'selected_color' => [
+                'required',
+                Rule::exists('vehicle_colors', 'color_code')
+                    ->where('model_of_cars_id', $request->input('models'))
+                    ->whereNull('deleted_at'),
+            ],
         ]);
 
         $oldQuote = Quote::findOrfail($request->quote_id);

@@ -14,7 +14,10 @@ class GradeController extends Controller
      */
     public function index()
     {
-        $values = Grade::orderBy('name', 'ASC')->get();
+        $values = Grade::with('modelOfCar')
+            ->whereHas('modelOfCar')
+            ->orderBy('name', 'ASC')
+            ->get();
         return view('backend.vehicle.grade.index', [
             'values' => $values,
         ]);
